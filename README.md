@@ -2,12 +2,15 @@
 ## About MVC Framework
 This is a web application framework Build with PHP programming language. We believe development must be an enjoyable and creative experience to be truly fulfilling. we develop any project easily by using this framework.
 
-## Features 
-- Simple and fast routing system.
-- Custom query builder.
-- Simple view templating.
-- Form validations.
-- HTTP Helper.
+## Features and Roadmap
+[x] Simple and fast routing system.
+[x] Custom query builder.
+[x] Simple view templating.
+[ ] Form validations.
+[x] HTTP Helper.
+[ ] User management system.
+[ ] Multi authentication system.
+[ ] E-mail and SMS system.
 
 ## License
 This framework is open-sourced software licensed under the MIT license.
