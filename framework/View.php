@@ -7,10 +7,6 @@ class View
 
   public $_head, $_body, $_siteTitle = '', $_outBuffer, $_layout = 'default';
 
-  public function __construct()
-  {
-  }
-
   public function render($viewName, $data = [])
   {
     extract($data);
