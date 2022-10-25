@@ -25,7 +25,7 @@ if (!function_exists('view')) {
   function view($viewName, $data = [])
   {
     $view = new View();
-    $view->rander($viewName, $data);
+    $view->render($viewName, $data);
   }
 }
 

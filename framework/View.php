@@ -11,7 +11,7 @@ class View
   {
   }
 
-  public function rander($viewName, $data = [])
+  public function render($viewName, $data = [])
   {
     extract($data);
     $viewAry = explode('/', $viewName);
