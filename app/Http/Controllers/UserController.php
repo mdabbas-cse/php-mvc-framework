@@ -14,8 +14,10 @@ class UserController extends Controller
   }
   public function store(Request $request)
   {
-    $dd = $request->getBody();
-    dd($dd);
+    if ($request->isPost()) {
+      $data = $request->getBody();
+      dd($data);
+    }
   }
 
 

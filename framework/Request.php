@@ -2,7 +2,9 @@
 
 namespace MVC\Framework;
 
-class Request
+use MVC\Framework\Interfaces\RequestInterface;
+
+class Request implements RequestInterface
 {
   public static function uri()
   {
@@ -35,5 +37,15 @@ class Request
       }
     }
     return $body;
+  }
+
+  public function isPost()
+  {
+    return $this->method() === 'POST' ? true : false;
+  }
+
+  public function isGet()
+  {
+    return $this->method() === 'GET' ? true : false;
   }
 }
