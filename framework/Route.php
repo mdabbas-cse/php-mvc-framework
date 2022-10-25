@@ -22,25 +22,26 @@ class Route
   {
     if (array_key_exists($url, $this->routes[$requestType])) {
       $route = $this->routes[$requestType][$url];
+      // check if route is a string or a callback
+      if (is_object($route)) {
+        return call_user_func($route);
+      }
       $controller = $route[0];
       $action = $route[1];
       return $this->callAction($controller, $action);
-      // return $this->routes[$requestType][$url];
     }
-    // return $this->routes['404'];
-    throw new Exception('No route defined for this URL.');
+    return view('404');
   }
 
   public function callAction($controller, $action)
   {
-    // $controller = "App\\App\\Http\\Controllers\\{$controller}";
     $controller = new $controller;
     if (!method_exists($controller, $action)) {
       throw new Exception(
         "{$controller} does not respond to the {$action} action."
       );
     }
-    return $controller->$action();
+    call_user_func_array([$controller, $action], []);
   }
 
 
@@ -49,7 +50,8 @@ class Route
     $this->routes['GET'][$uri] = $controller;
   }
 
-  public static function post()
+  public function post($uri, $controller)
   {
+    $this->routes['POST'][$uri] = $controller;
   }
 }
