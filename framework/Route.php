@@ -3,6 +3,7 @@
 namespace MVC\Framework;
 
 use Exception;
+use MVC\Framework\Response;
 
 class Route
 {
@@ -39,6 +40,7 @@ class Route
       $action = $route[1];
       return $this->callAction($controller, $action);
     }
+    Response::setStatusCode(404);
     return view('404');
   }
 
