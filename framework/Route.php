@@ -21,11 +21,20 @@ class Route
   public function callRoute($url, $requestType)
   {
     if (array_key_exists($url, $this->routes[$requestType])) {
+
       $route = $this->routes[$requestType][$url];
-      // check if route is a string or a callback
+
+      // check if route is a callback function render closure
       if (is_object($route)) {
         return call_user_func($route);
       }
+
+      // check if route is a string, then render the view
+      if (is_string($route)) {
+        return view($route);
+      }
+
+      // by default, route is an array, then render the controller
       $controller = $route[0];
       $action = $route[1];
       return $this->callAction($controller, $action);

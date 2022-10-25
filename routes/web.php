@@ -6,7 +6,10 @@ use MVC\App\Http\Controllers\UserController;
 $routes->get('/', [Home::class, 'index']); // for home page
 $routes->get('user', function () {
   echo 'user';
-});
+}); // callback function
+$routes->get('user/id', 'contact'); // for access view without any call back function
+
+
 $routes->get('about', 'app/Http/Controllers/about.php');
 $routes->get('about/culture', 'app/Http/Controllers/about-culture.php');
 $routes->get('contact', 'app/Http/Controllers/contact.php');
