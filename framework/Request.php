@@ -7,7 +7,7 @@ class Request
   public static function uri()
   {
     $request = $_SERVER['REQUEST_URI'];
-    if ($request == '/') {
+    if ($request === '/') {
       return '/';
     }
     return trim(
