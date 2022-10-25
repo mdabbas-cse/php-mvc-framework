@@ -4,8 +4,10 @@ This is a web application framework built with PHP programming language. I belie
 
 ## Features and Roadmap
 - [x] Simple and fast routing system.
+- [x] Custom routing system.
 - [x] Custom query builder.
 - [x] Simple view templating.
+- [x] Multi layouts system.
 - [ ] Form validations.
 - [x] HTTP Helper.
 - [ ] User management system.
