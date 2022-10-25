@@ -11,11 +11,16 @@ class Controller extends Application
   public function __construct()
   {
     parent::__construct();
+    $this->view = new View();
   }
 
   public function view($viewName, $data = [])
   {
-    $this->view = new View();
     return $this->view->render($viewName, $data);
+  }
+
+  public function setLayout($layout)
+  {
+    $this->view->setLayout($layout);
   }
 }
