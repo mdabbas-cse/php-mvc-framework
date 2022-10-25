@@ -21,39 +21,43 @@ class Route
 
   public function callRoute($url, $requestType)
   {
+    $request = new Request();
     if (array_key_exists($url, $this->routes[$requestType])) {
 
-      $route = $this->routes[$requestType][$url];
+      $callback = $this->routes[$requestType][$url];
 
       // check if route is a callback function render closure
-      if (is_object($route)) {
-        return call_user_func($route);
+      if (is_object($callback)) {
+        return call_user_func($callback);
       }
 
       // check if route is a string, then render the view
-      if (is_string($route)) {
-        return view($route);
+      if (is_string($callback)) {
+        return view($callback);
       }
 
       // by default, route is an array, then render the controller
-      $controller = $route[0];
-      $action = $route[1];
-      return $this->callAction($controller, $action);
+      if (is_array($callback)) {
+        $callback[0] = new $callback[0]();
+      }
+
+      return call_user_func($callback, $request);
     }
+
     Response::setStatusCode(404);
     return view('404');
   }
 
-  public function callAction($controller, $action)
-  {
-    $controller = new $controller;
-    if (!method_exists($controller, $action)) {
-      throw new Exception(
-        "{$controller} does not respond to the {$action} action."
-      );
-    }
-    call_user_func_array([$controller, $action], []);
-  }
+  // public function callAction($controller, $action)
+  // {
+  //   $controller = new $controller;
+  //   if (!method_exists($controller, $action)) {
+  //     throw new Exception(
+  //       "{$controller} does not respond to the {$action} action."
+  //     );
+  //   }
+  //   call_user_func_array([$controller, $action], []);
+  // }
 
 
   public function get($uri, $controller)

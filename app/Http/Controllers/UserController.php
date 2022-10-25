@@ -3,6 +3,7 @@
 namespace MVC\App\Http\Controllers;
 
 use MVC\Framework\Controller;
+use MVC\Framework\Request;
 
 class UserController extends Controller
 {
@@ -11,9 +12,10 @@ class UserController extends Controller
     // return view('users');
     return $this->view('users');
   }
-  public function store()
+  public function store(Request $request)
   {
-    dd($_POST);
+    $dd = $request->getBody();
+    dd($dd);
   }
 
 
