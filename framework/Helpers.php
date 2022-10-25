@@ -2,12 +2,12 @@
 
 use MVC\Framework\View;
 
-/**
- * @function dd
- * @param $data
- */
 if (!function_exists('dd')) {
-  function dd($data)
+  /**
+   * @function dd
+   * @param $data
+   */
+  function dd(...$data)
   {
     echo '<pre>';
     var_dump($data);
@@ -16,12 +16,12 @@ if (!function_exists('dd')) {
   }
 }
 
-/**
- * @function view
- * @param $viewName
- * @param array $data
- */
 if (!function_exists('view')) {
+  /**
+   * @function view
+   * @param $viewName
+   * @param array $data
+   */
   function view($viewName, $data = [])
   {
     $view = new View();
@@ -29,23 +29,23 @@ if (!function_exists('view')) {
   }
 }
 
-/**
- * @function redirect
- * @param $path
- */
 if (!function_exists('redirect')) {
+  /**
+   * @function redirect
+   * @param $path
+   */
   function redirect($path)
   {
     header("Location: {$path}");
   }
 }
 
-/**
- * @function asset
- * @param $path
- * @return string
- */
 if (!function_exists('assets')) {
+  /**
+   * @function assets
+   * @param $path
+   * @return string
+   */
   function assets($path)
   {
     global $config;
