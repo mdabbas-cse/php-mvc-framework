@@ -22,8 +22,12 @@ $proot = MVC\Framework\App::get('config')['app']['web-root'];
 </head>
 
 <body>
-  <h1>Auth layouts</h1>
+
   <?= $this->content('body'); ?>
+
+
+  <!-- Optional JavaScript; choose one of the two! -->
+  <?= $this->content('script'); ?>
 
 </body>
 

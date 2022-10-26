@@ -2,7 +2,6 @@
 
 use MVC\Framework\Db\Connection;
 use MVC\Framework\Db\QueryBuilder;
-use MVC\App\Models\Todos\Todo;
 use MVC\Framework\App;
 use MVC\Framework\Request;
 use MVC\Framework\Route;
@@ -23,7 +22,7 @@ Route::load($web)->callRoute(
 
 $db = new QueryBuilder(Connection::make($app['database']));
 
-$data = $db->selectAll('todos', Todo::class);
+// $data = $db->selectAll('todos', Todo::class);
 
 // $data = array_map(function ($item) {
 //   $t =  new Todo();

@@ -5,7 +5,7 @@ namespace MVC\Framework;
 class View
 {
 
-  public $_head, $_body, $_siteTitle = '', $_outBuffer, $_layout = 'default';
+  public $_head, $_body, $_script, $_siteTitle = '', $_outBuffer, $_layout = 'default';
 
   public function render($viewName, $data = [])
   {
@@ -23,10 +23,12 @@ class View
 
   public function content($type)
   {
-    if ($type == 'head') {
+    if ($type === 'head') {
       return $this->_head;
-    } elseif ($type == 'body') {
+    } elseif ($type === 'body') {
       return $this->_body;
+    } elseif ($type === 'script') {
+      return $this->_script;
     }
     return false;
   }
@@ -43,6 +45,8 @@ class View
       $this->_head = ob_get_clean();
     } elseif ($this->_outBuffer == 'body') {
       $this->_body = ob_get_clean();
+    } elseif ($this->_outBuffer == 'script') {
+      $this->_script = ob_get_clean();
     } else {
       die('Please! run first start() method.');
     }

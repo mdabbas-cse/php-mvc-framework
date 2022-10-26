@@ -2,7 +2,9 @@
 
 namespace MVC\App\Http\Controllers;
 
+use MVC\App\Models\RegisterModel;
 use MVC\Framework\Controller;
+use MVC\Framework\Request;
 
 class AuthController extends Controller
 {
@@ -11,8 +13,15 @@ class AuthController extends Controller
     $this->setLayout('auth');
     return $this->view('auth/login');
   }
-  public function register()
+  public function register(Request $request)
   {
-    return $this->view('register');
+    $registerModel = new RegisterModel();
+    $registerModel->loadData($request->getBody());
+    if ($registerModel->validate() && $registerModel->register()) {
+      return 'success';
+    }
+    dd($registerModel->errors);
+    $registerModel->register();
+    return $this->view('auth/register');
   }
 }

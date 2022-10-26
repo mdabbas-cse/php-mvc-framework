@@ -63,10 +63,17 @@ class Route
   public function get($uri, $controller)
   {
     $this->routes['GET'][$uri] = $controller;
+    return new static;
   }
 
   public function post($uri, $controller)
   {
     $this->routes['POST'][$uri] = $controller;
+    return new static;
+  }
+
+  public function name()
+  {
+    # code...
   }
 }

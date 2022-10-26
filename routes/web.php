@@ -11,7 +11,8 @@ $routes->get('user', function () {
 $routes->get('contact', 'contact'); // for access view without any call back function
 $routes->post('contact', [UserController::class, 'store']); // for post request
 
-$routes->get('auth', [AuthController::class, 'login']);
+$routes->get('auth', [AuthController::class, 'login'])->name('auth.login');
+$routes->post('register', [AuthController::class, 'register'])->name('register');
 
 
 $routes->get('about', 'app/Http/Controllers/about.php');
