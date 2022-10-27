@@ -16,19 +16,39 @@
       <h1 class="text-center">Login</h1>
       <form action="http://pro.af/register" method="post">
         <div class="mb-3">
-          <label for="email" class="form-label">Email address</label>
-          <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
-          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          <?=
+          input([
+            'label' => 'Email address',
+            'type' => 'text',
+            'name' => 'email',
+            'id' => 'email',
+            'placeholder' => 'Enter your name',
+            'required' => true,
+            'error' => $this->errors['name'] ?? false
+          ])
+          ?>
         </div>
         <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input type="password" class="form-control" id="password" name="password">
+          <?=
+          input([
+            'label' => 'Password',
+            'type' => 'password',
+            'name' => 'password',
+            'id' => 'password',
+            'placeholder' => 'Enter your password',
+            'required' => true,
+            'error' => $this->errors['password'] ?? false
+          ])
+          ?>
         </div>
-        <div class="mb-3 form-check">
+        <!-- <div class="mb-3 form-check">
           <input type="checkbox" class="form-check-input" id="remember" name="remember">
           <label class="form-check-label" for="remember">Remember Me</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        </div> -->
+        <?= button([
+          'type' => 'submit',
+          'label' => 'Submit',
+        ]) ?>
       </form>
     </div>
   </div>
