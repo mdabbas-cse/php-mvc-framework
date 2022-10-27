@@ -8,11 +8,13 @@ This is a web application framework built with PHP programming language. I belie
 - [x] Custom query builder.
 - [x] Simple view templating.
 - [x] Multi layouts system.
+- [x] HTTP helper.
+- [ ] Object relational mapping(ORM).
 - [ ] Form validations.
-- [x] HTTP Helper.
 - [ ] User management system.
 - [ ] Multi authentication system.
 - [ ] E-mail and SMS system.
+- [ ] CSRF token.
 
 ## License
 This framework is open-sourced software licensed under the MIT license.
