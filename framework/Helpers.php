@@ -1,5 +1,6 @@
 <?php
 
+use MVC\Framework\Configuration;
 use MVC\Framework\View;
 
 if (!function_exists('dd')) {
@@ -51,6 +52,21 @@ if (!function_exists('assets')) {
     global $config;
     dd($config);
     // return  $app['app']['web-root'] . DS . 'resources' . DS . 'assets' . DS . $path;
+  }
+}
+
+if (!function_exists('app_url')) {
+  /**
+   * @function app_url
+   * @param $path
+   * @return string
+   */
+  function app_url($path = null)
+  {
+    $config = Configuration::get('app');
+    $url = trim($config['root'], '/');
+    $path = trim($path, '/');
+    return  $path ? $url . '/' . $path : $url;
   }
 }
 
