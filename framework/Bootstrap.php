@@ -2,7 +2,7 @@
 
 use MVC\Framework\Configuration;
 use MVC\Framework\Request;
-use MVC\Framework\Route;
+use MVC\Framework\Router;
 
 $config = Configuration::get();
 date_default_timezone_set($config['app']['timezone']);
@@ -10,7 +10,7 @@ date_default_timezone_set($config['app']['timezone']);
 include ROOT . DS . 'Framework' . DS . "Helpers.php";
 $web = ROOT . DS . 'routes' . DS . 'web.php';
 
-Route::load($web)->callRoute(
+Router::load($web)->callRouter(
   Request::uri(),
   Request::method()
 );

@@ -2,7 +2,7 @@
 <html lang="en">
 <?php
 
-$proot = MVC\Framework\App::get('config')['app']['web-root'];
+$proot = app_url();
 
 
 
