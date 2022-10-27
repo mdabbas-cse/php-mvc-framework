@@ -11,15 +11,10 @@ $routes->get('user', function () {
 $routes->get('contact', 'contact'); // for access view without any call back function
 $routes->post('contact', [UserController::class, 'store']); // for post request
 
-$routes->get('auth', [AuthController::class, 'login'])->name('auth.login');
+$routes->get('auth-register', [AuthController::class, 'registerForm'])->name('auth.registerFrom');
+$routes->get('auth-login', [AuthController::class, 'loginForm'])->name('auth.loginFrom');
 $routes->post('register', [AuthController::class, 'register'])->name('register');
 
-
-$routes->get('about', 'app/Http/Controllers/about.php');
-$routes->get('about/culture', 'app/Http/Controllers/about-culture.php');
-
-$routes->get('names', 'app/Http/Controllers/add-name.php');
-$routes->get('users', 'app/Http/Controllers/users.php');
 $routes->get('users/([0-9]+)/show', [UserController::class, 'show']);
 $routes->get('users/([0-9]+)/edit', 'app/Http/Controllers/edit-user.php');
 $routes->get('users/([0-9]+)/delete', 'app/Http/Controllers/delete-user.php');

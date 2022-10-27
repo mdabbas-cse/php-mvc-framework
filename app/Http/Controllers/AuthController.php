@@ -8,11 +8,21 @@ use MVC\Framework\Request;
 
 class AuthController extends Controller
 {
-  public function login()
+  public function loginForm()
   {
     $this->setLayout('auth');
-    return $this->view('auth/login');
+    $data = [
+      'errors' => [],
+    ];
+    return $this->view('auth/login', compact('data'));
   }
+
+  public function registerForm()
+  {
+    $this->setLayout('auth');
+    return $this->view('auth/register');
+  }
+
   public function register(Request $request)
   {
     $registerModel = new RegisterModel();

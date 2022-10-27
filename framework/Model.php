@@ -43,26 +43,38 @@ abstract class Model
         if (!is_string($ruleName)) {
           $ruleName = $rule[0];
         }
-        if ($ruleName === self::RULE_REQUIRED && !$value) {
-          $this->addError($attribute, self::RULE_REQUIRED);
-        }
-        if ($ruleName === self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
-          $this->addError($attribute, self::RULE_EMAIL);
-        }
-        if ($ruleName === self::RULE_MIN && strlen($value) < $rule['min']) {
-          $this->addError($attribute, self::RULE_MIN, $rule);
-        }
-        if ($ruleName === self::RULE_MAX && strlen($value) > $rule['max']) {
-          $this->addError($attribute, self::RULE_MAX, $rule);
-        }
-        if ($ruleName === self::RULE_MATCH && $value !== $this->{$rule['match']}) {
-          $this->addError($attribute, self::RULE_MATCH, $rule);
-        }
-        if ($ruleName === self::RULE_UNIQUE) {
-          // $unique = $this->db->selectOne($this->table, [$attribute => $value]);
-          // if ($unique) {
-          //   $this->addError($attribute, self::RULE_UNIQUE, ['field' => $attribute]);
-          // }
+        switch ($ruleName) {
+          case self::RULE_REQUIRED:
+            if (empty($value)) {
+              $this->addError($attribute, self::RULE_REQUIRED);
+            }
+            break;
+          case self::RULE_EMAIL:
+            if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+              $this->addError($attribute, self::RULE_EMAIL);
+            }
+            break;
+          case self::RULE_MIN:
+            if (strlen($value) < $rule['min']) {
+              $this->addError($attribute, self::RULE_MIN, $rule);
+            }
+            break;
+          case self::RULE_MAX:
+            if (strlen($value) > $rule['max']) {
+              $this->addError($attribute, self::RULE_MAX, $rule);
+            }
+            break;
+          case self::RULE_MATCH:
+            if ($value !== $this->{$rule['match']}) {
+              $this->addError($attribute, self::RULE_MATCH, $rule);
+            }
+            break;
+            // case self::RULE_UNIQUE:
+            //   $unique = $this->db->select($this->table, $attribute, $value);
+            //   if ($unique) {
+            //     $this->addError($attribute, self::RULE_UNIQUE, ['field' => $attribute]);
+            //   }
+            //   break;
         }
       }
     }
