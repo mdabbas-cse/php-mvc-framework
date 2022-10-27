@@ -18,9 +18,9 @@ if (!function_exists('input')) {
     $type = $attributes['type'] ?? '';
     $name = $attributes['name'] ?? '';
     $value = $attributes['value'] ?? '';
-    $class = $attributes['class'];
-    $id = $attributes['id'];
-    $placeholder = $attributes['placeholder'];
+    $class = $attributes['class'] ?? '';
+    $id = $attributes['id'] ?? '';
+    $placeholder = $attributes['placeholder'] ?? '';
     $required = $attributes['required'] ? 'required' : false;
     $error = $attributes['error'] ?? false;
 
@@ -31,7 +31,7 @@ if (!function_exists('input')) {
   <input type="{$type}" name="{$name}" value="{$value}" class="form-control {$class} {$errorCls}" id="{$id}" placeholder="{$placeholder}" $required>
 HTML;
     if ($error) {
-      $html .= "<div id='emailHelp' class='form-text'>{$error}</div>";
+      $html .= "<div id='{$id}' class='form-text'>{$error}</div>";
     }
     return $html;
   }
@@ -47,10 +47,10 @@ if (!function_exists('button')) {
   {
     $label = $attributes['label'] ?? '';
     $type = $attributes['type'] ?? '';
-    $name = $attributes['name'] ? "name='{$attributes['name']}'" : '';
-    $value = $attributes['value'] ? "value='{$attributes['value']}'" : '';
-    $class = $attributes['class'] ?? '';
-    $id = $attributes['id'] ? "id='{$attributes['id']}'" : '';
+    $name = isset($attributes['name']) ? "name='{$attributes['name']}'" : '';
+    $value = isset($attributes['value']) ? "value='{$attributes['value']}'" : '';
+    $class = isset($attributes['class']) ?? '';
+    $id = isset($attributes['id']) ? "id='{$attributes['id']}'" : '';
     $html = <<<HTML
   <button type="{$type}" {$name} {$value} class="btn btn-primary {$class}" {$id}>{$label}</button>
 HTML;
