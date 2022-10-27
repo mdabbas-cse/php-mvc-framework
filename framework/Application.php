@@ -12,7 +12,8 @@ class Application
 
   private function _set_reporting()
   {
-    if (DEBUG) {
+    $debug = Configuration::get('app')['debug'];
+    if ($debug) {
       error_reporting(E_ALL);
       ini_set('display_errors', 1);
     } else {

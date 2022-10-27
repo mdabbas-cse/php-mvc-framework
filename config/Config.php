@@ -13,7 +13,9 @@ return [
   'app' => [
     'title' => 'My Todo',
     'defaultLayout' => 'default',
-    'web-root' => 'http://pro.af/',
+    'root' => 'http://pro.af/',
+    'debug' => true,
+    'timezone' => 'Asia/Dhaka'
   ],
   'auth' => [
     'session' => 'user_id',
@@ -27,9 +29,6 @@ return [
     'password' => 'your password',
     'port' => 587,
     'html' => true
-  ],
-  'twig' => [
-    'debug' => true
   ],
   'csrf' => [
     'key' => 'csrf_token'
@@ -45,5 +44,4 @@ return [
   'pagination' => [
     'per_page' => 5
   ],
-  'debug' => false,
 ];

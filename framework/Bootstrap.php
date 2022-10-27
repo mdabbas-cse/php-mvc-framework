@@ -1,17 +1,12 @@
 <?php
 
-use MVC\Framework\Db\Connection;
-use MVC\Framework\Db\QueryBuilder;
-use MVC\Framework\App;
+use MVC\Framework\Configuration;
 use MVC\Framework\Request;
 use MVC\Framework\Route;
 
-$config =  require(ROOT . DS . 'config' . DS . "Config.php");
+$config = Configuration::get();
+date_default_timezone_set($config['app']['timezone']);
 
-define('DEBUG', $config['debug']);
-
-App::bind('config', $config);
-$app = App::get('config');
 include ROOT . DS . 'Framework' . DS . "Helpers.php";
 $web = ROOT . DS . 'routes' . DS . 'web.php';
 
@@ -20,7 +15,7 @@ Route::load($web)->callRoute(
   Request::method()
 );
 
-$db = new QueryBuilder(Connection::make($app['database']));
+// $db = new QueryBuilder(Connection::make($app['database']));
 
 // $data = $db->selectAll('todos', Todo::class);
 

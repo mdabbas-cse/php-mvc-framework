@@ -2,7 +2,9 @@
 <html lang="en">
 <?php
 
-$proot = MVC\Framework\App::get('config')['app']['web-root'];
+use MVC\Framework\Configuration;
+
+$proot = Configuration::get('app')['root'];
 
 
 
