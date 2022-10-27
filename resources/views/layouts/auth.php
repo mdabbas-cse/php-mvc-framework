@@ -25,6 +25,7 @@ $proot = Configuration::get('app')['root'];
 
 <body>
 
+  <?php include('navbar.php') ?>
   <?= $this->content('body'); ?>
 
 

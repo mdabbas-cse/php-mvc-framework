@@ -14,7 +14,7 @@ return [
     'title' => 'My Todo',
     'defaultLayout' => 'default',
     'root' => 'http://pro.af/',
-    'debug' => true,
+    'debug' => false,
     'timezone' => 'Asia/Dhaka'
   ],
   'auth' => [
