@@ -17,6 +17,24 @@ class AuthController extends Controller
     return $this->view('auth/login', compact('data'));
   }
 
+  public function login(Request $request)
+  {
+    $data = [
+      'errors' => [],
+    ];
+    $this->setLayout('auth');
+    $registerModel = new RegisterModel();
+    $registerModel->loadData($request->getBody());
+    // if ($registerModel->validate() && $registerModel->login()) {
+    //   return $this->redirect('home');
+    // }
+    dd($registerModel);
+    $data['errors'] = $registerModel->errors;
+
+    return $this->view('auth/login', compact('data'));
+  }
+
+
   public function registerForm()
   {
     $this->setLayout('auth');

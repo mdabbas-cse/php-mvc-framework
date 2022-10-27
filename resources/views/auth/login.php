@@ -14,7 +14,7 @@
   <div class="row">
     <div class="col-md-6 offset-md-3 bg-white p-4 rounded">
       <h1 class="text-center">Login</h1>
-      <form action="http://pro.af/register" method="post">
+      <form action="http://pro.af/auth-login" method="post">
         <div class="mb-3">
           <?=
           input([

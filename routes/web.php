@@ -12,8 +12,9 @@ $routes->get('contact', 'contact'); // for access view without any call back fun
 $routes->post('contact', [UserController::class, 'store']); // for post request
 
 $routes->get('auth-register', [AuthController::class, 'registerForm'])->name('auth.registerFrom');
-$routes->get('auth-login', [AuthController::class, 'loginForm'])->name('auth.loginFrom');
 $routes->post('register', [AuthController::class, 'register'])->name('register');
+$routes->get('auth-login', [AuthController::class, 'loginForm'])->name('auth.loginFrom');
+$routes->post('auth-login', [AuthController::class, 'login'])->name('login');
 
 $routes->get('users/([0-9]+)/show', [UserController::class, 'show']);
 $routes->get('users/([0-9]+)/edit', 'app/Http/Controllers/edit-user.php');
