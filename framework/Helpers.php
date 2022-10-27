@@ -53,3 +53,6 @@ if (!function_exists('assets')) {
     // return  $app['app']['web-root'] . DS . 'resources' . DS . 'assets' . DS . $path;
   }
 }
+
+
+include_once 'Components/InputsComponent.php';
