@@ -28,10 +28,10 @@ class AuthController extends Controller
     // if ($registerModel->validate() && $registerModel->login()) {
     //   return $this->redirect('home');
     // }
-    dd($registerModel);
-    $data['errors'] = $registerModel->errors;
+    // dd($registerModel);
+    $model = $registerModel;
 
-    return $this->view('auth/login', compact('data'));
+    return $this->view('auth/login', compact('model'));
   }
 
 
@@ -44,12 +44,22 @@ class AuthController extends Controller
   public function register(Request $request)
   {
     $registerModel = new RegisterModel();
-    $registerModel->loadData($request->getBody());
-    if ($registerModel->validate() && $registerModel->register()) {
-      return 'success';
+    if ($request->isPost()) {
+      dd($request->getBody());
+      $registerModel->loadData($request->getBody());
+      if ($registerModel->validate() && $registerModel->register()) {
+        // return $this->redirect('home');
+        return 'success';
+      }
+      $data = [
+        'model' => $registerModel,
+      ];
+      dd($data);
+      return $this->view('auth/register', $data);
     }
-    dd($registerModel->errors);
-    $registerModel->register();
-    return $this->view('auth/register');
+    $data = [
+      'model' => $registerModel,
+    ];
+    return $this->view('auth/register', $data);
   }
 }

@@ -12,7 +12,7 @@ $routes->get('contact', 'contact'); // for access view without any call back fun
 $routes->post('contact', [UserController::class, 'store']); // for post request
 
 $routes->get('auth-register', [AuthController::class, 'registerForm'])->name('auth.registerFrom');
-$routes->post('register', [AuthController::class, 'register'])->name('register');
+$routes->post('auth-register', [AuthController::class, 'register']);
 $routes->get('auth-login', [AuthController::class, 'loginForm'])->name('auth.loginFrom');
 $routes->post('auth-login', [AuthController::class, 'login'])->name('login');
 

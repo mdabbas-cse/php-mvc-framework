@@ -4,6 +4,7 @@ namespace MVC\Framework;
 
 use MVC\Framework\Db\Connection;
 use MVC\Framework\Db\QueryBuilder;
+use MVC\Framework\Configuration;
 
 abstract class Model
 {
@@ -19,7 +20,7 @@ abstract class Model
 
   public function __construct()
   {
-    $this->db = new QueryBuilder(Connection::make(App::get('config')['database']));
+    $this->db = new QueryBuilder(Connection::make(Configuration::get('database')));
   }
 
   abstract public function role(): array;
@@ -103,5 +104,15 @@ abstract class Model
       self::RULE_MATCH => 'This field must be the same as {match}',
       self::RULE_UNIQUE => 'Record with this {field} already exists',
     ];
+  }
+
+  public function hasError($attribute)
+  {
+    return $this->errors[$attribute] ?? false;
+  }
+
+  public function getError($attribute)
+  {
+    return $this->errors[$attribute][0] ?? false;
   }
 }
