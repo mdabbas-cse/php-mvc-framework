@@ -9,8 +9,10 @@ This is a web application framework built with PHP programming language. I belie
 - [x] Simple view templating.
 - [x] Multi layouts system.
 - [x] HTTP helper.
+- [ ] Database migrations.
 - [ ] Object relational mapping(ORM).
-- [ ] Form validations.
+- [x] Component for form and input field.
+- [x] Form validations.
 - [ ] User management system.
 - [ ] Multi authentication system.
 - [ ] E-mail and SMS system.
