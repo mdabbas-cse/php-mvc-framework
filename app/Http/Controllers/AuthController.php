@@ -25,10 +25,7 @@ class AuthController extends Controller
     $this->setLayout('auth');
     $registerModel = new RegisterModel();
     $registerModel->loadData($request->getBody());
-    // if ($registerModel->validate() && $registerModel->login()) {
-    //   return $this->redirect('home');
-    // }
-    // dd($registerModel);
+
     $model = $registerModel;
 
     return $this->view('auth/login', compact('model'));
@@ -45,21 +42,38 @@ class AuthController extends Controller
   {
     $registerModel = new RegisterModel();
     if ($request->isPost()) {
-      dd($request->getBody());
-      $registerModel->loadData($request->getBody());
-      if ($registerModel->validate() && $registerModel->register()) {
-        // return $this->redirect('home');
-        return 'success';
+      $this->validation(
+        $request,
+        [
+          'firstname' => ['required'],
+          'lastname' => ['required'],
+          'email' => ['required', 'email'],
+          'password' => ['required', ['min', 'min' => 2], ['max', 'max' => 12]],
+          'confirmPassword' => ['required', ['match', 'match' => 'password']],
+        ]
+      );
+
+      if (!$this->isValidate()) {
+        return $this->view('auth/register');
+      } else {
+        echo 'success';
       }
-      $data = [
-        'model' => $registerModel,
-      ];
-      dd($data);
-      return $this->view('auth/register', $data);
+
+      // dd($request->getBody());
+      // $registerModel->loadData($request->getBody());
+      // if ($registerModel->validate() && $registerModel->register()) {
+      //   // return $this->redirect('home');
+      //   return 'success';
+      // }
+      // $model = $registerModel;
+      // return $this->view('auth/register', compact('model'));
     }
+
+    $model = $registerModel;
     $data = [
       'model' => $registerModel,
     ];
-    return $this->view('auth/register', $data);
+
+    // return $this->view('auth/register', $data);
   }
 }

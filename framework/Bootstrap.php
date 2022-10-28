@@ -4,6 +4,7 @@ use MVC\Framework\Configuration;
 use MVC\Framework\Request;
 use MVC\Framework\Router;
 
+session_start();
 $config = Configuration::get();
 date_default_timezone_set($config['app']['timezone']);
 
@@ -14,6 +15,8 @@ Router::load($web)->callRouter(
   Request::uri(),
   Request::method()
 );
+
+session_destroy();
 
 // $db = new QueryBuilder(Connection::make($app['database']));
 

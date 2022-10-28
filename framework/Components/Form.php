@@ -1,41 +1,29 @@
 <?php
 
 /**
- * @package    MVC
- * @subpackage Framework
- * @author     Md. Abbas Uddin
- * @version    1.0.0
- */
-/**
- * Class Form
- * @package MVC\Framework\Components
- * @description This class is used to create form dynamically
-
- * @property string $action
- * @property string $method
- * @property string $class
- * @property string $id
- * @property string $enctype
- * @property string $acceptCharset
- * @property string $autocomplete
- * @property string $novalidate
- * @property string $target
- * @property string $style
+ * @author:  Md. Abbas uddin <gmabbas44@gmail.com>
+ * @package: MVC\Framework\Components\Form
  */
 
-class  Form
+namespace MVC\Framework\Components;
+
+use MVC\Framework\Components\InputField;
+
+class Form
 {
-  public function __construct($action, $method = 'post', $class = '', $id = '', $enctype = '', $acceptCharset = '', $autocomplete = '', $novalidate = '', $target = '', $style = '')
+  public static function begin($action, $method)
   {
-    $this->action = $action;
-    $this->method = $method;
-    $this->class = $class;
-    $this->id = $id;
-    $this->enctype = $enctype;
-    $this->acceptCharset = $acceptCharset;
-    $this->autocomplete = $autocomplete;
-    $this->novalidate = $novalidate;
-    $this->target = $target;
-    $this->style = $style;
+    echo sprintf('<form action="%s" method="%s">', $action, $method);
+    return new Form();
+  }
+
+  public static function end()
+  {
+    echo '</form>';
+  }
+
+  public function field($type, $attribute, $label, $wrp_cls = null)
+  {
+    return new InputField($type, $attribute, $label, $wrp_cls);
   }
 }
