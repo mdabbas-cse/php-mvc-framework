@@ -23,7 +23,7 @@
             'name' => 'email',
             'id' => 'email',
             'placeholder' => 'Enter your name',
-            'required' => true,
+            // 'required' => true,
             'error' => $this->errors['name'] ?? false
           ])
           ?>
@@ -36,7 +36,7 @@
             'name' => 'password',
             'id' => 'password',
             'placeholder' => 'Enter your password',
-            'required' => true,
+            // 'required' => true,
             'error' => $this->errors['password'] ?? false
           ])
           ?>

@@ -1,4 +1,8 @@
-<?php $this->setSiteTile('Home'); ?>
+<?php
+
+use MVC\Framework\Components\Form;
+
+$this->setSiteTile('Home'); ?>
 
 <?php $this->start('head'); ?>
 
@@ -8,53 +12,39 @@
 
 <?php $this->start('body'); ?>
 
-<?php if ($model) var_dump($model) ?>
+<?php //if ($model) dd($model);
+
+?>
 <div class="container mt-4">
   <div class="row">
     <div class="col-md-6 offset-md-3 bg-white p-4 rounded">
       <h1 class="text-center">Registration</h1>
-      <form action="<?= app_url('auth-register') ?>" method="POST">
-        <!-- 2 column grid layout with text inputs for the first and last names -->
-        <div class="row mb-4">
-          <div class="col">
-            <div class="form-outline">
-              <input type="text" id="name" name="firstname" class="form-control" />
-              <label class="form-label" for="name" name="firstname">First name</label>
-            </div>
-          </div>
-          <div class="col">
-            <div class="form-outline">
-              <input type="text" id="lastname" name="lastname" class="form-control" />
-              <label class="form-label" for="lastname" name="lastname">Last name</label>
-            </div>
-          </div>
+      <?php $form = Form::begin(app_url('auth-register'), 'post') ?>
+      <div class="row mb-4">
+        <div class="col">
+          <?= $form->field('text', 'firstname', 'First name') ?>
         </div>
-
-        <!-- Email input -->
-        <div class="form-outline mb-4">
-          <input type="email" id="email" name="email" class="form-control" />
-          <label class="form-label" for="email" name="email">Email address</label>
+        <div class="col">
+          <?= $form->field('text', 'lastname', 'Last name') ?>
         </div>
+      </div>
 
-        <!-- Password input -->
-        <div class="row">
-          <div class="col">
-            <div class="form-outline mb-4">
-              <input type="password" id="password" name="password" class="form-control" />
-              <label class="form-label" for="password" name="password">Password</label>
-            </div>
-          </div>
-          <div class="col">
-            <div class="form-outline mb-4">
-              <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" />
-              <label class="form-label" for="confirmPassword" name="confirmPassword">Confirm Password</label>
-            </div>
-          </div>
+      <!-- Email input -->
+      <?= $form->field('email', 'email', 'Email address', 'form-outline mb-4') ?>
+
+      <!-- Password input -->
+      <div class="row">
+        <div class="col">
+          <?= $form->field('password', 'password', 'Password', 'form-outline mb-4') ?>
         </div>
+        <div class="col">
+          <?= $form->field('password', 'confirmPassword', 'Confirm Password', 'form-outline mb-4') ?>
+        </div>
+      </div>
 
-        <!-- Submit button -->
-        <button type="submit" class="btn btn-primary btn-block mb-4">Sign up</button>
-      </form>
+      <!-- Submit button -->
+      <button type="submit" class="btn btn-primary btn-block mb-4">Sign up</button>
+      <?php Form::end() ?>
     </div>
   </div>
 </div>

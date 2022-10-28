@@ -10,20 +10,11 @@ abstract class Model
 {
   protected $db;
   public $errors = [];
-  public const RULE_REQUIRED = 'required';
-  public const RULE_EMAIL = 'email';
-  public const RULE_MIN = 'min';
-  public const RULE_MAX = 'max';
-  public const RULE_MATCH = 'match';
-  public const RULE_UNIQUE = 'unique';
-
 
   public function __construct()
   {
     $this->db = new QueryBuilder(Connection::make(Configuration::get('database')));
   }
-
-  abstract public function role(): array;
 
   public function loadData($data)
   {
@@ -32,87 +23,5 @@ abstract class Model
         $this->{$key} = $value;
       }
     }
-  }
-
-  // for validate
-  public function validate()
-  {
-    foreach ($this->role() as $attribute => $rules) {
-      $value = $this->{$attribute};
-      foreach ($rules as $rule) {
-        $ruleName = $rule;
-        if (!is_string($ruleName)) {
-          $ruleName = $rule[0];
-        }
-        switch ($ruleName) {
-          case self::RULE_REQUIRED:
-            if (empty($value)) {
-              $this->addError($attribute, self::RULE_REQUIRED);
-            }
-            break;
-          case self::RULE_EMAIL:
-            if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
-              $this->addError($attribute, self::RULE_EMAIL);
-            }
-            break;
-          case self::RULE_MIN:
-            if (strlen($value) < $rule['min']) {
-              $this->addError($attribute, self::RULE_MIN, $rule);
-            }
-            break;
-          case self::RULE_MAX:
-            if (strlen($value) > $rule['max']) {
-              $this->addError($attribute, self::RULE_MAX, $rule);
-            }
-            break;
-          case self::RULE_MATCH:
-            if ($value !== $this->{$rule['match']}) {
-              $this->addError($attribute, self::RULE_MATCH, $rule);
-            }
-            break;
-            // case self::RULE_UNIQUE:
-            //   $unique = $this->db->select($this->table, $attribute, $value);
-            //   if ($unique) {
-            //     $this->addError($attribute, self::RULE_UNIQUE, ['field' => $attribute]);
-            //   }
-            //   break;
-        }
-      }
-    }
-    return empty($this->errors);
-  }
-
-  public function addError(string $attribute, string $rule, $params = [])
-  {
-    $message = $this->errormessage()[$rule] ?? '';
-    if (!$message) {
-      throw new \Exception("There is no error message for $rule");
-    }
-    foreach ($params as $key => $value) {
-      $message = str_replace("{{$key}}", $value, $message);
-    }
-    $this->errors[$attribute][] = $message;
-  }
-
-  public function errormessage()
-  {
-    return [
-      self::RULE_REQUIRED => 'This field is required',
-      self::RULE_EMAIL => 'This field must be a valid email address',
-      self::RULE_MIN => 'Min length of this field must be {min}',
-      self::RULE_MAX => 'Max length of this field must be {max}',
-      self::RULE_MATCH => 'This field must be the same as {match}',
-      self::RULE_UNIQUE => 'Record with this {field} already exists',
-    ];
-  }
-
-  public function hasError($attribute)
-  {
-    return $this->errors[$attribute] ?? false;
-  }
-
-  public function getError($attribute)
-  {
-    return $this->errors[$attribute][0] ?? false;
   }
 }

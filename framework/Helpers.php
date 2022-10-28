@@ -1,6 +1,8 @@
 <?php
 
 use MVC\Framework\Configuration;
+use MVC\Framework\Helpers\Errors;
+use MVC\Framework\Helpers\Values;
 use MVC\Framework\View;
 
 if (!function_exists('dd')) {
@@ -67,6 +69,30 @@ if (!function_exists('app_url')) {
     $url = trim($config['root'], '/');
     $path = trim($path, '/');
     return  $path ? $url . '/' . $path : $url;
+  }
+}
+
+/**
+ * @function for get input value
+ * @param $key
+ * @return string
+ */
+if (!function_exists('old')) {
+  function old($key)
+  {
+    return Values::get($key);
+  }
+}
+
+/**
+ * @function for get error message
+ * @param $key
+ * @return string
+ */
+if (!function_exists('errors')) {
+  function errors($key)
+  {
+    return Errors::get($key);
   }
 }
 

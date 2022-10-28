@@ -5,7 +5,12 @@ namespace MVC\Framework;
 class View
 {
 
-  public $_head, $_body, $_script, $_siteTitle = '', $_outBuffer, $_layout = 'default';
+  public $_head;
+  public $_body;
+  public $_script;
+  public $_siteTitle = '';
+  public $_outBuffer;
+  public $_layout = 'default';
 
   public function render($viewName, $data = [])
   {

@@ -4,7 +4,8 @@ use MVC\App\Http\Controllers\AuthController;
 use MVC\App\Http\Controllers\HomeController;
 use MVC\App\Http\Controllers\UserController;
 
-$routes->get('/', [HomeController::class, 'index']); // for home page
+// $routes->get('/', [HomeController::class, 'index']); // for home page
+$routes->get('/', [AuthController::class, 'loginForm']); // for home page
 $routes->get('user', function () {
   echo 'user';
 }); // callback function

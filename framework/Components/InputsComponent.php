@@ -21,7 +21,7 @@ if (!function_exists('input')) {
     $class = $attributes['class'] ?? '';
     $id = $attributes['id'] ?? '';
     $placeholder = $attributes['placeholder'] ?? '';
-    $required = $attributes['required'] ? 'required' : false;
+    $required = isset($attributes['required']) ? 'required' : false;
     $error = $attributes['error'] ?? false;
 
     $required = $required ? 'required' : '';

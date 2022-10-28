@@ -3,11 +3,14 @@
 namespace MVC\Framework;
 
 use MVC\Framework\Application;
+use MVC\Framework\Validation;
+use MVC\Framework\Interfaces\ControllerInterface;
 use MVC\Framework\View;
 
-class Controller extends Application
+abstract class Controller extends Application implements ControllerInterface
 {
   protected $view;
+  protected $validate;
   public function __construct()
   {
     parent::__construct();
@@ -22,5 +25,19 @@ class Controller extends Application
   public function setLayout($layout)
   {
     $this->view->setLayout($layout);
+  }
+
+  public function validation(Request $request, $data = [])
+  {
+    $this->validate = new Validation($request->getBody(), $data);
+    return $this->validate->checkValidation();
+  }
+  public function isValidate()
+  {
+    return $this->validate->isValidate();
+  }
+  public function errors()
+  {
+    return $this->validate->getErrors();
   }
 }
