@@ -2,7 +2,7 @@
 
 namespace MVC\App\Http\Controllers;
 
-use MVC\App\Models\RegisterModel;
+use MVC\App\Models\Users;
 use MVC\Framework\Controller;
 use MVC\Framework\Request;
 
@@ -23,7 +23,7 @@ class AuthController extends Controller
       'errors' => [],
     ];
     $this->setLayout('auth');
-    $registerModel = new RegisterModel();
+    $registerModel = new Users();
     $registerModel->loadData($request->getBody());
 
     $model = $registerModel;
@@ -40,7 +40,7 @@ class AuthController extends Controller
 
   public function register(Request $request)
   {
-    $registerModel = new RegisterModel();
+    $registerModel = new Users();
     if ($request->isPost()) {
       $this->validation(
         $request,
@@ -56,7 +56,9 @@ class AuthController extends Controller
       if (!$this->isValidate()) {
         return $this->view('auth/register');
       } else {
-        echo 'success';
+        $registerModel->loadData($request->getBody());
+        $registerModel->save();
+        // return $this->redirect('login');
       }
 
       // dd($request->getBody());
