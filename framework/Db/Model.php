@@ -1,6 +1,6 @@
 <?php
 
-namespace MVC\Framework;
+namespace MVC\Framework\Db;
 
 use MVC\Framework\Db\Connection;
 use MVC\Framework\Db\QueryBuilder;
@@ -16,12 +16,16 @@ abstract class Model
     $this->db = new QueryBuilder(Connection::make(Configuration::get('database')));
   }
 
-  public function loadData($data)
+  /**
+   * get all data from database
+   */
+  public function all($tableName)
   {
-    foreach ($data as $key => $value) {
-      if (property_exists($this, $key)) {
-        $this->{$key} = $value;
-      }
-    }
+    return $this->db->selectAll($tableName);
+  }
+
+  public function prepare($sql)
+  {
+    return $this->db->prepare($sql);
   }
 }
