@@ -23,10 +23,10 @@ class AuthController extends Controller
       'errors' => [],
     ];
     $this->setLayout('auth');
-    $registerModel = new Users();
-    $registerModel->loadData($request->getBody());
+    $users = new Users();
+    $users->loadData($request->getBody());
 
-    $model = $registerModel;
+    $model = $users;
 
     return $this->view('auth/login', compact('model'));
   }
@@ -40,7 +40,7 @@ class AuthController extends Controller
 
   public function register(Request $request)
   {
-    $registerModel = new Users();
+    $users = new Users();
     if ($request->isPost()) {
       $this->validation(
         $request,
@@ -56,24 +56,29 @@ class AuthController extends Controller
       if (!$this->isValidate()) {
         return $this->view('auth/register');
       } else {
-        $registerModel->loadData($request->getBody());
-        $registerModel->save();
+        // dd($request->getBody());
+        // $users->loadData($request->getBody());
+        $users->firstname = $request->input('firstname');
+        $users->lastname = $request->lastname;
+        $users->email = $request->email;
+        $users->password = $request->password;
+        $users->save();
         // return $this->redirect('login');
       }
 
       // dd($request->getBody());
-      // $registerModel->loadData($request->getBody());
-      // if ($registerModel->validate() && $registerModel->register()) {
+      // $users->loadData($request->getBody());
+      // if ($users->validate() && $users->register()) {
       //   // return $this->redirect('home');
       //   return 'success';
       // }
-      // $model = $registerModel;
+      // $model = $users;
       // return $this->view('auth/register', compact('model'));
     }
 
-    $model = $registerModel;
+    $model = $users;
     $data = [
-      'model' => $registerModel,
+      'model' => $users,
     ];
 
     // return $this->view('auth/register', $data);

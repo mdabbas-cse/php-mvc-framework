@@ -10,10 +10,10 @@ namespace MVC\Framework\Helpers;
 
 class Hash
 {
-
   /**
    * @param $password
-   * @return bool|string
+   * @return string $hash
+   * @description hash password
    */
   public static function make($password)
   {
@@ -21,9 +21,11 @@ class Hash
   }
 
   /**
-   * @param $password
+   * @function check
+   * @param $password 
    * @param $hash
    * @return bool
+   * @description check if password is correct
    */
   public static function check($password, $hash)
   {

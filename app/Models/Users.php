@@ -3,7 +3,7 @@
 namespace MVC\App\Models;
 
 use MVC\Framework\Db\DataModel;
-
+use MVC\Framework\Helpers\Hash;
 
 class Users extends DataModel
 {
@@ -20,8 +20,9 @@ class Users extends DataModel
     return $this->fillable;
   }
 
-  // public function register()
-  // {
-  //   return $this->save();
-  // }
+  public function save()
+  {
+    $this->password = Hash::make($this->password);
+    return parent::save();
+  }
 }

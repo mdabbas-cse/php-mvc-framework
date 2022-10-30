@@ -2,6 +2,7 @@
 
 namespace MVC\Framework;
 
+use MVC\Framework\Helpers\Input;
 use MVC\Framework\Interfaces\RequestInterface;
 
 class Request implements RequestInterface
@@ -26,17 +27,30 @@ class Request implements RequestInterface
   public function getBody()
   {
     $body = [];
-    if ($this->method() === 'GET') {
+    if ($this->isGet()) {
       foreach ($_GET as $key => $value) {
         $body[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+        $this->{$key} = Input::sanitize($value);
       }
     }
-    if ($this->method() === 'POST') {
+    if ($this->isPost()) {
       foreach ($_POST as $key => $value) {
         $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+        $this->{$key} = Input::sanitize($value);
       }
     }
     return $body;
+  }
+
+  /**
+   * get request method value
+   */
+  public function input($key)
+  {
+    if (property_exists($this, $key)) {
+      return Input::sanitize($this->{$key});
+    }
+    throw new \Exception("{$key} not found");
   }
 
   public function isPost()

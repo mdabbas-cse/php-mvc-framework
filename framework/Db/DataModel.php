@@ -57,12 +57,10 @@ abstract class DataModel extends Model
       return ":{$attr}";
     }, $attributes);
 
-    // dd($attributes, $params);
     $statement = $this->prepare("INSERT INTO {$this->tableName()} (" . implode(',', $attributes) . ") VALUES (" . implode(',', $params) . ")");
     foreach ($attributes as $attribute) {
       $statement->bindValue(":$attribute", $this->{$attribute});
     }
-    // dd($statement);
     $statement->execute();
     return true;
   }
