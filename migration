@@ -1,0 +1,13 @@
+<?php
+
+use MVC\Framework\Db\Migrations\Migration;
+use MVC\Framework\Db\QueryBuilder;
+
+define('DS', DIRECTORY_SEPARATOR);
+$path = dirname(__FILE__);
+define('ROOT',  $path);
+include_once './vendor/autoload.php';
+
+$migration = new Migration();
+
+$migration->applyMigrations();

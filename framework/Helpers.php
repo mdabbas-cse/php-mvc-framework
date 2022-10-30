@@ -51,9 +51,8 @@ if (!function_exists('assets')) {
    */
   function assets($path)
   {
-    global $config;
-    dd($config);
-    // return  $app['app']['web-root'] . DS . 'resources' . DS . 'assets' . DS . $path;
+    $url = '/resources/assets/' . $path;
+    return app_url($url);
   }
 }
 

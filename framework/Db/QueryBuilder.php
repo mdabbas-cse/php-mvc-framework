@@ -2,15 +2,19 @@
 
 namespace MVC\Framework\Db;
 
+use MVC\Framework\Configuration;
 use PDO;
+use MVC\Framework\Db\Connection;
 
 class QueryBuilder
 {
   protected $pdo;
 
-  public function __construct($pdo)
+  public function __construct()
   {
-    $this->pdo = $pdo;
+    $config = Configuration::get('database');
+    $connection =  Connection::make($config);
+    $this->pdo = $connection;
   }
 
   public function selectAll($table, $intoClass = null)

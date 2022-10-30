@@ -4,7 +4,6 @@
       "MVC\\": "./"
     },
     "files": [
-      "framework/Bootstrap.php",
       "framework/Helpers.php"
     ]
   }
