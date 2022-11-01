@@ -15,15 +15,21 @@ class Errors
   public static function get($key)
   {
     if (array_key_exists('inputErrors', $_SESSION) && !empty($_SESSION)) {
-      $errors = $_SESSION['inputErrors'];
-      $_SESSION['inputErrors'] = null;
-      return $errors[$key];
+      if (array_key_exists($key, $_SESSION['inputErrors'])) {
+        $message = $_SESSION['inputErrors'][$key];
+        $_SESSION['inputErrors'][$key] = null;
+        return $message;
+      }
     }
     return '';
   }
 
   public static function set($errors)
   {
-    $_SESSION['inputErrors'] = $errors;
+    if (!$errors) return;
+    foreach ($errors as $key => $value) {
+      $_SESSION['inputErrors'][$key] = $value;
+    }
+    dd($_SESSION['inputErrors']);
   }
 }
