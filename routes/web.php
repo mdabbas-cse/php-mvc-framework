@@ -1,7 +1,6 @@
 <?php
 
-use MVC\App\Http\Controllers\AuthController;
-use MVC\App\Http\Controllers\HomeController;
+use MVC\App\Http\Controllers\Auth\AuthController;
 use MVC\App\Http\Controllers\UserController;
 
 // $routes->get('/', [HomeController::class, 'index']); // for home page
