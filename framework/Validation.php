@@ -2,7 +2,7 @@
 
 namespace MVC\Framework;
 
-use Error;
+use MVC\Framework\Db\QueryBuilder;
 use MVC\Framework\Helpers\Errors;
 use MVC\Framework\Helpers\Input;
 
@@ -59,12 +59,15 @@ class Validation
               $this->addError($attribute, self::RULE_MATCH, $rule);
             }
             break;
-            // case self::RULE_UNIQUE:
-            //   $unique = $this->db->select($this->table, $attribute, $value);
-            //   if ($unique) {
-            //     $this->addError($attribute, self::RULE_UNIQUE, ['field' => $attribute]);
-            //   }
-            //   break;
+          case self::RULE_UNIQUE:
+            $className = $rule['class'];
+            $uniqueAttribute = $rule['attribute'] ?? $attribute;
+            $tableName = (new $className)->tableName();
+            $user = (new QueryBuilder)->select($tableName, ['*'], [$uniqueAttribute => $value]);
+            if (!empty($user)) {
+              $this->addError($attribute, self::RULE_UNIQUE, ['field' => $attribute]);
+            }
+            break;
         }
       }
     }
@@ -97,9 +100,8 @@ class Validation
   public function getErrors()
   {
     $errors = [];
-    if (empty($this->errors)) {
-      return false;
-    }
+    if (empty($this->errors)) return false;
+
     foreach ($this->errors as $key => $value) {
       $errors[$key] = $value[0];
     }
