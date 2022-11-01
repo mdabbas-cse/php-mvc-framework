@@ -1,6 +1,6 @@
 <?php
 
-namespace MVC\App\Http\Controllers;
+namespace MVC\App\Http\Controllers\Auth;
 
 use MVC\App\Models\Users;
 use MVC\Framework\Controller;
@@ -9,28 +9,26 @@ use MVC\Framework\Request;
 
 class AuthController extends Controller
 {
+  public function __construct()
+  {
+    parent::__construct();
+    $this->setLayout('auth');
+  }
   public function loginForm()
   {
-    $this->setLayout('auth');
-    $data = [
-      'errors' => [],
-    ];
-    return $this->view('auth/login', compact('data'));
+    return $this->view('auth/login');
   }
 
   public function login(Request $request)
   {
-    $this->setLayout('auth');
     $users = new Users();
     $users->loadData($request->getBody());
     $model = $users;
     return $this->view('auth/login', compact('model'));
   }
 
-
   public function registerForm()
   {
-    $this->setLayout('auth');
     return $this->view('auth/register');
   }
 
@@ -49,9 +47,7 @@ class AuthController extends Controller
         ]
       );
 
-      if (!$this->isValidate()) {
-        return $this->view('auth/register');
-      } else {
+      if ($this->isValidate()) {
         $users->firstname = $request->input('firstname');
         $users->lastname = $request->lastname;
         $users->email = $request->email;
@@ -60,6 +56,7 @@ class AuthController extends Controller
         (new FlashMessages)->setFlash('success', 'User created successfully');
         return $request->redirect('auth-login');
       }
+      $request->redirect('auth-register');
     }
   }
 }
