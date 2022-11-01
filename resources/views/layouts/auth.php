@@ -3,6 +3,7 @@
 <?php
 
 use MVC\Framework\Configuration;
+use MVC\Framework\Helpers\FlashMessages;
 
 $proot = Configuration::get('app')['root'];
 
@@ -26,6 +27,9 @@ $proot = Configuration::get('app')['root'];
 <body>
 
   <?php include('navbar.php') ?>
+  <div class="container" style="width: 50%;">
+    <?php (new FlashMessages)->getFlash('success'); ?>
+  </div>
   <?= $this->content('body'); ?>
 
 

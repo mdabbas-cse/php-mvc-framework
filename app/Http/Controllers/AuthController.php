@@ -4,6 +4,7 @@ namespace MVC\App\Http\Controllers;
 
 use MVC\App\Models\Users;
 use MVC\Framework\Controller;
+use MVC\Framework\Helpers\FlashMessages;
 use MVC\Framework\Request;
 
 class AuthController extends Controller
@@ -19,15 +20,10 @@ class AuthController extends Controller
 
   public function login(Request $request)
   {
-    $data = [
-      'errors' => [],
-    ];
     $this->setLayout('auth');
     $users = new Users();
     $users->loadData($request->getBody());
-
     $model = $users;
-
     return $this->view('auth/login', compact('model'));
   }
 
@@ -47,7 +43,7 @@ class AuthController extends Controller
         [
           'firstname' => ['required'],
           'lastname' => ['required'],
-          'email' => ['required', 'email'],
+          'email' => ['required', 'email', ['unique', 'class' => Users::class]],
           'password' => ['required', ['min', 'min' => 2], ['max', 'max' => 12]],
           'confirmPassword' => ['required', ['match', 'match' => 'password']],
         ]
@@ -56,31 +52,14 @@ class AuthController extends Controller
       if (!$this->isValidate()) {
         return $this->view('auth/register');
       } else {
-        // dd($request->getBody());
-        // $users->loadData($request->getBody());
         $users->firstname = $request->input('firstname');
         $users->lastname = $request->lastname;
         $users->email = $request->email;
         $users->password = $request->password;
         $users->save();
-        // return $this->redirect('login');
+        (new FlashMessages)->setFlash('success', 'User created successfully');
+        return $request->redirect('auth-login');
       }
-
-      // dd($request->getBody());
-      // $users->loadData($request->getBody());
-      // if ($users->validate() && $users->register()) {
-      //   // return $this->redirect('home');
-      //   return 'success';
-      // }
-      // $model = $users;
-      // return $this->view('auth/register', compact('model'));
     }
-
-    $model = $users;
-    $data = [
-      'model' => $users,
-    ];
-
-    // return $this->view('auth/register', $data);
   }
 }
