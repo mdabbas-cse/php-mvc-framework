@@ -22,13 +22,18 @@ if (!function_exists('dd')) {
 if (!function_exists('view')) {
   /**
    * @function view
-   * @param $viewName
-   * @param array $data
+   * @param string $viewName
+   * @param array $data 
+   * @param option string $layout
+   * @return View template
    */
-  function view($viewName, $data = [])
+  function view($viewName, $data = [], $layout = null)
   {
     $view = new View();
-    $view->render($viewName, $data);
+    if ($layout) {
+      $view->setLayout($layout);
+    }
+    return $view->render($viewName, $data);
   }
 }
 
