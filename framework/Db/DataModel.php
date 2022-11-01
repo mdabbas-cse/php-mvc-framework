@@ -19,10 +19,6 @@ abstract class DataModel extends Model
     parent::__construct();
   }
 
-  // public function tableName()
-  // {
-  //   return strtolower(get_called_class());
-  // }
   /**
    * assign table name from class name
    */
@@ -57,11 +53,71 @@ abstract class DataModel extends Model
       return ":{$attr}";
     }, $attributes);
 
-    $statement = $this->prepare("INSERT INTO {$this->tableName()} (" . implode(',', $attributes) . ") VALUES (" . implode(',', $params) . ")");
+    $stmt = $this->prepare("INSERT INTO {$this->tableName()} (" . implode(',', $attributes) . ") VALUES (" . implode(',', $params) . ")");
     foreach ($attributes as $attribute) {
-      $statement->bindValue(":$attribute", $this->{$attribute});
+      $stmt->bindValue(":$attribute", $this->{$attribute});
     }
-    $statement->execute();
+    $stmt->execute();
     return true;
+  }
+
+  /**
+   * @method find
+   * @param int $id
+   * @return mixed
+   */
+  public function find($id)
+  {
+    $stmt = $this->prepare("SELECT * FROM {$this->tableName()} WHERE {$this->primaryKey} = :id");
+    $stmt->bindValue(':id', $id);
+    $stmt->execute();
+    return $stmt->fetchObject(static::class);
+  }
+
+  /**
+   * @method update
+   * @param int $id
+   * @return mixed
+   */
+  public function update($id)
+  {
+    $attributes = $this->attributes();
+    $params = array_map(function ($attr) {
+      return "{$attr} = :{$attr}";
+    }, $attributes);
+
+    $stmt = $this->prepare("UPDATE {$this->tableName()} SET " . implode(',', $params) . " WHERE {$this->primaryKey} = :id");
+    foreach ($attributes as $attribute) {
+      $stmt->bindValue(":$attribute", $this->{$attribute});
+    }
+    $stmt->bindValue(':id', $id);
+    $stmt->execute();
+    return true;
+  }
+
+  /**
+   * @method delete
+   * @param int $id
+   * @return mixed
+   * @throws \Exception
+   */
+  public function delete($id)
+  {
+    $stmt = $this->prepare("DELETE FROM {$this->tableName()} WHERE {$this->primaryKey} = :id");
+    $stmt->bindValue(':id', $id);
+    $stmt->execute();
+    return true;
+  }
+
+  /**
+   * @method select columns
+   * @param array $columns
+   * @return mixed
+   */
+  public function select($columns = ['*'])
+  {
+    $stmt = $this->prepare("SELECT " . implode(',', $columns) . " FROM {$this->tableName()}");
+    $stmt->execute();
+    return $stmt->fetchAll();
   }
 }

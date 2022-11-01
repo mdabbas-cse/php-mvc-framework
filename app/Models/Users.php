@@ -8,7 +8,7 @@ use MVC\Framework\Helpers\Hash;
 class Users extends DataModel
 {
   protected $table = 'users';
-  protected $fillable = ['firstname', 'lastname', 'email', 'password'];
+  protected $fillable = ['firstname', 'lastname', 'email', 'password', 'status'];
 
   public function tableName(): string
   {
@@ -23,6 +23,7 @@ class Users extends DataModel
   public function save()
   {
     $this->password = Hash::make($this->password);
+    $this->status = 1;
     return parent::save();
   }
 }
