@@ -118,6 +118,42 @@ abstract class DataModel extends Model
   {
     $stmt = $this->prepare("SELECT " . implode(',', $columns) . " FROM {$this->tableName()}");
     $stmt->execute();
-    return $stmt->fetchAll();
+    return $stmt->fetchAll(\PDO::FETCH_OBJ, static::class);
+  }
+
+  /**
+   * @method select columns
+   * @param array $columns
+   * @return mixed
+   */
+  public function selectWhere($columns = ['*'], $where = [])
+  {
+    $params = array_map(function ($attr) {
+      return "{$attr} = :{$attr}";
+    }, array_keys($where));
+    $stmt = $this->prepare("SELECT " . implode(',', $columns) . " FROM {$this->tableName()} WHERE " . implode(' AND ', $params));
+    foreach ($where as $key => $value) {
+      $stmt->bindValue(":$key", $value);
+    }
+    $stmt->execute();
+    return $stmt->fetchAll(\PDO::FETCH_OBJ, static::class);
+  }
+
+  /**
+   * @method fineOne
+   * @param array $columns
+   * @return mixed
+   */
+  public function fineOne($column = [])
+  {
+    $params = array_map(function ($attr) {
+      return "{$attr} = :{$attr}";
+    }, array_keys($column));
+    $stmt = $this->prepare("SELECT * FROM {$this->tableName()} WHERE " . implode(' AND ', $params));
+    foreach ($column as $key => $value) {
+      $stmt->bindValue(":$key", $value);
+    }
+    $stmt->execute();
+    return $stmt->fetchObject(static::class);
   }
 }
