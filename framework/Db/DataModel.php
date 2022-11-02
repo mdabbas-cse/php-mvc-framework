@@ -8,6 +8,8 @@
 
 namespace MVC\Framework\Db;
 
+use PDO;
+
 abstract class DataModel extends Model
 {
   protected $table;
@@ -140,20 +142,20 @@ abstract class DataModel extends Model
   }
 
   /**
-   * @method fineOne
+   * @method findOne
    * @param array $columns
    * @return mixed
    */
-  public function fineOne($column = [])
+  public function findOne($columns = [])
   {
     $params = array_map(function ($attr) {
       return "{$attr} = :{$attr}";
-    }, array_keys($column));
+    }, array_keys($columns));
     $stmt = $this->prepare("SELECT * FROM {$this->tableName()} WHERE " . implode(' AND ', $params));
-    foreach ($column as $key => $value) {
+    foreach ($columns as $key => $value) {
       $stmt->bindValue(":$key", $value);
     }
     $stmt->execute();
-    return $stmt->fetchObject(static::class);
+    return $stmt->fetchAll(PDO::FETCH_CLASS, static::class);
   }
 }
