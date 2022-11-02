@@ -31,6 +31,8 @@ class AuthController extends Controller
 
   public function registerForm()
   {
+    $users = new Users();
+    dd($users->getAll());
     return $this->view('auth/register');
   }
 

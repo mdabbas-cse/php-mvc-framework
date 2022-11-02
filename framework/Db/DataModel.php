@@ -46,6 +46,15 @@ abstract class DataModel extends Model
   }
 
   /**
+   * @method form get all
+   * @Override 
+   */
+  public function getAll()
+  {
+    return parent::all($this->tableName());
+  }
+
+  /**
    * save data to database
    */
   public function save()

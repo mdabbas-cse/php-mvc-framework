@@ -5,7 +5,8 @@ return [
     'dbname' => 'mvc',
     'username' => 'root',
     'password' => '1234',
-    'connection' => 'mysql:host=localhost:3307;',
+    'connection' => 'localhost',
+    'port' => 3307,
     'options' => [
       PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     ]

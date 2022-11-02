@@ -19,6 +19,6 @@ class Configuration
     if ($key && array_key_exists($key, $config)) {
       return $config[$key];
     }
-    return  $config;
+    die("Config key \"{$key}\" not found");
   }
 }
