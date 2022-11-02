@@ -21,13 +21,13 @@ class Hash
   }
 
   /**
-   * @function check
+   * @function verify
    * @param $password 
    * @param $hash
    * @return bool
-   * @description check if password is correct
+   * @description verify if password is correct
    */
-  public static function check($password, $hash)
+  public static function verify($password, $hash)
   {
     return password_verify($password, $hash);
   }
