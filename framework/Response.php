@@ -8,4 +8,14 @@ class Response
   {
     http_response_code($code);
   }
+
+  /**
+   * @method for redirect to another page
+   * @param $url
+   * @param $statusCode
+   */
+  public function redirect($url = '/', $statusCode = null)
+  {
+    header('Location: ' . $url, true, $statusCode);
+  }
 }
