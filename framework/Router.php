@@ -3,6 +3,7 @@
 namespace MVC\Framework;
 
 use MVC\Framework\Response;
+use MVC\Framework\Request;
 
 class Router
 {
@@ -21,6 +22,7 @@ class Router
   public function callRouter($url, $requestType)
   {
     $request = new Request();
+    $response = new Response();
     if (array_key_exists($url, $this->routes[$requestType])) {
 
       $callback = $this->routes[$requestType][$url];
@@ -40,7 +42,7 @@ class Router
         $callback[0] = new $callback[0]();
       }
 
-      return call_user_func($callback, $request);
+      return call_user_func($callback, $request, $response);
     }
 
     Response::setStatusCode(404);
