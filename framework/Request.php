@@ -62,14 +62,4 @@ class Request implements RequestInterface
   {
     return $this->method() === 'GET' ? true : false;
   }
-
-  /**
-   * @method for redirect to another page
-   * @param $url
-   * @param $statusCode
-   */
-  public static function redirect($url = '/', $statusCode = null)
-  {
-    header('Location: ' . $url, true, $statusCode);
-  }
 }
