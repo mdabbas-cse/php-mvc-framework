@@ -2,13 +2,7 @@
 <html lang="en">
 <?php
 
-use MVC\Framework\Configuration;
 use MVC\Framework\Helpers\FlashMessages;
-
-$proot = Configuration::get('app')['root'];
-
-
-
 ?>
 
 <head>
@@ -19,7 +13,7 @@ $proot = Configuration::get('app')['root'];
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <!-- custom CSS -->
-  <link rel="stylesheet" href="<?= $proot ?>resources/assets/css/style.css">
+  <link rel="stylesheet" href="<?= css('/style.css') ?>">
   <?= $this->content('head'); ?>
 
 </head>
