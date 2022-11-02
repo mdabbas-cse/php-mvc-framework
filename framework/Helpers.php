@@ -61,6 +61,33 @@ if (!function_exists('assets')) {
   }
 }
 
+
+if (!function_exists('css')) {
+  /**
+   * @function css
+   * @param $path
+   * @return string
+   */
+  function css($path)
+  {
+    $url = '/resources/assets/css/' . trim($path, '/');
+    return app_url($url);
+  }
+}
+
+if (!function_exists('js')) {
+  /**
+   * @function js
+   * @param $path
+   * @return string
+   */
+  function js($path)
+  {
+    $url = '/resources/assets/js/' . trim($path, '/');
+    return app_url($url);
+  }
+}
+
 if (!function_exists('app_url')) {
   /**
    * @function app_url
