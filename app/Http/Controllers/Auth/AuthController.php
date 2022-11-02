@@ -6,6 +6,7 @@ use MVC\App\Models\Users;
 use MVC\Framework\Controller;
 use MVC\Framework\Helpers\FlashMessages;
 use MVC\Framework\Request;
+use MVC\Framework\Response;
 
 class AuthController extends Controller
 {
@@ -23,7 +24,8 @@ class AuthController extends Controller
   {
     $users = new Users();
     $users->loadData($request->getBody());
-    $model = $users;
+    $user = $users->login();
+    dd($user);
     return $this->view('auth/login', compact('model'));
   }
 
@@ -32,7 +34,7 @@ class AuthController extends Controller
     return $this->view('auth/register');
   }
 
-  public function register(Request $request)
+  public function register(Request $request, Response $response)
   {
     $users = new Users();
     if ($request->isPost()) {
@@ -54,9 +56,9 @@ class AuthController extends Controller
         $users->password = $request->password;
         $users->save();
         (new FlashMessages)->setFlash('success', 'User created successfully');
-        return $request->redirect('auth-login');
+        return $response->redirect('auth-login');
       }
-      $request->redirect('auth-register');
+      $response->redirect('auth-register');
     }
   }
 }
