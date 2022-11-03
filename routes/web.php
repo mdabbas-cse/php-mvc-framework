@@ -16,8 +16,7 @@ $routes->post('auth-register', [AuthController::class, 'register']);
 $routes->get('auth-login', [AuthController::class, 'loginForm'])->name('auth.loginFrom');
 $routes->post('auth-login', [AuthController::class, 'login'])->name('login');
 
-$routes->get('users/([0-9]+)/show', [UserController::class, 'show']);
-$routes->get('users/([0-9]+)/edit', 'app/Http/Controllers/edit-user.php');
-$routes->get('users/([0-9]+)/delete', 'app/Http/Controllers/delete-user.php');
-$routes->get('users/([0-9]+)/posts', 'app/Http/Controllers/user-posts.php');
+$routes->get('users/{id}/{user}/show', [UserController::class, 'show']);
+$routes->get('users/{id:\d+}/{profile}', 'app/Http/Controllers/edit-user.php');
+
 // dd($routes);

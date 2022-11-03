@@ -21,8 +21,9 @@ class UserController extends Controller
   }
 
 
-  public function show($id)
+  public function show(Request $request)
   {
+    dd($request->getParam('id'));
     // return view('user', ['id' => $id]);
   }
 
