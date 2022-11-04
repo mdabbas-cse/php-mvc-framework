@@ -1,9 +1,9 @@
 <?php
 
-use MVC\Framework\Configuration;
-use MVC\Framework\Helpers\Errors;
-use MVC\Framework\Helpers\Values;
-use MVC\Framework\View;
+use Lora\Core\Framework\Configuration;
+use Lora\Core\Framework\Helpers\Errors;
+use Lora\Core\Framework\Helpers\Values;
+use Lora\Core\Framework\View;
 
 if (!function_exists('dd')) {
   /**

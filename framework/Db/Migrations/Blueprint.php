@@ -4,7 +4,7 @@
  * class for sql blueprint
  */
 
-namespace MVC\Framework\Db\Migrations;
+namespace Lora\Core\Framework\Db\Migrations;
 
 class Blueprint
 {

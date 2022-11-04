@@ -1,8 +1,8 @@
 <?php
 
-namespace MVC\Framework\Interfaces;
+namespace Lora\Core\Framework\Interfaces;
 
-use MVC\Framework\Request;
+use Lora\Core\Framework\Request;
 
 interface ControllerInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace MVC\Framework;
+namespace Lora\Core\Framework;
 
 class Response
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace MVC\Framework\Helpers;
+namespace Lora\Core\Framework\Helpers;
 
 class FlashMessages
 {

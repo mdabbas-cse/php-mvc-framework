@@ -1,10 +1,44 @@
 {
-  "autoload": {
-    "psr-4": {
-      "MVC\\": "./"
+    "name": "lora/core",
+    "description": "A simple and efficiency PHP framework for building web application.",
+    "type": "library",
+    "keywords": [
+        "framework",
+        "php",
+        "lora",
+        "core",
+        "mvc"
+    ],
+    "readme": "",
+    "time": "",
+    "support": {
+        "issues": "https://github.com/mdabbas-cse/php-mvc-framework/issues",
+        "source": "https://github.com/mdabbas-cse/php-mvc-framework",
+        "wiki": "https://github.com/mdabbas-cse/php-mvc-framework/wiki"
     },
-    "files": [
-      "framework/Helpers.php"
-    ]
-  }
+    "require": {
+        "php": "7.4|^8.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "mdabbas-cse",
+            "email": "gmabbas44@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "alpha",
+    "autoload": {
+        "psr-4": {
+            "Lora\\Core\\": "./"
+        },
+        "files": [
+            "framework/Helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lora\\Core\\Tests\\": "tests/"
+        }
+    }
 }

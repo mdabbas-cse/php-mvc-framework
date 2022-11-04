@@ -1,6 +1,6 @@
 <?php
 
-use MVC\Framework\Db\Migrations\Migration;
+use Lora\Core\Framework\Db\Migrations\Migration;
 
 class table_001 extends Migration
 {

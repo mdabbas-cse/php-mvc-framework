@@ -1,10 +1,10 @@
 <?php
 
-namespace MVC\Framework\Db\Migrations;
+namespace Lora\Core\Framework\Db\Migrations;
 
-use MVC\Framework\Application;
-use MVC\Framework\Configuration;
-use MVC\Framework\Db\Connection;
+use Lora\Core\Framework\Application;
+use Lora\Core\Framework\Configuration;
+use Lora\Core\Framework\Db\Connection;
 use PDO;
 
 class Migration extends Application

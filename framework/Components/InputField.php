@@ -1,6 +1,6 @@
 <?php
 
-namespace MVC\Framework\Components;
+namespace Lora\Core\Framework\Components;
 
 
 class InputField

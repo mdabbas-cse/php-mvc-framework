@@ -1,10 +1,10 @@
 <?php
 
-namespace MVC\Framework\Db;
+namespace Lora\Core\Framework\Db;
 
-use MVC\Framework\Configuration;
+use Lora\Core\Framework\Configuration;
 use PDO;
-use MVC\Framework\Db\Connection;
+use Lora\Core\Framework\Db\Connection;
 
 class QueryBuilder
 {

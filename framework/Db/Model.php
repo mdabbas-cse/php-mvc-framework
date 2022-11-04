@@ -1,10 +1,10 @@
 <?php
 
-namespace MVC\Framework\Db;
+namespace Lora\Core\Framework\Db;
 
-use MVC\Framework\Db\Connection;
-use MVC\Framework\Db\QueryBuilder;
-use MVC\Framework\Configuration;
+use Lora\Core\Framework\Db\Connection;
+use Lora\Core\Framework\Db\QueryBuilder;
+use Lora\Core\Framework\Configuration;
 
 abstract class Model
 {

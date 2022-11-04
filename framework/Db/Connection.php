@@ -1,6 +1,6 @@
 <?php
 
-namespace MVC\Framework\Db;
+namespace Lora\Core\Framework\Db;
 
 use PDO;
 use PDOException;

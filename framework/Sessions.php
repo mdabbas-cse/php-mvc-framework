@@ -2,10 +2,10 @@
 
 /**
  * Class Session
- * @package MVC\Framework
+ * @package Lora\Core\Framework
  */
 
-namespace MVC\Framework;
+namespace Lora\Core\Framework;
 
 class Session
 {

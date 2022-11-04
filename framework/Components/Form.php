@@ -2,12 +2,12 @@
 
 /**
  * @author:  Md. Abbas uddin <gmabbas44@gmail.com>
- * @package: MVC\Framework\Components\Form
+ * @package: Lora\Core\Framework\Components\Form
  */
 
-namespace MVC\Framework\Components;
+namespace Lora\Core\Framework\Components;
 
-use MVC\Framework\Components\InputField;
+use Lora\Core\Framework\Components\InputField;
 
 class Form
 {

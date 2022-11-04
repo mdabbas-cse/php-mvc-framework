@@ -1,10 +1,10 @@
 <?php
 
-namespace MVC\Framework;
+namespace Lora\Core\Framework;
 
 /**
  * Class Configuration
- * @package MVC\Framework
+ * @package Lora\Core\Framework
  */
 
 class Configuration

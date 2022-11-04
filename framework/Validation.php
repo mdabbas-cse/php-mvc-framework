@@ -1,10 +1,10 @@
 <?php
 
-namespace MVC\Framework;
+namespace Lora\Core\Framework;
 
-use MVC\Framework\Db\QueryBuilder;
-use MVC\Framework\Helpers\Errors;
-use MVC\Framework\Helpers\Input;
+use Lora\Core\Framework\Db\QueryBuilder;
+use Lora\Core\Framework\Helpers\Errors;
+use Lora\Core\Framework\Helpers\Input;
 
 class Validation
 {

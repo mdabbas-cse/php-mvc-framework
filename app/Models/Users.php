@@ -1,10 +1,10 @@
 <?php
 
-namespace MVC\App\Models;
+namespace Lora\Core\App\Models;
 
-use MVC\Framework\Db\DataModel;
-use MVC\Framework\Helpers\Hash;
-use MVC\Framework\Session;
+use Lora\Core\Framework\Db\DataModel;
+use Lora\Core\Framework\Helpers\Hash;
+use Lora\Core\Framework\Session;
 
 class Users extends DataModel
 {
