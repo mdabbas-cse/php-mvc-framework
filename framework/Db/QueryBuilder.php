@@ -1,12 +1,13 @@
 <?php
 
-namespace MVC\Framework\Db;
+namespace Lora\Core\Framework\Db;
 
-use MVC\Framework\Configuration;
+use Lora\Core\Framework\Configuration;
 use PDO;
-use MVC\Framework\Db\Connection;
+use Lora\Core\Framework\Db\Connection;
+use Lora\Core\Framework\Db\Interfaces\QueryBuilderInterface;
 
-class QueryBuilder
+class QueryBuilder implements QueryBuilderInterface
 {
   protected $pdo;
 
@@ -27,10 +28,11 @@ class QueryBuilder
   /**
    * prepare sql statement
    */
-  public function prepare($sql)
+  public function prepare($sql): \PDOStatement
   {
     return $this->pdo->prepare($sql);
   }
+
 
   /**
    * select data from database
@@ -62,5 +64,13 @@ class QueryBuilder
   public function get()
   {
     # code...
+  }
+
+  /**
+   * @method for destruct data from database
+   */
+  public function __destruct()
+  {
+    $this->pdo = null;
   }
 }

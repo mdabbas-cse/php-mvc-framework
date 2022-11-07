@@ -1,13 +1,15 @@
 <?php
 
-namespace MVC\Framework\Db;
+namespace Lora\Core\Framework\Db;
 
+use Lora\Core\Framework\Db\Exceptions\DatabaseConnectionException;
+use Lora\Core\Framework\Db\Interfaces\ConnectionInterface;
 use PDO;
 use PDOException;
 
-class Connection
+class Connection implements ConnectionInterface
 {
-  public static function make($config)
+  public static function make($config): PDO
   {
     try {
       return new PDO(
@@ -17,7 +19,7 @@ class Connection
         $config['options']
       );
     } catch (PDOException $e) {
-      die($e->getMessage());
+      throw new DatabaseConnectionException($e->getMessage(), (int)$e->getCode());
     }
   }
 }

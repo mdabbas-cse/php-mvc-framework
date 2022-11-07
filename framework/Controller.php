@@ -1,11 +1,11 @@
 <?php
 
-namespace MVC\Framework;
+namespace Lora\Core\Framework;
 
-use MVC\Framework\Application;
-use MVC\Framework\Validation;
-use MVC\Framework\Interfaces\ControllerInterface;
-use MVC\Framework\View;
+use Lora\Core\Framework\Application;
+use Lora\Core\Framework\Validation;
+use Lora\Core\Framework\Interfaces\ControllerInterface;
+use Lora\Core\Framework\View;
 
 abstract class Controller extends Application implements ControllerInterface
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace MVC\Framework;
+namespace Lora\Core\Framework;
 
-use MVC\Framework\Helpers\Input;
-use MVC\Framework\Interfaces\RequestInterface;
+use Lora\Core\Framework\Helpers\Input;
+use Lora\Core\Framework\Interfaces\RequestInterface;
 
 final class Request implements RequestInterface
 {

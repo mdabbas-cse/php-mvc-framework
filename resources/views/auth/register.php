@@ -1,6 +1,6 @@
 <?php
 
-use MVC\Framework\Components\Form;
+use Lora\Core\Framework\Components\Form;
 
 $this->setSiteTile('Home'); ?>
 

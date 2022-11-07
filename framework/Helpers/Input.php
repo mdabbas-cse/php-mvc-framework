@@ -2,10 +2,10 @@
 
 /**
  * Class Input for sanitizes user input
- * @package MVC\Framework
+ * @package Lora\Core\Framework
  */
 
-namespace MVC\Framework\Helpers;
+namespace Lora\Core\Framework\Helpers;
 
 class Input
 {

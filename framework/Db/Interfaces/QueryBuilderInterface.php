@@ -8,7 +8,6 @@ namespace Lora\Core\Framework\Db\Interfaces;
 
 interface QueryBuilderInterface
 {
-
   /**
    * @param string $table
    * @param string|null $intoClass

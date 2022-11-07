@@ -1,6 +1,6 @@
 <?php
 
-namespace MVC\Framework\Interfaces;
+namespace Lora\Core\Framework\Interfaces;
 
 interface RequestInterface
 {

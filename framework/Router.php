@@ -1,9 +1,9 @@
 <?php
 
-namespace MVC\Framework;
+namespace Lora\Core\Framework;
 
-use MVC\Framework\Response;
-use MVC\Framework\Request;
+use Lora\Core\Framework\Response;
+use Lora\Core\Framework\Request;
 
 class Router
 {

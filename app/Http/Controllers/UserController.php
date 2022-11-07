@@ -1,9 +1,9 @@
 <?php
 
-namespace MVC\App\Http\Controllers;
+namespace Lora\Core\App\Http\Controllers;
 
-use MVC\Framework\Controller;
-use MVC\Framework\Request;
+use Lora\Core\Framework\Controller;
+use Lora\Core\Framework\Request;
 
 class UserController extends Controller
 {

@@ -1,8 +1,8 @@
 <?php
 
-use MVC\Framework\Configuration;
-use MVC\Framework\Request;
-use MVC\Framework\Router;
+use Lora\Core\Framework\Configuration;
+use Lora\Core\Framework\Request;
+use Lora\Core\Framework\Router;
 
 session_start();
 $config = Configuration::get('app');

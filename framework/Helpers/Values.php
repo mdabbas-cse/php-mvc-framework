@@ -4,7 +4,7 @@
  * Class Values form show input value in input field
  */
 
-namespace MVC\Framework\Helpers;
+namespace Lora\Core\Framework\Helpers;
 
 class Values
 {

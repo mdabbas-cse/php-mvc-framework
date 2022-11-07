@@ -2,11 +2,11 @@
 
 /**
  * Class Hash
- * @package MVC\Framework
+ * @package Lora\Core\Framework
  * @version 1.0.0
  */
 
-namespace MVC\Framework\Helpers;
+namespace Lora\Core\Framework\Helpers;
 
 class Hash
 {

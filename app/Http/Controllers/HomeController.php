@@ -1,8 +1,8 @@
 <?php
 
-namespace MVC\App\Http\Controllers;
+namespace Lora\Core\App\Http\Controllers;
 
-use MVC\Framework\Controller;
+use Lora\Core\Framework\Controller;
 
 class HomeController extends Controller
 {
@@ -14,7 +14,7 @@ class HomeController extends Controller
   {
     $data = [
       'title' => 'Home Page',
-      'name' => 'MVC Framework'
+      'name' => 'Lora\Core Framework'
     ];
     // return view('home', $data);
     return $this->view('home', $data);
