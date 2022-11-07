@@ -17,7 +17,8 @@
     "wiki": "https://github.com/mdabbas-cse/php-mvc-framework/wiki"
   },
   "require": {
-    "php": "7.4|^8.0"
+    "php": "7.4|^8.0",
+    "friendsofphp/php-cs-fixer": "^3.13"
   },
   "license": "MIT",
   "authors": [
@@ -40,5 +41,15 @@
     "psr-4": {
       "Lora\\Core\\Tests\\": "tests/"
     }
+  },
+  "scripts": {
+    "test": "./vendor/bin/phpunit --testdox --colors=always tests/ --exclude-group db",
+    "unused-variables": "phpcs -p --standard=VariableAnalysis includes",
+    "variable-fix": "vendor/bin/psalter --alter --issues=UnusedVariable",
+    "version": "phpcs -p --standard=PHPCompatibilityWP --runtime-set testVersion 5.6-8.1 includes",
+    "fix-all": "php-cs-fixer fix includes",
+    "fix": "php-cs-fixer fix",
+    "pcf-commands": "php-cs-fixer",
+    "code-status": "php-cs-fixer fix --dry-run --show-progress=dots --ansi --diff -vv ./"
   }
 }
