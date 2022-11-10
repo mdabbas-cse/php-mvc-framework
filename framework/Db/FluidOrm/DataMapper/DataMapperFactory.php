@@ -31,7 +31,7 @@ class DataMapperFactory
   {
     // Create databaseConnection Object and pass the database credentials in
     // $credentials = $dataMapperEnvironmentConfiguration->getDatabaseCredentials(YamlConfig::file('app')['pdo_driver']);
-    $credentials = $dataMapperEnvironmentConfiguration->getDatabaseCredentials('mysql');
+    $credentials = (new $dataMapperEnvironmentConfiguration([]))->getDatabaseCredentials('mysql');
     $databaseConnectionObject = new $databaseConnectionString($credentials);
     if (!$databaseConnectionObject instanceof DatabaseConnectionInterface) {
       throw new BaseUnexpectedValueException($databaseConnectionString . ' is not a valid database connection object');

@@ -5,161 +5,72 @@ namespace Lora\Core\Framework\Db\FluidOrm\Interfaces;
 interface DataMapperInterface
 {
   /**
-   * @param string $sql
-   * @return \PDOStatement
+   * Prepare the query string
+   * 
+   * @param string $sqlQuery
+   * @return self
    */
-  public function prepare(string $sql): self;
+  public function prepare(string $sqlQuery): self;
 
   /**
-   * @param string $value
+   * Explicit dat type for the parameter using the PDO::PARAM_* constants.
+   * 
+   * @param mixed $value
+   * @return mixed
    */
   public function bind($value);
 
   /**
-   * @param string $field
+   * Combination method which combines both methods above. One of which  is
+   * optimized for binding search queries. Once the second argument $type
+   * is set to search
+   * 
+   * @param array $fields
    * @param bool $isSearch
-   * @return $this
+   * @return mixed
    */
   public function bindParameters(array $fields, bool $isSearch = false): self;
 
   /**
-   * @param string $field
-   * @return $this
-   */
-  // public function bindSearchValues(array $fields): \PDOStatement;
-
-  /**
-   * @param string $field
-   * @return $this
-   */
-  // public function bindValues(array $fields): \PDOStatement;
-
-  /**
-   * @param int 
+   * returns the number of rows affected by a DELETE, INSERT, or UPDATE statement.
+   * 
+   * @return int|null
    */
   public function numRows(): int;
 
   /**
+   * Execute function which will execute the prepared statement
+   * 
    * @return void
    */
-  public function execute(): void;
+  public function execute();
 
   /**
+   * Returns a single database row as an object
+   * 
    * @return Object
    */
   public function result(): Object;
 
   /**
+   * Returns all the rows within the database as an array
+   * 
    * @return array
    */
   public function results(): array;
 
-
   /**
-   * @method getLastId
-   * @return int
-   */
-  public function getLastId(): int;
-
-  /**
-   * @param string $table
-   * @param array $columns
-   * @param array $where
-   * @param string|null $intoClass
-   * @return array
-   */
-  // public function select(string $table, array $columns = ['*'], array $where = [], string $intoClass = null): array;
-
-  /**
-   * @param string $table
-   * @param array $columns
-   * @param array $where
-   * @param string|null $intoClass
-   * @return array
-   */
-  // public function all(string $table, string $intoClass = null): array;
-
-  /**
-   * @param string $table
-   * @param array $data
-   * @return array
-   */
-  // public function insert(string $table, array $columns = [], array $where = [], string $intoClass = null): array;
-
-  /**
-   * @param string $table
-   * @param array $data
-   * @param array $where
-   * @return bool
-   */
-  // public function update(string $table, array $data, array $where): bool;
-
-  /**
-   * @param string $table
-   * @param array $where
-   * @return bool
-   */
-  // public function delete(string $table, array $where): bool;
-
-  /**
-   * @param string $table
-   * @param array $data
-   * @return bool
-   */
-  // public function insertOrUpdate(string $table, array $data): bool;
-
-  /**
-   * @param string $table
-   * @param array $data
-   * @return bool
-   */
-  // public function insertIgnore(string $table, array $data): bool;
-
-  /**
-   * @param string $table
-   * @param array $data
-   * @return bool
-   */
-  // public function replace(string $table, array $data): bool;
-
-  /**
-   * @param array $data
+   * Returns a database column
+   * 
    * @return mixed
    */
-  // public function hydrate(array $data);
+  // public function column();
 
   /**
-   * @return array
+   * Returns the last inserted row ID from database table
+   * 
+   * @return int
+   * @throws \Throwable
    */
-  // public function extract(): array;
-
-  /**
-   * @return array
-   */
-  // public function getColumns(): array;
-
-  /**
-   * @return string
-   */
-  // public function getTableName(): string;
-
-  /**
-   * @return string
-   */
-  // public function getPrimaryKey(): string;
-
-  /**
-   * @return string
-   */
-  // public function getForeignKey(): string;
-
-  /**
-   * @return string
-   */
-  // public function getClassName(): string;
-
-  /**
-   * @return string
-   */
-  // public function getNamespace(): string;
+  public function getLastId(): int;
 }

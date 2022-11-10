@@ -130,6 +130,8 @@ class DataMapper implements DataMapperInterface
 
   /**
    * @InheritDoc
+   * 
+   * @return self
    */
   public function prepare(string $sql): self
   {
@@ -140,6 +142,8 @@ class DataMapper implements DataMapperInterface
 
   /**
    * @InheritDoc
+   * 
+   * @return
    */
   public function bind($value)
   {
@@ -165,7 +169,9 @@ class DataMapper implements DataMapperInterface
 
   /**
    * @InheritDoc
+   * 
    * @Exception DataMapperException
+   * @return PDOStatement
    */
   protected function bindValues(array $fields): PDOStatement
   {
@@ -182,9 +188,11 @@ class DataMapper implements DataMapperInterface
 
   /**
    * @InheritDoc
+   * 
    * @Exception DataMapperException
+   * @return PDOStatement
    */
-  protected function bindSearchValues(array $fields): \PDOStatement
+  protected function bindSearchValues(array $fields): PDOStatement
   {
     try {
       $this->isArray($fields);
@@ -199,6 +207,8 @@ class DataMapper implements DataMapperInterface
 
   /**
    * @InheritDoc
+   * 
+   * @return PDOStatement
    */
   public function bindParameters(array $fields, bool $isSearch = false): self
   {
@@ -210,6 +220,8 @@ class DataMapper implements DataMapperInterface
 
   /**
    * @InheritDoc
+   * 
+   * @return Int
    */
   public function numRows(): int
   {
@@ -219,15 +231,19 @@ class DataMapper implements DataMapperInterface
 
   /**
    * @InheritDoc
+   * 
+   * @return 
    */
-  public function execute(): void
+  public function execute()
   {
     if ($this->statement)
-      $this->statement->execute();
+      return $this->statement->execute();
   }
 
   /**
    * @InheritDoc
+   * 
+   * @return Object
    */
   public function result(): Object
   {
@@ -237,6 +253,8 @@ class DataMapper implements DataMapperInterface
 
   /**
    * @InheritDoc
+   * 
+   * @return array
    */
   public function results(): array
   {
@@ -246,6 +264,8 @@ class DataMapper implements DataMapperInterface
 
   /**
    * @InheritDoc
+   * 
+   * @return int
    */
   public function getLastId(): int
   {
@@ -254,307 +274,25 @@ class DataMapper implements DataMapperInterface
       if (!empty($lastId)) {
         return intval($lastId);
       }
+      return 0;
     } catch (Throwable $throwable) {
       throw new DataMapperException($throwable->getMessage(), $throwable->getCode(), $throwable);
     }
   }
 
-  // /**
-  //  * @param string $table
-  //  * @param array $columns
-  //  * @param array $where
-  //  * @param string|null $intoClass
-  //  * @return array
-  //  */
-  // public function select(string $table, array $columns = ['*'], array $where = [], string $intoClass = null): array
-  // {
-  //   $this->table = $table;
-  //   $this->columns = $columns;
-  //   $this->where = $where;
-  //   $this->intoClass = $intoClass;
+  public function builderQueryParameters(array $conditions = [], array $parameters = [])
+  {
+    return (!empty($conditions) || !empty($parameters)) ? array_merge($conditions, $parameters) : $parameters;
+  }
 
-  //   $this->sql = "SELECT " . implode(', ', $this->columns) . " FROM {$this->table}";
-
-  //   if (!empty($this->where)) {
-  //     $this->sql .= " WHERE ";
-  //     $i = 0;
-  //     foreach ($this->where as $key => $value) {
-  //       if ($i > 0) {
-  //         $this->sql .= " AND ";
-  //       }
-  //       $this->sql .= "{$key} = :{$key}";
-  //       $this->bind($value);
-  //       $this->bindParams($key);
-  //       $i++;
-  //     }
-  //   }
-
-  //   $this->prepare($this->sql);
-  //   return $this->results();
-  // }
-
-  // /**
-  //  * @param string $table
-  //  * @param array $columns
-  //  * @param array $where
-  //  * @param string|null $intoClass
-  //  * @return array
-  //  */
-  // public function all(string $table, string $intoClass = null): array
-  // {
-  //   $this->table = $table;
-  //   $this->intoClass = $intoClass;
-
-  //   $this->sql = "SELECT * FROM {$this->table}";
-
-  //   $this->prepare($this->sql);
-  //   return $this->results();
-  // }
-
-  // /**
-  //  * @param string $table
-  //  * @param array $columns
-  //  * @param array $where
-  //  * @param string|null $intoClass
-  //  * @return array
-  //  */
-  // // public function insert(string $table, array $columns = [], array $where = [], string $intoClass = null): array
-  // // {
-  // //   $this->table = $table;
-  // //   $this->columns = $columns;
-  // //   $this->where = $where;
-  // //   $this->intoClass = $intoClass;
-
-  // //   $this->sql = "INSERT INTO {$this->table} (" . implode(', ', $this->columns) . ") VALUES (:" . implode(', :', $this->columns) . ")";
-
-  // //   $this->prepare($this->sql);
-
-  // //   $i = 0;
-  // //   foreach ($this->columns as $column) {
-  // //     $this->bindParams($column);
-  // //     $this->statement->bindValue(":{$column}", $this->params[$i]);
-  // //     $i++;
-  // //   }
-
-  // //   $this->execute();
-  // //   return $this->results();
-  // // }
-
-  // /**
-  //  * @param string $table
-  //  * @param array $columns
-  //  * @param array $where
-  //  * @param string|null $intoClass
-  //  * @return array
-  //  */
-  // // public function update(string $table, array $columns = [], array $where = [], string $intoClass = null): array
-  // // {
-  // //   $this->table = $table;
-  // //   $this->columns = $columns;
-  // //   $this->where = $where;
-  // //   $this->intoClass = $intoClass;
-
-  // //   $this->sql = "UPDATE {$this->table} SET ";
-
-  // //   $i = 0;
-  // //   foreach ($this->columns as $column) {
-  // //     if ($i > 0) {
-  // //       $this->sql .= ", ";
-  // //     }
-  // //     $this->sql .= "{$column} = :{$column}";
-  // //     $this->bindParams($column);
-  // //     $i++;
-  // //   }
-
-  // //   if (!empty($this->where)) {
-  // //     $this->sql .= " WHERE ";
-  // //     $i = 0;
-  // //     foreach ($this->where as $key => $value) {
-  // //       if ($i > 0) {
-  // //         $this->sql .= " AND ";
-  // //       }
-  // //       $this->sql .= "{$key} = :{$key}";
-  // //       $this->bind($value);
-  // //       $this->bindParams($key);
-  // //       $i++;
-  // //     }
-  // //   }
-
-  // //   $this->prepare($this->sql);
-
-  // //   $i = 0;
-  // //   foreach ($this->columns as $column) {
-  // //     $this->statement->bindValue(":{$column}", $this->params[$i]);
-  // //     $i++;
-  // //   }
-
-  // //   $this->execute();
-  // //   return $this->results();
-  // // }
-
-  // /**
-  //  * @param string $table
-  //  * @param array $columns
-  //  * @param array $where
-  //  * @param string|null $intoClass
-  //  * @return array
-  //  */
-  // // public function delete(string $table, array $columns = [], array $where = [], string $intoClass = null): array
-  // // {
-  // //   $this->table = $table;
-  // //   $this->columns = $columns;
-  // //   $this->where = $where;
-  // //   $this->intoClass = $intoClass;
-
-  // //   $this->sql = "DELETE FROM {$this->table}";
-
-  // //   if (!empty($this->where)) {
-  // //     $this->sql .= " WHERE ";
-  // //     $i = 0;
-  // //     foreach ($this->where as $key => $value) {
-  // //       if ($i > 0) {
-  // //         $this->sql .= " AND ";
-  // //       }
-  // //       $this->sql .= "{$key} = :{$key}";
-  // //       $this->bind($value);
-  // //       $this->bindParams($key);
-  // //       $i++;
-  // //     }
-  // //   }
-
-  // //   $this->prepare($this->sql);
-  // //   return $this->results();
-  // // }
-
-  // /**
-  //  * @param string $table
-  //  * @param array $columns
-  //  * @param array $where
-  //  * @param string|null $intoClass
-  //  * @return array
-  //  */
-  // public function truncate(string $table, array $columns = [], array $where = [], string $intoClass = null): array
-  // {
-  //   $this->table = $table;
-  //   $this->columns = $columns;
-  //   $this->where = $where;
-  //   $this->intoClass = $intoClass;
-
-  //   $this->sql = "TRUNCATE TABLE {$this->table}";
-
-  //   $this->prepare($this->sql);
-  //   return $this->results();
-  // }
-
-  // /**
-  //  * @param string $table
-  //  * @param array $columns
-  //  * @param array $where
-  //  * @param string|null $intoClass
-  //  * @return array
-  //  */
-
-  // public function drop(string $table, array $columns = [], array $where = [], string $intoClass = null): array
-  // {
-  //   $this->table = $table;
-  //   $this->columns = $columns;
-  //   $this->where = $where;
-  //   $this->intoClass = $intoClass;
-
-  //   $this->sql = "DROP TABLE {$this->table}";
-
-  //   $this->prepare($this->sql);
-  //   return $this->results();
-  // }
-
-  // /**
-  //  * @param string $table
-  //  * @param array $columns
-  //  * @param array $where
-  //  * @param string|null $intoClass
-  //  * @return array
-  //  */
-  // public function create(string $table, array $columns = [], array $where = [], string $intoClass = null): array
-  // {
-  //   $this->table = $table;
-  //   $this->columns = $columns;
-  //   $this->where = $where;
-  //   $this->intoClass = $intoClass;
-
-  //   $this->sql = "CREATE TABLE {$this->table} (";
-
-  //   $i = 0;
-  //   foreach ($this->columns as $column) {
-  //     if ($i > 0) {
-  //       $this->sql .= ", ";
-  //     }
-  //     $this->sql .= "{$column}";
-  //     $i++;
-  //   }
-
-  //   $this->sql .= ")";
-
-  //   $this->prepare($this->sql);
-  //   return $this->results();
-  // }
-
-  // /**
-  //  * @param string $table
-  //  * @param array $columns
-  //  * @param array $where
-  //  * @param string|null $intoClass
-  //  * @return array
-  //  */
-  // public function alter(string $table, array $columns = [], array $where = [], string $intoClass = null): array
-
-  // {
-  //   $this->table = $table;
-  //   $this->columns = $columns;
-  //   $this->where = $where;
-  //   $this->intoClass = $intoClass;
-
-  //   $this->sql = "ALTER TABLE {$this->table} ";
-
-  //   $i = 0;
-  //   foreach ($this->columns as $column) {
-  //     if ($i > 0) {
-  //       $this->sql .= ", ";
-  //     }
-  //     $this->sql .= "{$column}";
-  //     $i++;
-  //   }
-
-  //   $this->prepare($this->sql);
-  //   return $this->results();
-  // }
-
-  // /**
-  //  * @param string $table
-  //  * @param array $columns
-  //  * @param array $where
-  //  * @param string|null $intoClass
-  //  * @return array
-  //  */
-
-  // public function rename(string $table, array $columns = [], array $where = [], string $intoClass = null): array
-  // {
-  //   $this->table = $table;
-  //   $this->columns = $columns;
-  //   $this->where = $where;
-  //   $this->intoClass = $intoClass;
-
-  //   $this->sql = "RENAME TABLE {$this->table} TO ";
-
-  //   $i = 0;
-  //   foreach ($this->columns as $column) {
-  //     if ($i > 0) {
-  //       $this->sql .= ", ";
-  //     }
-  //     $this->sql .= "{$column}";
-  //     $i++;
-  //   }
-
-  //   $this->prepare($this->sql);
-  //   return $this->results();
-  // }
+  public function persist(string $sqlQuery, array $parameters = [])
+  {
+    try {
+      $this->prepare($sqlQuery);
+      $this->bindParameters($parameters);
+      $this->execute();
+    } catch (Throwable $throwable) {
+      throw new DataMapperException($throwable->getMessage(), $throwable->getCode(), $throwable);
+    }
+  }
 }

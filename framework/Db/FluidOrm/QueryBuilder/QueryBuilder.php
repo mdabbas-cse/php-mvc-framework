@@ -35,7 +35,8 @@ class QueryBuilder implements QueryBuilderInterface
     'update',
     'delete',
     'select',
-    'row'
+    'row',
+    'search'
   ];
 
   /**
@@ -63,6 +64,8 @@ class QueryBuilder implements QueryBuilderInterface
 
   /**
    * @method isQueryTypeValid
+   * 
+   * @return bool
    */
   public function isQueryTypeValid(string $type): bool
   {
@@ -73,6 +76,8 @@ class QueryBuilder implements QueryBuilderInterface
 
   /**
    * @inheritDoc
+   * 
+   * @return string
    */
   public function insertQuery(): string
   {
@@ -94,6 +99,8 @@ class QueryBuilder implements QueryBuilderInterface
 
   /**
    * @inheritDoc
+   * 
+   * @return string
    */
   public function selectQuery(): string
   {
@@ -113,6 +120,8 @@ class QueryBuilder implements QueryBuilderInterface
 
   /**
    * @inheritDoc
+   * 
+   * @return string
    */
   public function updateQuery(): string
   {
@@ -152,6 +161,8 @@ class QueryBuilder implements QueryBuilderInterface
 
   /**
    * @inheritDoc
+   * 
+   * @return string
    */
   public function deleteQuery(): string
   {
@@ -208,18 +219,47 @@ class QueryBuilder implements QueryBuilderInterface
 
   /**
    * @inheritDoc
+   * 
+   * @return string
    */
   public function rowQuery(): string
   {
-    if ($this->isQueryTypeValid('row')) {
-      $this->sqlQuery = sprintf(
-        'SELECT * FROM %s WHERE %s = :%s LIMIT 1',
-        $this->key['table'],
-        $this->key['primary_key'],
-        $this->key['primary_key']
-      );
+    if ($this->isQueryTypeValid('raw')) {
+      $this->sqlQuery = $this->key['raw'];
+
       return $this->sqlQuery;
     }
     return false;
+  }
+
+  /**
+   * @inheritDoc
+   * 
+   * @return string
+   */
+  public function searchQuery(): string
+  {
+    if ($this->isQueryTypeValid('search ')) {
+      if (is_array($this->key['selectors']) && $this->key['selectors'] != '') {
+        $this->sqlQuery = "SELECT * FROM {$this->key['table']} WHERE ";
+        if ($this->has('selectors')) {
+          $values = [];
+          foreach ($this->key['selectors'] as $selector) {
+            $values[] = $selector . " LIKE " . "{$selector}";
+          }
+          if (count($this->key['selectors']) >= 1) {
+            $this->sqlQuery .= implode(" OR ", $values);
+          }
+        }
+        //$this->sqlQuery .= $this->orderByQuery();
+        //$this->sqlQuery .= $this->queryOffset();
+      }
+      return $this->sqlQuery;
+    }
+    return false;
+  }
+  private function has($key): bool
+  {
+    return isset($this->key[$key]) && !empty($this->key[$key]);
   }
 }

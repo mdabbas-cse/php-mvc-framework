@@ -33,4 +33,10 @@ interface QueryBuilderInterface
    * @return string
    */
   public function rowQuery(): string;
+
+  /**
+   * @method searchQuery
+   * @return string
+   */
+  public function searchQuery(): string;
 }
