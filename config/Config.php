@@ -14,7 +14,7 @@ return [
   'app' => [
     'title' => 'My Todo',
     'defaultLayout' => 'default',
-    'root' => 'http://pro.af/',
+    'root' => 'http://lora-core.af/',
     'debug' => false,
     'timezone' => 'Asia/Dhaka'
   ],
