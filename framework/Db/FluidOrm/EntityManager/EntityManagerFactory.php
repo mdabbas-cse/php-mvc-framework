@@ -38,7 +38,7 @@ class EntityManagerFactory
    */
   public function create(string $crudSting, string $tableSchema, string $tableSchemaID, array $options = []): EntityManagerInterface
   {
-    $curdObject = new $crudSting($this->dataMapper, $this->queryBuilder, $tableSchema);
+    $curdObject = new $crudSting($this->dataMapper, $this->queryBuilder, $tableSchema, $tableSchemaID, $options);
     if (!$curdObject instanceof CrudInterface)
       throw new CrudException("{$crudSting} must be instance of CrudInterface");
 
