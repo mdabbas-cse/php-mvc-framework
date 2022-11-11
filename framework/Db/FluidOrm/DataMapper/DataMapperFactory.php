@@ -19,15 +19,15 @@ class DataMapperFactory
   }
 
   /**
-   * @method create
-   * To create a new instance of DataMapper
+   * Create data mapper
    * 
-   * @param string $driver
-   * @param array $credentials
-   * @return DataMapper
+   * @param string $databaseConnection
+   * @param string $environmentConfiguration
+   * @throws BaseUnexpectedValueException
+   * @return DataMapperInterface
    */
 
-  public function create(string $databaseConnectionString, Object $dataMapperEnvironmentConfiguration): DataMapperInterface
+  public function create(string $databaseConnectionString, string $dataMapperEnvironmentConfiguration): DataMapperInterface
   {
     // Create databaseConnection Object and pass the database credentials in
     // $credentials = $dataMapperEnvironmentConfiguration->getDatabaseCredentials(YamlConfig::file('app')['pdo_driver']);

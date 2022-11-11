@@ -9,14 +9,14 @@ This is a web application framework built with PHP programming language. I belie
 - [x] Simple view templating.
 - [x] Multi layouts system.
 - [x] HTTP helper.
-- [ ] Database migrations.
-- [ ] Object relational mapping(ORM).
+- [x] CSRF token.
 - [x] Component for form and input field.
 - [x] Form validations.
+- [ ] Database migrations.
+- [ ] Object relational mapping(ORM).
 - [ ] User management system.
 - [ ] Multi authentication system.
 - [ ] E-mail and SMS system.
-- [ ] CSRF token.
 
 ## License
 This framework is open-sourced software licensed under the MIT license.

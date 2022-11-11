@@ -13,8 +13,7 @@ class BaseUnexpectedValueException  extends UnexpectedValueException
    * 
    * @param string $message
    * @param integer $code
-   * @param UnexpectedValueException $previous
-   * @throws \RuntimeException
+   * @param \UnexpectedValueException $previous
    */
   public function __construct(string $message, int $code = 0, UnexpectedValueException  $previous = null)
   {
