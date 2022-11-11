@@ -33,7 +33,7 @@ class DatabaseConnection implements DatabaseConnectionInterface
    * 
    * @return PDO
    */
-  public function open(): \PDO
+  public function open(): PDO
   {
     try {
       $params = [

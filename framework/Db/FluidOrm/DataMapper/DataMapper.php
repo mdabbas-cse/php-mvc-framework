@@ -2,13 +2,15 @@
 
 namespace Lora\Core\Framework\Db\FluidOrm\DataMapper;
 
+use Lora\Core\Framework\Db\ExceptionTraits\InvalidArgumentException;
 use Lora\Core\Framework\Db\FluidOrm\Exceptions\DataMapperException;
-use Lora\Core\Framework\Db\FluidOrm\Interfaces\DataMapperInterface;
+use Lora\Core\Framework\Db\FluidOrm\DataMapper\DataMapperInterface;
 use PDOStatement;
 use Throwable;
 
 class DataMapper implements DataMapperInterface
 {
+  use InvalidArgumentException;
   /**
    * @var \PDO
    */
@@ -65,67 +67,6 @@ class DataMapper implements DataMapperInterface
   public function __construct(\PDO $pdo)
   {
     $this->pdo = $pdo;
-  }
-  /**
-   * @method for checking if isEmpty
-   * @param string $value
-   * @param string $message
-   * @return void
-   */
-  private function isEmpty(string $value, string $message = null): void
-  {
-    if (empty($value)) {
-      throw new DataMapperException($message);
-    }
-  }
-
-  /**
-   * @method for checking if isString
-   * @param string $value
-   * @return void
-   */
-  private function isString(string $value): void
-  {
-    if (!is_string($value)) {
-      throw new DataMapperException('The value must be a string');
-    }
-  }
-
-  /**
-   * @method for checking if isInt
-   * @param int $value
-   * @return void
-   */
-  private function isInt(int $value): void
-  {
-    if (!is_int($value)) {
-      throw new DataMapperException('The value must be an integer');
-    }
-  }
-
-  /**
-   * @method for checking if isBool
-   * @param bool $value
-   * @param string $message
-   * @return void
-   */
-  private function isBool(bool $value): void
-  {
-    if (!is_bool($value)) {
-      throw new DataMapperException('The value must be a boolean');
-    }
-  }
-
-  /**
-   * @method for checking if isArray
-   * @param array $value
-   * @return void
-   */
-  private function isArray(array $value): void
-  {
-    if (!is_array($value)) {
-      throw new DataMapperException('The value must be an array');
-    }
   }
 
   /**
