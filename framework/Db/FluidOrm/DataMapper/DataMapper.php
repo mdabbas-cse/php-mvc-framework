@@ -2,9 +2,11 @@
 
 namespace Lora\Core\Framework\Db\FluidOrm\DataMapper;
 
+use Exception;
 use Lora\Core\Framework\Db\ExceptionTraits\InvalidArgumentException;
 use Lora\Core\Framework\Db\FluidOrm\Exceptions\DataMapperException;
 use Lora\Core\Framework\Db\FluidOrm\DataMapper\DataMapperInterface;
+use PDO;
 use PDOStatement;
 use Throwable;
 
@@ -12,7 +14,7 @@ class DataMapper implements DataMapperInterface
 {
   use InvalidArgumentException;
   /**
-   * @var \PDO
+   * @var PDO
    */
   private $pdo;
 
@@ -20,21 +22,6 @@ class DataMapper implements DataMapperInterface
    * @var \PDOStatement
    */
   private $statement;
-
-  /**
-   * @var array
-   */
-  private $params = [];
-
-  /**
-   * @var array
-   */
-  private $results = [];
-
-  /**
-   * @var int
-   */
-  private $numRows = 0;
 
   /**
    * @var string
@@ -62,9 +49,9 @@ class DataMapper implements DataMapperInterface
   private $intoClass;
 
   /**
-   * @param \PDO $pdo
+   * @param PDO $pdo
    */
-  public function __construct(\PDO $pdo)
+  public function __construct(PDO $pdo)
   {
     $this->pdo = $pdo;
   }
@@ -91,16 +78,16 @@ class DataMapper implements DataMapperInterface
     try {
       switch ($value) {
         case is_int($value):
-          $dataType = \PDO::PARAM_INT;
+          $dataType = PDO::PARAM_INT;
           break;
         case is_bool($value):
-          $dataType = \PDO::PARAM_BOOL;
+          $dataType = PDO::PARAM_BOOL;
           break;
         case is_null($value):
-          $dataType = \PDO::PARAM_NULL;
+          $dataType = PDO::PARAM_NULL;
           break;
         default:
-          $dataType = \PDO::PARAM_STR;
+          $dataType = PDO::PARAM_STR;
       }
       return $dataType;
     } catch (DataMapperException $message) {
@@ -122,7 +109,7 @@ class DataMapper implements DataMapperInterface
         $this->statement->bindValue(':' . $key, $value, $this->bind($value));
       }
       return $this->statement;
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       throw new DataMapperException($e->getMessage(), $e->getCode(), $e);
     }
   }
@@ -141,7 +128,7 @@ class DataMapper implements DataMapperInterface
         $this->statement->bindValue(':' . $key, '%' . $value . '%', $this->bind($value));
       }
       return $this->statement;
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       throw new DataMapperException($e->getMessage(), $e->getCode(), $e);
     }
   }
@@ -200,7 +187,7 @@ class DataMapper implements DataMapperInterface
   public function results(): array
   {
     if ($this->statement)
-      return $this->statement->fetchAll(\PDO::FETCH_CLASS, $this->intoClass);
+      return $this->statement->fetchAll(PDO::FETCH_CLASS, $this->intoClass);
   }
 
   /**

@@ -2,10 +2,9 @@
 
 namespace Framework\Db\FluidOrm\DataRepository;
 
-use Framework\Db\ExceptionTraits\InvalidArgumentException;
 use Framework\Db\FluidOrm\DataRepository\DataRepositoryInterface;
-use Framework\Db\FluidOrm\EntityManager\EntityManager;
 use Framework\Db\FluidOrm\EntityManager\EntityManagerInterface;
+use Lora\Core\Framework\Db\ExceptionTraits\InvalidArgumentException;
 
 class DataRepository implements DataRepositoryInterface
 {
@@ -15,9 +14,8 @@ class DataRepository implements DataRepositoryInterface
   /**
    * DataRepository constructor.
    * 
-   * @param EntityManager $entityManager
+   * @param EntityManagerInterface $entityManager
    */
-
   public function __construct(EntityManagerInterface $entityManager)
   {
     $this->entityManager = $entityManager;
@@ -166,15 +164,6 @@ class DataRepository implements DataRepositoryInterface
     return [];
   }
 
-  /**
-   * @inheritDoc
-   * 
-   * @return array
-   */
-  public function findWithSearchAndPaging(Object $request, array $args = []): array
-  {
-    return [];
-  }
 
   /**
    * @inheritDoc
