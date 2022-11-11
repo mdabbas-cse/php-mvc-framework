@@ -9,7 +9,7 @@
     "core",
     "mvc"
   ],
-  "readme": "",
+  "readme": "https://github.com/mdabbas-cse/php-mvc-framework/blob/main/README.md",
   "time": "",
   "support": {
     "issues": "https://github.com/mdabbas-cse/php-mvc-framework/issues",
@@ -17,7 +17,7 @@
     "wiki": "https://github.com/mdabbas-cse/php-mvc-framework/wiki"
   },
   "require": {
-    "php": "7.4|^8.0",
+    "php": "7.4.2|^8.0",
     "friendsofphp/php-cs-fixer": "^3.13"
   },
   "license": "MIT",
