@@ -2,15 +2,19 @@
 
 namespace Lora\Core\Framework\Db\FluidOrm\DataMapper;
 
+use Exception;
+use Lora\Core\Framework\Db\ExceptionTraits\InvalidArgumentException;
 use Lora\Core\Framework\Db\FluidOrm\Exceptions\DataMapperException;
-use Lora\Core\Framework\Db\FluidOrm\Interfaces\DataMapperInterface;
+use Lora\Core\Framework\Db\FluidOrm\DataMapper\DataMapperInterface;
+use PDO;
 use PDOStatement;
 use Throwable;
 
 class DataMapper implements DataMapperInterface
 {
+  use InvalidArgumentException;
   /**
-   * @var \PDO
+   * @var PDO
    */
   private $pdo;
 
@@ -18,21 +22,6 @@ class DataMapper implements DataMapperInterface
    * @var \PDOStatement
    */
   private $statement;
-
-  /**
-   * @var array
-   */
-  private $params = [];
-
-  /**
-   * @var array
-   */
-  private $results = [];
-
-  /**
-   * @var int
-   */
-  private $numRows = 0;
 
   /**
    * @var string
@@ -60,72 +49,11 @@ class DataMapper implements DataMapperInterface
   private $intoClass;
 
   /**
-   * @param \PDO $pdo
+   * @param PDO $pdo
    */
-  public function __construct(\PDO $pdo)
+  public function __construct(PDO $pdo)
   {
     $this->pdo = $pdo;
-  }
-  /**
-   * @method for checking if isEmpty
-   * @param string $value
-   * @param string $message
-   * @return void
-   */
-  private function isEmpty(string $value, string $message = null): void
-  {
-    if (empty($value)) {
-      throw new DataMapperException($message);
-    }
-  }
-
-  /**
-   * @method for checking if isString
-   * @param string $value
-   * @return void
-   */
-  private function isString(string $value): void
-  {
-    if (!is_string($value)) {
-      throw new DataMapperException('The value must be a string');
-    }
-  }
-
-  /**
-   * @method for checking if isInt
-   * @param int $value
-   * @return void
-   */
-  private function isInt(int $value): void
-  {
-    if (!is_int($value)) {
-      throw new DataMapperException('The value must be an integer');
-    }
-  }
-
-  /**
-   * @method for checking if isBool
-   * @param bool $value
-   * @param string $message
-   * @return void
-   */
-  private function isBool(bool $value): void
-  {
-    if (!is_bool($value)) {
-      throw new DataMapperException('The value must be a boolean');
-    }
-  }
-
-  /**
-   * @method for checking if isArray
-   * @param array $value
-   * @return void
-   */
-  private function isArray(array $value): void
-  {
-    if (!is_array($value)) {
-      throw new DataMapperException('The value must be an array');
-    }
   }
 
   /**
@@ -150,16 +78,16 @@ class DataMapper implements DataMapperInterface
     try {
       switch ($value) {
         case is_int($value):
-          $dataType = \PDO::PARAM_INT;
+          $dataType = PDO::PARAM_INT;
           break;
         case is_bool($value):
-          $dataType = \PDO::PARAM_BOOL;
+          $dataType = PDO::PARAM_BOOL;
           break;
         case is_null($value):
-          $dataType = \PDO::PARAM_NULL;
+          $dataType = PDO::PARAM_NULL;
           break;
         default:
-          $dataType = \PDO::PARAM_STR;
+          $dataType = PDO::PARAM_STR;
       }
       return $dataType;
     } catch (DataMapperException $message) {
@@ -181,7 +109,7 @@ class DataMapper implements DataMapperInterface
         $this->statement->bindValue(':' . $key, $value, $this->bind($value));
       }
       return $this->statement;
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       throw new DataMapperException($e->getMessage(), $e->getCode(), $e);
     }
   }
@@ -200,7 +128,7 @@ class DataMapper implements DataMapperInterface
         $this->statement->bindValue(':' . $key, '%' . $value . '%', $this->bind($value));
       }
       return $this->statement;
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       throw new DataMapperException($e->getMessage(), $e->getCode(), $e);
     }
   }
@@ -259,7 +187,7 @@ class DataMapper implements DataMapperInterface
   public function results(): array
   {
     if ($this->statement)
-      return $this->statement->fetchAll(\PDO::FETCH_CLASS, $this->intoClass);
+      return $this->statement->fetchAll(PDO::FETCH_CLASS, $this->intoClass);
   }
 
   /**
