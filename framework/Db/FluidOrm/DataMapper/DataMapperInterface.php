@@ -1,6 +1,6 @@
 <?php
 
-namespace Lora\Core\Framework\Db\FluidOrm\Interfaces;
+namespace Lora\Core\Framework\Db\FluidOrm\DataMapper;
 
 interface DataMapperInterface
 {
