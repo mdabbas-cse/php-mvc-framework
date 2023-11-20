@@ -14,31 +14,162 @@ class Migration extends Application
   {
     parent::__construct();
     $config = Configuration::get('database');
-    $connection =  Connection::make($config);
+    $connection = Connection::make($config);
     $this->pdo = $connection;
   }
+
   /**
-   * Create a new table
+   * Run the "up" method on the migration.
+   *
+   * @return void
    */
-  public function create($table, $callback)
+  public function up()
   {
-    var_dump($table, $callback);
-    // $sql = "CREATE TABLE IF NOT EXISTS $table (";
-    // $sql .= $this->buildColumns($callback);
-    // $sql .= ")";
-    // var_dump($sql);
-    // $this->pdo->exec($sql);
+    // Implement the logic for creating or modifying the database table.
   }
 
+  /**
+   * Run the "down" method on the migration.
+   *
+   * @return void
+   */
+  public function down()
+  {
+    // Implement the logic for reverting the changes made in the "up" method.
+  }
 
   /**
-   * Drop a table
+   * Create a new table with the given blueprint.
+   *
+   * @param string $tableName
+   * @param \Lora\Core\Framework\Db\Migrations\Blueprint $callback
+   * @return void
    */
-  public function drop($table)
+  public function create($tableName, $callback)
   {
-    $sql = "DROP TABLE IF EXISTS $table";
+    $columns = $callback->getColumns();
+    $sql = "CREATE TABLE $tableName ($columns)";
+    $this->execute($sql);
+  }
+
+  /**
+   * Drop a table from the database.
+   *
+   * @param string $tableName
+   * @return void
+   */
+  public function drop($tableName)
+  {
+    $sql = "DROP TABLE IF EXISTS $tableName";
+    $this->execute($sql);
+  }
+
+  /**
+   * Rename a table in the database.
+   *
+   * @param string $oldName
+   * @param string $newName
+   * @return void
+   */
+  public function rename($oldName, $newName): void
+  {
+    $sql = "ALTER TABLE $oldName RENAME TO $newName";
+    $this->execute($sql);
+  }
+
+  /**
+   * Add a new column to the given table.
+   *
+   * @param string $tableName
+   * @param string $columnName
+   * @param \Lora\Core\Framework\Db\Migrations\Blueprint $callback
+   * @return void
+   */
+  public function addColumn($tableName, $columnName, $callback)
+  {
+    $columnDefinition = $callback->getCurrentColumnDefinition(''); // Get column definition from the Blueprint
+    $sql = "ALTER TABLE $tableName ADD COLUMN $columnDefinition";
+    $this->execute($sql);
+  }
+
+  /**
+   * Drop a column from the given table.
+   *
+   * @param string $tableName
+   * @param string $columnName
+   * @return void
+   */
+  public function dropColumn($tableName, $columnName)
+  {
+    $sql = "ALTER TABLE $tableName DROP COLUMN $columnName";
+    $this->execute($sql);
+  }
+
+  /**
+   * Modify a column on the given table.
+   *
+   * @param string $tableName
+   * @param string $columnName
+   * @param \Lora\Core\Framework\Db\Migrations\Blueprint $callback
+   * @return void
+   */
+  public function modifyColumn($tableName, $columnName, $callback)
+  {
+    $columnDefinition = $callback->getCurrentColumnDefinition(''); // Get column definition from the Blueprint
+    $sql = "ALTER TABLE $tableName MODIFY COLUMN $columnDefinition";
+    $this->execute($sql);
+  }
+
+  /**
+   * Add a new index to the given table.
+   *
+   * @param string $tableName
+   * @param string|array $columns
+   * @param string|null $indexName
+   * @return void
+   */
+  public function addIndex($tableName, $columns, $indexName = null)
+  {
+    $columns = is_array($columns) ? implode(', ', $columns) : $columns;
+    $indexName = $indexName ? "INDEX $indexName" : '';
+    $sql = "CREATE $indexName ON $tableName ($columns)";
+    $this->execute($sql);
+  }
+
+  /**
+   * Drop an index from the given table.
+   *
+   * @param string $tableName
+   * @param string $indexName
+   * @return void
+   */
+  public function dropIndex($tableName, $indexName)
+  {
+    $sql = "DROP INDEX $indexName ON $tableName";
+    $this->execute($sql);
+  }
+
+  /**
+   * Execute a raw SQL query.
+   *
+   * @param string $sql
+   * @return void
+   */
+  protected function execute($sql)
+  {
+    // Execute the SQL query.
     $this->pdo->exec($sql);
   }
+
+
+  // /**
+  //  * Drop a table
+  //  */
+  // public function drop($table)
+  // {
+  //   $sql = "DROP TABLE IF EXISTS $table";
+  //   $this->pdo->exec($sql);
+  // }
 
   /**
    * Build the columns
@@ -79,16 +210,18 @@ class Migration extends Application
   public function applyMigrations()
   {
     $this->createMigrationsTable();
-    $applyMigrations =  $this->getApplyMigrationsTable();
+    $applyMigrations = $this->getApplyMigrationsTable();
+
+    $migrationDir = scandir(ROOT . DS . 'database' . DS . 'migrations');
 
     $newMigrations = [];
-    $files = scandir(ROOT . DS . 'database' . DS . 'migrations');
+    $files = scandir($migrationDir);
     $toApplyMigrations = array_diff($files, $applyMigrations);
     foreach ($toApplyMigrations as $migration) {
       if ($migration === '.' || $migration === '..') {
         continue;
       }
-      require_once ROOT . DS . 'database' . DS . 'migrations' . DS . $migration;
+      require_once $migrationDir . DS . $migration;
       $className = pathinfo($migration, PATHINFO_FILENAME);
       $instance = new $className();
       // $this->log($migration);
