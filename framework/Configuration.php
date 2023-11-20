@@ -2,6 +2,8 @@
 
 namespace Lora\Core\Framework;
 
+use Exception;
+
 /**
  * Class Configuration
  * @package Lora\Core\Framework
@@ -15,7 +17,11 @@ class Configuration
    */
   public static function get($key = null)
   {
-    $config =  require(ROOT . DS . 'config' . DS . "Config.php");
+    $configFilePath = ROOT . DS . 'config' . DS . 'Config.php';
+    if (!file_exists($configFilePath)) {
+      throw new Exception("Config file not found at {$configFilePath}");
+    }
+    $config = require($configFilePath);
     if ($key && array_key_exists($key, $config)) {
       return $config[$key];
     }

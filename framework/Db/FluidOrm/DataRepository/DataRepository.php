@@ -88,7 +88,7 @@ class DataRepository implements DataRepositoryInterface
    * 
    * @return Object
    */
-  public function findObjectBy(array $conditions = [], array $selectors = []): Object
+  public function findObjectBy(array $conditions = [], array $selectors = []): object
   {
     return (object) [];
   }
@@ -159,7 +159,7 @@ class DataRepository implements DataRepositoryInterface
    * 
    * @return array
    */
-  public function findWithSearchAndPaging(Object $request, array $args = []): array
+  public function findWithSearchAndPaging(object $request, array $args = []): array
   {
     return [];
   }

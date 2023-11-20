@@ -19,7 +19,7 @@ class Connection implements ConnectionInterface
         $config['options']
       );
     } catch (PDOException $e) {
-      throw new DatabaseConnectionException($e->getMessage(), (int)$e->getCode());
+      throw new DatabaseConnectionException($e->getMessage(), (int) $e->getCode());
     }
   }
 }

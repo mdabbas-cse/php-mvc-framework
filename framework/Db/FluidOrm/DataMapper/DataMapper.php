@@ -142,7 +142,8 @@ class DataMapper implements DataMapperInterface
   {
     if (is_array($fields)) {
       $type = $isSearch === false ? $this->bindValues($fields) : $this->bindSearchValues($fields);
-      if ($type) return $this;
+      if ($type)
+        return $this;
     }
   }
 
@@ -173,7 +174,7 @@ class DataMapper implements DataMapperInterface
    * 
    * @return Object
    */
-  public function result(): Object
+  public function result(): object
   {
     if ($this->statement)
       return $this->statement->fetchObject();
@@ -198,7 +199,7 @@ class DataMapper implements DataMapperInterface
   public function getLastId(): int
   {
     try {
-      $lastId =  $this->pdo->lastInsertId();
+      $lastId = $this->pdo->lastInsertId();
       if (!empty($lastId)) {
         return intval($lastId);
       }
