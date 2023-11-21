@@ -2,11 +2,11 @@
 
 return [
   'database' => [
-    'dbname' => 'mvc',
+    'dbname' => 'laracore',
     'username' => 'root',
-    'password' => '1234',
+    'password' => '',
     'connection' => 'localhost',
-    'port' => 3307,
+    'port' => 3306,
     'options' => [
       PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     ]
