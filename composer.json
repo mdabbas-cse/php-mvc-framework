@@ -31,15 +31,17 @@
   "minimum-stability": "alpha",
   "autoload": {
     "psr-4": {
-      "Lora\\Core\\": "./"
-    },
-    "files": [
-      "framework/Helpers.php"
-    ]
+      "LaraCore\\": "./",
+      "LaraCore\\Framework\\": "./framework/",
+      "LaraCore\\App\\": "./app/",
+      "LaraCore\\Config\\": "./config/",
+      "LaraCore\\Database\\": "./database/",
+      "LaraCore\\Resources\\": "./resources/"
+    }
   },
   "autoload-dev": {
     "psr-4": {
-      "Lora\\Core\\Tests\\": "tests/"
+      "LaraCore\\Tests\\": "tests/"
     }
   },
   "scripts": {
