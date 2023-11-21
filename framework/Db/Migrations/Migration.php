@@ -9,7 +9,17 @@ use PDO;
 
 class Migration extends Application
 {
+  /**
+   * The PDO instance.
+   *
+   * @var \PDO
+   */
   protected $pdo;
+  protected $connection;
+  protected $config;
+
+  const CREATE_TABLE = 'CREATE TABLE';
+
   public function __construct()
   {
     parent::__construct();
@@ -45,12 +55,24 @@ class Migration extends Application
    * @param \LaraCore\Framework\Db\Migrations\Blueprint $callback
    * @return void
    */
-  public function create($tableName, $callback)
+  public function create($tableName, callable $callback)
   {
-    $columns = $callback->getColumns();
-    $sql = "CREATE TABLE $tableName ($columns)";
+    $bluePrintInstance = new Blueprint();
+    $callback($bluePrintInstance);
+    $columns = $bluePrintInstance->getColumns();
+    $sql = $this->createQuery($tableName, $columns);
     $this->execute($sql);
   }
+
+  private function createQuery($tableName, $columns)
+  {
+    $sql = self::CREATE_TABLE . " $tableName (";
+    $sql .= implode(',', $columns);
+    $sql = rtrim($sql, ',');
+    $sql .= ')';
+    return $sql;
+  }
+
 
   /**
    * Drop a table from the database.
