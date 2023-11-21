@@ -8,7 +8,7 @@ session_start();
 $config = Configuration::get('app');
 date_default_timezone_set($config['timezone']);
 
-include ROOT . DS . 'Framework' . DS . "Helpers.php";
+include ROOT . DS . 'framework' . DS . "Helpers.php";
 $web = ROOT . DS . 'routes' . DS . 'web.php';
 
 Router::load($web)->callRouter(
