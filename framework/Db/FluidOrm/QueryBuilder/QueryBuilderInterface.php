@@ -1,6 +1,6 @@
 <?php
 
-namespace Lora\Core\Framework\Db\FluidOrm\QueryBuilder;
+namespace LaraCore\Framework\Db\FluidOrm\QueryBuilder;
 
 interface QueryBuilderInterface
 {

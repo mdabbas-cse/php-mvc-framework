@@ -1,6 +1,6 @@
 <?php
 
-namespace Lora\Core\Framework\Db\ExceptionTraits;
+namespace LaraCore\Framework\Db\ExceptionTraits;
 
 trait InvalidArgumentException
 {

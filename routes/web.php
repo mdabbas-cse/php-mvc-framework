@@ -1,9 +1,9 @@
 <?php
 
 
-use Lora\Core\App\Http\Controllers\Auth\AuthController;
-use Lora\Core\App\Http\Controllers\HomeController;
-use Lora\Core\App\Http\Controllers\UserController;
+use LaraCore\App\Http\Controllers\Auth\AuthController;
+use LaraCore\App\Http\Controllers\HomeController;
+use LaraCore\App\Http\Controllers\UserController;
 
 
 // $routes->get('/', 'welcome');

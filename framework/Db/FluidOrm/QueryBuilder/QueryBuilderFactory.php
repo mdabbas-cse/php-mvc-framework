@@ -1,9 +1,9 @@
 <?php
 
-namespace Lora\Core\Framework\Db\FluidOrm\QueryBuilder;
+namespace LaraCore\Framework\Db\FluidOrm\QueryBuilder;
 
-use Lora\Core\Framework\Db\FluidOrm\QueryBuilder\Exceptions\QueryBuilderException;
-use Lora\Core\Framework\Db\FluidOrm\QueryBuilder\QueryBuilderInterface;
+use LaraCore\Framework\Db\FluidOrm\QueryBuilder\Exceptions\QueryBuilderException;
+use LaraCore\Framework\Db\FluidOrm\QueryBuilder\QueryBuilderInterface;
 
 
 class QueryBuilderFactory

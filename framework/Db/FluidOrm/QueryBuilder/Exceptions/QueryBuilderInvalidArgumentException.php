@@ -1,6 +1,6 @@
 <?php
 
-namespace Lora\Core\Framework\Db\FluidOrm\QueryBuilder\Exceptions;
+namespace LaraCore\Framework\Db\FluidOrm\QueryBuilder\Exceptions;
 
 use InvalidArgumentException;
 

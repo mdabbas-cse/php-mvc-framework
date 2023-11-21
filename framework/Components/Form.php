@@ -2,12 +2,12 @@
 
 /**
  * @author:  Md. Abbas uddin <gmabbas44@gmail.com>
- * @package: Lora\Core\Framework\Components\Form
+ * @package: LaraCore\Framework\Components\Form
  */
 
-namespace Lora\Core\Framework\Components;
+namespace LaraCore\Framework\Components;
 
-use Lora\Core\Framework\Components\InputField;
+use LaraCore\Framework\Components\InputField;
 
 class Form
 {

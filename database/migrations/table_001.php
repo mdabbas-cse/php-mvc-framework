@@ -1,7 +1,7 @@
 <?php
 
-use Lora\Core\Framework\Db\Migrations\Blueprint;
-use Lora\Core\Framework\Db\Migrations\Migration;
+use LaraCore\Framework\Db\Migrations\Blueprint;
+use LaraCore\Framework\Db\Migrations\Migration;
 
 class table_001 extends Migration
 {

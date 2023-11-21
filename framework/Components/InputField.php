@@ -1,6 +1,6 @@
 <?php
 
-namespace Lora\Core\Framework\Components;
+namespace LaraCore\Framework\Components;
 
 
 class InputField
@@ -18,7 +18,7 @@ class InputField
 
   public function __toString()
   {
-    $fld =  sprintf(
+    $fld = sprintf(
       '
       <div class="%s">
         <label class="form-label" for="%s">%s</label>

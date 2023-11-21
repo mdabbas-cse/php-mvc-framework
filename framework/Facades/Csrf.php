@@ -2,8 +2,8 @@
 
 namespace zFramework\Core;
 
-use Lora\Core\Framework\Facades\Str;
-use Lora\Core\Framework\Request;
+use LaraCore\Framework\Facades\Str;
+use LaraCore\Framework\Request;
 
 class Csrf
 {
@@ -26,7 +26,8 @@ class Csrf
    */
   public static function get(): string
   {
-    if ((!@$_SESSION['csrf_token'] || time() > @$_SESSION['csrf_token_timeout'])) self::set();
+    if ((!@$_SESSION['csrf_token'] || time() > @$_SESSION['csrf_token_timeout']))
+      self::set();
     return $_SESSION['csrf_token'];
   }
 
@@ -65,7 +66,8 @@ class Csrf
    */
   public static function check($alwaysTrue = false, Request $request): bool
   {
-    if (($request->isGet() && $request->input('_token') != self::get()) && $alwaysTrue != true) return false;
+    if (($request->isGet() && $request->input('_token') != self::get()) && $alwaysTrue != true)
+      return false;
     return true;
   }
 }

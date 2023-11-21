@@ -1,6 +1,6 @@
 <?php
 
-namespace Lora\Core\Framework\Db\Migrations;
+namespace LaraCore\Framework\Db\Migrations;
 
 
 class ForeignConstraint

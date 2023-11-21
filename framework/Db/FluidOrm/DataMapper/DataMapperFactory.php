@@ -1,10 +1,10 @@
 <?php
 
-namespace Lora\Core\Framework\Db\FluidOrm\DataMapper;
+namespace LaraCore\Framework\Db\FluidOrm\DataMapper;
 
-use Lora\Core\Framework\BaseExceptions\BaseUnexpectedValueException;
-use Lora\Core\Framework\Db\FluidOrm\Interfaces\DatabaseConnectionInterface;
-use Lora\Core\Framework\Db\FluidOrm\Interfaces\DataMapperInterface;
+use LaraCore\Framework\BaseExceptions\BaseUnexpectedValueException;
+use LaraCore\Framework\Db\FluidOrm\Interfaces\DatabaseConnectionInterface;
+use LaraCore\Framework\Db\FluidOrm\Interfaces\DataMapperInterface;
 
 class DataMapperFactory
 {

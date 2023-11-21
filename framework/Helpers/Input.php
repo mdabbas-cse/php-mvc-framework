@@ -2,10 +2,10 @@
 
 /**
  * Class Input for sanitizes user input
- * @package Lora\Core\Framework
+ * @package LaraCore\Framework
  */
 
-namespace Lora\Core\Framework\Helpers;
+namespace LaraCore\Framework\Helpers;
 
 class Input
 {

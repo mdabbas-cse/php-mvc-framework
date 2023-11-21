@@ -1,6 +1,6 @@
 <?php
 
-use Lora\Core\Framework\Db\Migrations\Migration;
+use LaraCore\Framework\Db\Migrations\Migration;
 
 define('DS', DIRECTORY_SEPARATOR);
 $path = dirname(__FILE__);

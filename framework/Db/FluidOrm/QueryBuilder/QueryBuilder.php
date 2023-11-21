@@ -1,8 +1,8 @@
 <?php
 
-namespace Lora\Core\Framework\Db\FluidOrm\QueryBuilder;
+namespace LaraCore\Framework\Db\FluidOrm\QueryBuilder;
 
-use Lora\Core\Framework\Db\FluidOrm\QueryBuilder\Exceptions\QueryBuilderInvalidArgumentException;
+use LaraCore\Framework\Db\FluidOrm\QueryBuilder\Exceptions\QueryBuilderInvalidArgumentException;
 
 class QueryBuilder implements QueryBuilderInterface
 {

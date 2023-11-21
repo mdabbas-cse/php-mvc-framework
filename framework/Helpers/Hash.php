@@ -2,11 +2,11 @@
 
 /**
  * Class Hash
- * @package Lora\Core\Framework
+ * @package LaraCore\Framework
  * @version 1.0.0
  */
 
-namespace Lora\Core\Framework\Helpers;
+namespace LaraCore\Framework\Helpers;
 
 class Hash
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Lora\Core\Framework\Db\Migrations;
+namespace LaraCore\Framework\Db\Migrations;
 
-use Lora\Core\Framework\Application;
-use Lora\Core\Framework\Configuration;
-use Lora\Core\Framework\Db\Connection;
+use LaraCore\Framework\Application;
+use LaraCore\Framework\Configuration;
+use LaraCore\Framework\Db\Connection;
 use PDO;
 
 class Migration extends Application
@@ -42,7 +42,7 @@ class Migration extends Application
    * Create a new table with the given blueprint.
    *
    * @param string $tableName
-   * @param \Lora\Core\Framework\Db\Migrations\Blueprint $callback
+   * @param \LaraCore\Framework\Db\Migrations\Blueprint $callback
    * @return void
    */
   public function create($tableName, $callback)
@@ -82,7 +82,7 @@ class Migration extends Application
    *
    * @param string $tableName
    * @param string $columnName
-   * @param \Lora\Core\Framework\Db\Migrations\Blueprint $callback
+   * @param \LaraCore\Framework\Db\Migrations\Blueprint $callback
    * @return void
    */
   public function addColumn($tableName, $columnName, $callback)
@@ -110,7 +110,7 @@ class Migration extends Application
    *
    * @param string $tableName
    * @param string $columnName
-   * @param \Lora\Core\Framework\Db\Migrations\Blueprint $callback
+   * @param \LaraCore\Framework\Db\Migrations\Blueprint $callback
    * @return void
    */
   public function modifyColumn($tableName, $columnName, $callback)

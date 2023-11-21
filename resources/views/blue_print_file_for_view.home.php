@@ -8,6 +8,6 @@
 
 <?php $this->start('body'); ?>
 
-<h1>Welcome to Lora\Core Framework <?= dirname(__FILE__); ?></h1>
+<h1>Welcome to LaraCore Framework <?= dirname(__FILE__); ?></h1>
 
 <?php $this->end(); ?>

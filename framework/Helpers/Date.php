@@ -1,6 +1,6 @@
 <?php
 
-namespace Lora\Core\Framework\Helpers;
+namespace LaraCore\Framework\Helpers;
 
 class Date
 {
@@ -73,7 +73,8 @@ class Date
     ];
 
     foreach ($tokens as $unit => $text) {
-      if ($time < $unit) continue;
+      if ($time < $unit)
+        continue;
       $numberOfUnits = floor($time / $unit);
       return $numberOfUnits . ' ' . $text . (($numberOfUnits > 1) ? 's' : '');
     }

@@ -1,9 +1,9 @@
 <?php
 
-namespace Lora\Core\App\Http\Controllers;
+namespace LaraCore\App\Http\Controllers;
 
-use Lora\Core\Framework\Controller;
-use Lora\Core\Framework\Request;
+use LaraCore\Framework\Controller;
+use LaraCore\Framework\Request;
 
 class UserController extends Controller
 {

@@ -3,8 +3,8 @@
 namespace Framework\Db\FluidOrm\EntityManager;
 
 use Framework\Db\FluidOrm\EntityManager\CrudInterface;
-use Lora\Core\Framework\Db\FluidOrm\DataMapper\DataMapper;
-use Lora\Core\Framework\Db\FluidOrm\QueryBuilder\QueryBuilder;
+use LaraCore\Framework\Db\FluidOrm\DataMapper\DataMapper;
+use LaraCore\Framework\Db\FluidOrm\QueryBuilder\QueryBuilder;
 use Throwable;
 
 class Crud implements CrudInterface
@@ -44,7 +44,7 @@ class Crud implements CrudInterface
    */
   public function getSchema(): string
   {
-    return (string)$this->tableSchema;
+    return (string) $this->tableSchema;
   }
 
   /**
@@ -54,7 +54,7 @@ class Crud implements CrudInterface
    */
   public function getSchemaID(): string
   {
-    return (string)$this->tableSchemaID;
+    return (string) $this->tableSchemaID;
   }
 
   /**

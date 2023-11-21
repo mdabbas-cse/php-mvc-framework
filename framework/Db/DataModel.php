@@ -3,10 +3,10 @@
 /**
  * abstract class DataModel
  * like ORM in Laravel
- * @package Lora\Core\Framework\Db
+ * @package LaraCore\Framework\Db
  */
 
-namespace Lora\Core\Framework\Db;
+namespace LaraCore\Framework\Db;
 
 use PDO;
 

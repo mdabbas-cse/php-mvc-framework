@@ -1,6 +1,6 @@
 <?php
 
-namespace Lora\Core\Framework\Db\FluidOrm\DataMapper;
+namespace LaraCore\Framework\Db\FluidOrm\DataMapper;
 
 interface DataMapperInterface
 {
@@ -50,7 +50,7 @@ interface DataMapperInterface
    * 
    * @return Object
    */
-  public function result(): Object;
+  public function result(): object;
 
   /**
    * Returns all the rows within the database as an array

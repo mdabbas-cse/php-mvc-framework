@@ -1,9 +1,9 @@
 <?php
 
-use Lora\Core\Framework\Configuration;
-use Lora\Core\Framework\Helpers\Errors;
-use Lora\Core\Framework\Helpers\Values;
-use Lora\Core\Framework\View;
+use LaraCore\Framework\Configuration;
+use LaraCore\Framework\Helpers\Errors;
+use LaraCore\Framework\Helpers\Values;
+use LaraCore\Framework\View;
 
 if (!function_exists('dd')) {
   /**

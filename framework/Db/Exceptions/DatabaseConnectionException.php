@@ -1,6 +1,6 @@
 <?php
 
-namespace Lora\Core\Framework\Db\Exceptions;
+namespace LaraCore\Framework\Db\Exceptions;
 
 use Exception;
 

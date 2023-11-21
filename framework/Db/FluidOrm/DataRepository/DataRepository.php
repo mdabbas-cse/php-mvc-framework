@@ -4,7 +4,7 @@ namespace Framework\Db\FluidOrm\DataRepository;
 
 use Framework\Db\FluidOrm\DataRepository\DataRepositoryInterface;
 use Framework\Db\FluidOrm\EntityManager\EntityManagerInterface;
-use Lora\Core\Framework\Db\ExceptionTraits\InvalidArgumentException;
+use LaraCore\Framework\Db\ExceptionTraits\InvalidArgumentException;
 
 class DataRepository implements DataRepositoryInterface
 {

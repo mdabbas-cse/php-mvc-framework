@@ -2,10 +2,10 @@
 
 /**
  * Class Session
- * @package Lora\Core\Framework
+ * @package LaraCore\Framework
  */
 
-namespace Lora\Core\Framework;
+namespace LaraCore\Framework;
 
 class Session
 {

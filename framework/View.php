@@ -1,6 +1,6 @@
 <?php
 
-namespace Lora\Core\Framework;
+namespace LaraCore\Framework;
 
 class View
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Lora\Core\Framework\Interfaces;
+namespace LaraCore\Framework\Interfaces;
 
 interface RequestInterface
 {

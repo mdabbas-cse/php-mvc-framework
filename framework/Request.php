@@ -1,9 +1,9 @@
 <?php
 
-namespace Lora\Core\Framework;
+namespace LaraCore\Framework;
 
-use Lora\Core\Framework\Helpers\Input;
-use Lora\Core\Framework\Interfaces\RequestInterface;
+use LaraCore\Framework\Helpers\Input;
+use LaraCore\Framework\Interfaces\RequestInterface;
 
 final class Request implements RequestInterface
 {

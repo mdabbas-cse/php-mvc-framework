@@ -1,11 +1,11 @@
 <?php
 
-namespace Lora\Core\Framework\Db;
+namespace LaraCore\Framework\Db;
 
-use Lora\Core\Framework\Configuration;
+use LaraCore\Framework\Configuration;
 use PDO;
-use Lora\Core\Framework\Db\Connection;
-use Lora\Core\Framework\Db\Interfaces\QueryBuilderInterface;
+use LaraCore\Framework\Db\Connection;
+use LaraCore\Framework\Db\Interfaces\QueryBuilderInterface;
 
 class QueryBuilder implements QueryBuilderInterface
 {
@@ -14,7 +14,7 @@ class QueryBuilder implements QueryBuilderInterface
   public function __construct()
   {
     $config = Configuration::get('database');
-    $connection =  Connection::make($config);
+    $connection = Connection::make($config);
     $this->pdo = $connection;
   }
 

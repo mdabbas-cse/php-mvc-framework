@@ -1,6 +1,6 @@
 <?php
 
-namespace Lora\Core\Framework\Helpers;
+namespace LaraCore\Framework\Helpers;
 
 class FlashMessages
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Lora\Core\Framework\Db\FluidOrm\DataMapper;
+namespace LaraCore\Framework\Db\FluidOrm\DataMapper;
 
 use Exception;
-use Lora\Core\Framework\Db\ExceptionTraits\InvalidArgumentException;
-use Lora\Core\Framework\Db\FluidOrm\Exceptions\DataMapperException;
-use Lora\Core\Framework\Db\FluidOrm\DataMapper\DataMapperInterface;
+use LaraCore\Framework\Db\ExceptionTraits\InvalidArgumentException;
+use LaraCore\Framework\Db\FluidOrm\Exceptions\DataMapperException;
+use LaraCore\Framework\Db\FluidOrm\DataMapper\DataMapperInterface;
 use PDO;
 use PDOStatement;
 use Throwable;

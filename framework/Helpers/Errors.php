@@ -4,7 +4,7 @@
  * Class Errors form show input value in input field
  */
 
-namespace Lora\Core\Framework\Helpers;
+namespace LaraCore\Framework\Helpers;
 
 class Errors
 {
@@ -26,7 +26,8 @@ class Errors
 
   public static function set($errors)
   {
-    if (!$errors) return;
+    if (!$errors)
+      return;
     foreach ($errors as $key => $value) {
       $_SESSION['inputErrors'][$key] = $value;
     }

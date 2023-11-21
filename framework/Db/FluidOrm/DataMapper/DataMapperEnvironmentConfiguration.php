@@ -1,8 +1,8 @@
 <?php
 
-namespace Lora\Core\Framework\Db\FluidOrm\DataMapper;
+namespace LaraCore\Framework\Db\FluidOrm\DataMapper;
 
-use Lora\Core\Framework\Db\FluidOrm\Exceptions\DataMapperInvalidArgumentException;
+use LaraCore\Framework\Db\FluidOrm\Exceptions\DataMapperInvalidArgumentException;
 
 class DataMapperEnvironmentConfiguration
 {

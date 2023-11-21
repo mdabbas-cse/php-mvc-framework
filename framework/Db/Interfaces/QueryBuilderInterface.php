@@ -4,7 +4,7 @@
  * @package Lora
  */
 
-namespace Lora\Core\Framework\Db\Interfaces;
+namespace LaraCore\Framework\Db\Interfaces;
 
 interface QueryBuilderInterface
 {

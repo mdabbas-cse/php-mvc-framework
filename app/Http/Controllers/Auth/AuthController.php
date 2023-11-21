@@ -1,12 +1,12 @@
 <?php
 
-namespace Lora\Core\App\Http\Controllers\Auth;
+namespace LaraCore\App\Http\Controllers\Auth;
 
-use Lora\Core\App\Models\Users;
-use Lora\Core\Framework\Controller;
-use Lora\Core\Framework\Helpers\FlashMessages;
-use Lora\Core\Framework\Request;
-use Lora\Core\Framework\Response;
+use LaraCore\App\Models\Users;
+use LaraCore\Framework\Controller;
+use LaraCore\Framework\Helpers\FlashMessages;
+use LaraCore\Framework\Request;
+use LaraCore\Framework\Response;
 
 class AuthController extends Controller
 {

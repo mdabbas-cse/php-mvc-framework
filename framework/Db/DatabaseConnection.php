@@ -1,9 +1,9 @@
 <?php
 
-namespace Lora\Core\Framework\Db;
+namespace LaraCore\Framework\Db;
 
-use Lora\Core\Framework\Db\DbExceptions\DatabaseConnectionException;
-use Lora\Core\Framework\Db\FluidOrm\Interfaces\DatabaseConnectionInterface;
+use LaraCore\Framework\Db\DbExceptions\DatabaseConnectionException;
+use LaraCore\Framework\Db\FluidOrm\Interfaces\DatabaseConnectionInterface;
 use PDO;
 
 class DatabaseConnection implements DatabaseConnectionInterface

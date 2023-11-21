@@ -1,8 +1,8 @@
 <?php
 
-namespace Lora\Core\Framework\Interfaces;
+namespace LaraCore\Framework\Interfaces;
 
-use Lora\Core\Framework\Request;
+use LaraCore\Framework\Request;
 
 interface ControllerInterface
 {

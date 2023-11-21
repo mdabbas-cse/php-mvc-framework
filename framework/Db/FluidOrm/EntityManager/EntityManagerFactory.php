@@ -4,8 +4,8 @@
 namespace Framework\Db\FluidOrm\EntityManager;
 
 use Framework\Db\FluidOrm\EntityManager\Exceptions\CrudException;
-use Lora\Core\Framework\Db\FluidOrm\Interfaces\DataMapperInterface;
-use Lora\Core\Framework\Db\FluidOrm\QueryBuilder\QueryBuilderInterface;
+use LaraCore\Framework\Db\FluidOrm\Interfaces\DataMapperInterface;
+use LaraCore\Framework\Db\FluidOrm\QueryBuilder\QueryBuilderInterface;
 
 class EntityManagerFactory
 {

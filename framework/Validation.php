@@ -1,10 +1,10 @@
 <?php
 
-namespace Lora\Core\Framework;
+namespace LaraCore\Framework;
 
-use Lora\Core\Framework\Db\QueryBuilder;
-use Lora\Core\Framework\Helpers\Errors;
-use Lora\Core\Framework\Helpers\Input;
+use LaraCore\Framework\Db\QueryBuilder;
+use LaraCore\Framework\Helpers\Errors;
+use LaraCore\Framework\Helpers\Input;
 
 class Validation
 {
@@ -100,7 +100,8 @@ class Validation
   public function getErrors()
   {
     $errors = [];
-    if (empty($this->errors)) return false;
+    if (empty($this->errors))
+      return false;
 
     foreach ($this->errors as $key => $value) {
       $errors[$key] = $value[0];

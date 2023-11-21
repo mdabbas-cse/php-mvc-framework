@@ -1,8 +1,8 @@
 <?php
 
-use Lora\Core\Framework\Configuration;
-use Lora\Core\Framework\Request;
-use Lora\Core\Framework\Router;
+use LaraCore\Framework\Configuration;
+use LaraCore\Framework\Request;
+use LaraCore\Framework\Router;
 
 session_start();
 $config = Configuration::get('app');

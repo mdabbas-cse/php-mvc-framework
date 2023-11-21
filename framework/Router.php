@@ -1,9 +1,9 @@
 <?php
 
-namespace Lora\Core\Framework;
+namespace LaraCore\Framework;
 
-use Lora\Core\Framework\Response;
-use Lora\Core\Framework\Request;
+use LaraCore\Framework\Response;
+use LaraCore\Framework\Request;
 
 class Router
 {

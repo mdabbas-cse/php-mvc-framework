@@ -4,9 +4,9 @@
  * class for sql blueprint
  */
 
-namespace Lora\Core\Framework\Db\Migrations;
+namespace LaraCore\Framework\Db\Migrations;
 
-use Lora\Core\Framework\Db\Migrations\ForeignConstraint;
+use LaraCore\Framework\Db\Migrations\ForeignConstraint;
 
 /**
  * Class Blueprint

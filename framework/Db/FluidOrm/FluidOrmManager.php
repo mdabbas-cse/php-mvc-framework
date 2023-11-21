@@ -4,11 +4,11 @@ namespace Framework\Db\FluidOrm;
 
 use Framework\Db\FluidOrm\EntityManager\Crud;
 use Framework\Db\FluidOrm\EntityManager\EntityManagerFactory;
-use Lora\Core\Framework\Db\DatabaseConnection;
-use Lora\Core\Framework\Db\FluidOrm\DataMapper\DataMapperEnvironmentConfiguration;
-use Lora\Core\Framework\Db\FluidOrm\DataMapper\DataMapperFactory;
-use Lora\Core\Framework\Db\FluidOrm\QueryBuilder\QueryBuilder;
-use Lora\Core\Framework\Db\FluidOrm\QueryBuilder\QueryBuilderFactory;
+use LaraCore\Framework\Db\DatabaseConnection;
+use LaraCore\Framework\Db\FluidOrm\DataMapper\DataMapperEnvironmentConfiguration;
+use LaraCore\Framework\Db\FluidOrm\DataMapper\DataMapperFactory;
+use LaraCore\Framework\Db\FluidOrm\QueryBuilder\QueryBuilder;
+use LaraCore\Framework\Db\FluidOrm\QueryBuilder\QueryBuilderFactory;
 
 class FluidOrmManager
 {

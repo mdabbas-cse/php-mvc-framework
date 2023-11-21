@@ -1,6 +1,6 @@
 <?php
 
-use Lora\Core\Framework\Components\Form;
+use LaraCore\Framework\Components\Form;
 
 $this->setSiteTile('Home'); ?>
 

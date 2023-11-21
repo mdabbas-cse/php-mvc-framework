@@ -1,6 +1,6 @@
 <?php
 
-namespace Lora\Core\Framework\Facades;
+namespace LaraCore\Framework\Facades;
 
 class Str
 {
@@ -13,7 +13,8 @@ class Str
    */
   public static function limit(string $text, int $length = 50, string $continue = "..."): string
   {
-    if (strlen($text) > $length) $text = substr($text, 0, $length) . $continue;
+    if (strlen($text) > $length)
+      $text = substr($text, 0, $length) . $continue;
     return $text;
   }
 
@@ -28,7 +29,8 @@ class Str
     $q = "QWERTYUIOPASDFHJKLZXCVBNMqwertyuopasdfghjklizxcvbnm0987654321";
     $q_count = strlen($q) - 1;
     $r = "";
-    for ($x = $length; $x > 0; $x--) $r .= $q[rand(0, $q_count)];
+    for ($x = $length; $x > 0; $x--)
+      $r .= $q[rand(0, $q_count)];
     return $r . ($unique ? uniqid('', true) : null);
   }
 
@@ -40,6 +42,7 @@ class Str
    */
   public static function slug(string $text, string $divider = '-'): string
   {
-    return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', $divider, $text)));;
+    return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', $divider, $text)));
+    ;
   }
 }

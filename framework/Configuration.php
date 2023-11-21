@@ -1,12 +1,12 @@
 <?php
 
-namespace Lora\Core\Framework;
+namespace LaraCore\Framework;
 
 use Exception;
 
 /**
  * Class Configuration
- * @package Lora\Core\Framework
+ * @package LaraCore\Framework
  */
 
 class Configuration

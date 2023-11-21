@@ -1,10 +1,10 @@
 <?php
 
-namespace Lora\Core\Framework\BaseExceptions;
+namespace LaraCore\Framework\BaseExceptions;
 
 use UnexpectedValueException;
 
-class BaseUnexpectedValueException  extends UnexpectedValueException
+class BaseUnexpectedValueException extends UnexpectedValueException
 {
   /**
    * Exception thrown if a value does not match with a set of values. Typically this happens 
@@ -15,7 +15,7 @@ class BaseUnexpectedValueException  extends UnexpectedValueException
    * @param integer $code
    * @param \UnexpectedValueException $previous
    */
-  public function __construct(string $message, int $code = 0, UnexpectedValueException  $previous = null)
+  public function __construct(string $message, int $code = 0, UnexpectedValueException $previous = null)
   {
     parent::__construct($message, $code, $previous);
   }

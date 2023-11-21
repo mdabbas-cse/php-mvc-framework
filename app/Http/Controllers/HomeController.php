@@ -1,8 +1,8 @@
 <?php
 
-namespace Lora\Core\App\Http\Controllers;
+namespace LaraCore\App\Http\Controllers;
 
-use Lora\Core\Framework\Controller;
+use LaraCore\Framework\Controller;
 
 class HomeController extends Controller
 {
@@ -14,7 +14,7 @@ class HomeController extends Controller
   {
     $data = [
       'title' => 'Home Page',
-      'name' => 'Lora\Core Framework'
+      'name' => 'LaraCore Framework'
     ];
     // return view('home', $data);
     return $this->view('home', $data);
