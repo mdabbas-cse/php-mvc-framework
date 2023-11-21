@@ -15,7 +15,7 @@ class Router
   public static function load($file)
   {
     $routes = new static;
-    require $file;
+    require_once($file);
     return $routes;
   }
 
@@ -24,10 +24,10 @@ class Router
    * @param $uri
    * @param $controller
    */
-  private function getCallback(Request  $request, $url, $method)
+  private function getCallback(Request $request, $url, $method)
   {
     $url = trim($url, '/');
-    $routes  = $this->routes[$method] ?? [];
+    $routes = $this->routes[$method] ?? [];
 
     $routeParams = false;
 
@@ -35,7 +35,8 @@ class Router
       $route = trim($route, '/');
       $routeName = [];
 
-      if (!$route)  continue;
+      if (!$route)
+        continue;
       // find all route name from route name
       if (preg_match_all('/\{(\w+)(:[^}]+)?}/', $route, $matches)) {
         $routeName = $matches[1];

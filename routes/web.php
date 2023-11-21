@@ -1,7 +1,13 @@
 <?php
 
+
 use Lora\Core\App\Http\Controllers\Auth\AuthController;
+use Lora\Core\App\Http\Controllers\HomeController;
 use Lora\Core\App\Http\Controllers\UserController;
+
+
+// $routes->get('/', 'welcome');
+
 
 // $routes->get('/', [HomeController::class, 'index']); // for home page
 $routes->get('/', [AuthController::class, 'loginForm']); // for home page

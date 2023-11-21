@@ -99,7 +99,7 @@ if (!function_exists('app_url')) {
     $config = Configuration::get('app');
     $url = trim($config['root'], '/');
     $path = trim($path, '/');
-    return  $path ? $url . '/' . $path : $url;
+    return $path ? $url . '/' . $path : $url;
   }
 }
 
