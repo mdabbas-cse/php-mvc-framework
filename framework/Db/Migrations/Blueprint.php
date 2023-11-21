@@ -55,7 +55,7 @@ final class Blueprint
    */
   public function id($columnName = 'id')
   {
-    $this->columns[] = "$columnName INT PRIMARY KEY AUTO_INCREMENT NOT NULL";
+    $this->columns[] = "`{$columnName}` INT PRIMARY KEY AUTO_INCREMENT NOT NULL";
     return $this;
   }
 
@@ -287,7 +287,7 @@ final class Blueprint
    */
   public function timestamps()
   {
-    $this->columns[] = "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL";
+    $this->columns[] = "`created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL";
     return $this;
   }
 
@@ -308,7 +308,7 @@ final class Blueprint
    */
   protected function setCurrentColumn($columnName)
   {
-    $this->currentColumn = $columnName;
+    $this->currentColumn = "`{$columnName}`";
     $this->isCurrentColumnNullable = false;
     $this->currentColumnDefault = null;
     $this->currentColumnUnique = false;
