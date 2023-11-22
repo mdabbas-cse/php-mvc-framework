@@ -23,7 +23,12 @@ class Command
                 break;
 
             case 'migrate':
-                MigrationCommand::migrate();
+                MigrationCommand::migrate($argv);
+                break;
+
+            case 'migration:rollback':
+                MigrationCommand::rollback();
+                break;
 
             case 'make:controller':
                 // self::makeController($argv);

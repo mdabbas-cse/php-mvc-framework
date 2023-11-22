@@ -4,6 +4,7 @@ namespace LaraCore\Framework\Db\Migrations;
 
 use LaraCore\Framework\Application;
 use LaraCore\Framework\Configuration;
+use LaraCore\Framework\Console\Log;
 use LaraCore\Framework\Db\Connection;
 use PDO;
 
@@ -20,32 +21,16 @@ class Migration extends Application
 
   const CREATE_TABLE = 'CREATE TABLE';
 
+  const MIGRATIONS_DIR = ROOT . DS . 'database' . DS . 'migrations';
+
+  const MIGRATIONS_PATH_NAMESPACE = 'LaraCore\\Database\\Migrations\\';
+
   public function __construct()
   {
     parent::__construct();
     $config = Configuration::get('database');
     $connection = Connection::make($config);
     $this->pdo = $connection;
-  }
-
-  /**
-   * Run the "up" method on the migration.
-   *
-   * @return void
-   */
-  public function up()
-  {
-    // Implement the logic for creating or modifying the database table.
-  }
-
-  /**
-   * Run the "down" method on the migration.
-   *
-   * @return void
-   */
-  public function down()
-  {
-    // Implement the logic for reverting the changes made in the "up" method.
   }
 
   /**
@@ -64,6 +49,13 @@ class Migration extends Application
     $this->execute($sql);
   }
 
+  /**
+   * Create the SQL query for creating a table.
+   *
+   * @param string $tableName
+   * @param array $columns
+   * @return string
+   */
   private function createQuery($tableName, $columns)
   {
     $sql = self::CREATE_TABLE . " $tableName (";
@@ -73,7 +65,6 @@ class Migration extends Application
     return $sql;
   }
 
-
   /**
    * Drop a table from the database.
    *
@@ -82,6 +73,7 @@ class Migration extends Application
    */
   public function drop($tableName)
   {
+    print_r($tableName);
     $sql = "DROP TABLE IF EXISTS $tableName";
     $this->execute($sql);
   }
@@ -137,7 +129,7 @@ class Migration extends Application
    */
   public function modifyColumn($tableName, $columnName, $callback)
   {
-    $columnDefinition = $callback->getCurrentColumnDefinition(''); // Get column definition from the Blueprint
+    $columnDefinition = $callback->getCurrentColumnDefinition($columnName); // Get column definition from the Blueprint
     $sql = "ALTER TABLE $tableName MODIFY COLUMN $columnDefinition";
     $this->execute($sql);
   }
@@ -183,18 +175,11 @@ class Migration extends Application
     $this->pdo->exec($sql);
   }
 
-
-  // /**
-  //  * Drop a table
-  //  */
-  // public function drop($table)
-  // {
-  //   $sql = "DROP TABLE IF EXISTS $table";
-  //   $this->pdo->exec($sql);
-  // }
-
   /**
    * Build the columns
+   * 
+   * @param callable $callback
+   * @return string
    */
   private function buildColumns($callback)
   {
@@ -229,36 +214,58 @@ class Migration extends Application
    * Apply all migrations
    * @return void
    */
-  public function applyMigrations()
+  public function applyMigrations($argv)
   {
     $this->createMigrationsTable();
     $applyMigrations = $this->getApplyMigrationsTable();
 
-    $migrationDir = scandir(ROOT . DS . 'database' . DS . 'migrations');
-
-    $newMigrations = [];
-    $files = scandir($migrationDir);
-    $toApplyMigrations = array_diff($files, $applyMigrations);
-    foreach ($toApplyMigrations as $migration) {
-      if ($migration === '.' || $migration === '..') {
-        continue;
+    // check arguments for specific migration
+    if (isset($argv[2])) {
+      if (in_array($argv[2], $applyMigrations)) {
+        Log::warning("Migration {$argv[2]} already applied");
+        return;
       }
-      require_once $migrationDir . DS . $migration;
-      $className = pathinfo($migration, PATHINFO_FILENAME);
-      $instance = new $className();
-      // $this->log($migration);
-      $this->log('success', "Applying migration $className");
-      $instance->up();
-      echo "Applied migration $className" . PHP_EOL;
-      $this->log('success', "Applied migration $className");
-      $newMigrations[] = $migration;
+      $this->specificMigration($argv[2], $newMigrations);
+    } else {
+      $newMigrations = [];
+      $files = scandir(self::MIGRATIONS_DIR);
+      $toApplyMigrations = array_diff($files, $applyMigrations);
+
+      foreach ($toApplyMigrations as $migration) {
+        if ($migration === '.' || $migration === '..') {
+          continue;
+        }
+        $this->specificMigration($migration, $newMigrations);
+      }
     }
     if (!empty($newMigrations)) {
       $this->saveMigrations($newMigrations);
+      Log::success("Applied migration successfully");
     } else {
-      $this->log('warning', 'All migrations are applied');
+      Log::warning('All migrations are applied');
     }
   }
+
+  /**
+   * Define for specific migration
+   * 
+   * @param string $migration
+   * @param array $newMigrations
+   * @return void
+   */
+  private function specificMigration($migration, &$newMigrations)
+  {
+    require_once self::MIGRATIONS_DIR . DS . $migration;
+    $migrationFileName = pathinfo($migration, PATHINFO_FILENAME);
+    $migrationClassName = self::MIGRATIONS_PATH_NAMESPACE . $migrationFileName;
+    $instance = new $migrationClassName();
+    Log::warning("Applying migration $migrationClassName");
+    $instance->up();
+    Log::info("Applied migration $migrationClassName");
+    $newMigrations[] = $migration;
+  }
+
+
 
   /**
    * Save migrations to database
@@ -278,18 +285,59 @@ class Migration extends Application
   }
 
   /**
-   * Create Log massage
-   * @param string $message
+   * Delete migrations from database
+   * 
+   * @param array $migrations
    * @return void
    */
-  public function log($status, $message)
+  public function deleteMigrations(array $migrations)
   {
-    $msg = [
-      'success' => "\033[32m" . $message . "\033[0m\n",
-      'error' => "\033[31m" . $message . "\033[0m\n",
-      'warning' => "\033[33m" . $message . "\033[0m\n",
-      'info' => "\033[34m" . $message . "\033[0m\n",
-    ];
-    echo $msg[$status];
+    $str = implode(
+      ",",
+      array_map(function ($m) {
+        return "'$m'";
+      }, $migrations)
+    );
+    $statement = $this->pdo->prepare("DELETE FROM migrations WHERE migration IN ($str)");
+    $statement->execute();
+  }
+
+
+  /**
+   * Rollback all migrations
+   * @return void
+   */
+  public function rollbackMigrations()
+  {
+    $applyMigrations = $this->getApplyMigrationsTable();
+
+    $newMigrations = [];
+    $files = scandir(self::MIGRATIONS_DIR);
+
+    foreach ($files as $migration) {
+      if (
+        $migration === '.'
+        || $migration === '..'
+        || !in_array($migration, $applyMigrations)
+      ) {
+        continue;
+      }
+
+      $migrationFileName = self::MIGRATIONS_DIR . DS . $migration;
+      require_once $migrationFileName;
+      $migrationFileName = pathinfo($migration, PATHINFO_FILENAME);
+      $migrationClassName = self::MIGRATIONS_PATH_NAMESPACE . $migrationFileName;
+      $instance = new $migrationClassName();
+      Log::warning("Applying migration rollback $migrationClassName");
+      $instance->down();
+      Log::info("Applied migration rollback $migrationClassName");
+      $newMigrations[] = $migration;
+    }
+    if (!empty($newMigrations)) {
+      $this->deleteMigrations($newMigrations);
+      Log::success("Applied migration rollback successfully");
+    } else {
+      Log::warning('All migrations are applied');
+    }
   }
 }

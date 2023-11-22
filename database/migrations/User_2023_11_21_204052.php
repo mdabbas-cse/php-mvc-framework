@@ -20,6 +20,6 @@ class User_2023_11_21_204052 extends Migration
 
   public function down()
   {
-    // $this->drop('users');
+    $this->drop('users');
   }
 }

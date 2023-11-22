@@ -3,9 +3,39 @@
 namespace LaraCore\Framework\Console;
 
 use LaraCore\Framework\Console\Log;
+use LaraCore\Framework\Db\Migrations\Migration;
 
-class MigrationCommand
+class MigrationCommand extends Migration
 {
+  /**
+   * The singleton instance of this class.
+   *
+   * @var \LaraCore\Framework\Console\MigrationCommand
+   */
+  protected static $instance;
+
+  public function __construct()
+  {
+    parent::__construct();
+  }
+
+  /**
+   * Define self instance for singleton pattern
+   * 
+   */
+  public static function getInstance()
+  {
+    if (!self::$instance) {
+      self::$instance = new MigrationCommand();
+    }
+    return self::$instance;
+  }
+
+  /**
+   * Summary of makeMigration
+   * @param mixed $argv
+   * @return void
+   */
   public static function makeMigration($argv)
   {
     // Extract migration name from the command-line arguments
@@ -28,28 +58,22 @@ class MigrationCommand
     Log::success("Migration $migrationName created successfully.");
   }
 
-  public static function migrate()
+  /**
+   * Summary of applyMigrations
+   * @return void
+   */
+  public static function migrate($argv)
   {
-    $path = ROOT . DS . 'database' . DS . 'migrations';
-    $migrationFiles = scandir($path);
-
-    foreach ($migrationFiles as $migrationFile) {
-      if ($migrationFile === '.' || $migrationFile === '..') {
-        continue;
-      }
-
-      $migrationFilePath = $path . DS . $migrationFile;
-      require_once $migrationFilePath;
-
-      $migrationFileName = pathinfo($migrationFile, PATHINFO_FILENAME);
-      $migrationClassName = "LaraCore\\Database\\Migrations\\{$migrationFileName}";
-
-      $migration = new $migrationClassName();
-      $migration->up();
-    }
-    Log::success("Migration run successfully");
+    // get instance of MigrationCommand
+    $migrationCommand = self::getInstance();
+    $migrationCommand->run($argv);
   }
 
+  /**
+   * Summary of createMigrationFile
+   * @param mixed $migrationName
+   * @return void
+   */
   private static function createMigrationFile($migrationName)
   {
     $path = ROOT . DS . 'database' . DS . 'migrations';
@@ -83,7 +107,7 @@ class {$migrationFileName} extends Migration
 
   public function down()
   {
-    // \$this->drop('users');
+    \$this->drop('{$migrationTable}');
   }
 }
 EOL;
@@ -93,4 +117,23 @@ EOL;
     Log::info("Migration file created: $migrationFilePath");
   }
 
+  /**
+   * Summary of run
+   * @return void
+   */
+  public function run($argv)
+  {
+    $this->applyMigrations($argv);
+  }
+
+  /**
+   * Summary of Migration rollback
+   * @return void
+   */
+  public static function rollback()
+  {
+    // get instance of MigrationCommand
+    $migrationCommand = self::getInstance();
+    $migrationCommand->rollbackMigrations();
+  }
 }
