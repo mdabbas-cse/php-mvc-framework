@@ -2,7 +2,7 @@
 
 use LaraCore\Framework\Configuration;
 use LaraCore\Framework\Request;
-use LaraCore\Framework\Router;
+use LaraCore\Framework\Routers\Router;
 
 session_start();
 $config = Configuration::get('app');
