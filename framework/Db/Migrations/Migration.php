@@ -2,13 +2,12 @@
 
 namespace LaraCore\Framework\Db\Migrations;
 
-use LaraCore\Framework\Application;
 use LaraCore\Framework\Configuration;
 use LaraCore\Framework\Console\Log;
 use LaraCore\Framework\Db\Connection;
 use PDO;
 
-class Migration extends Application
+class Migration
 {
   /**
    * The PDO instance.
@@ -27,7 +26,6 @@ class Migration extends Application
 
   public function __construct()
   {
-    parent::__construct();
     $config = Configuration::get('database');
     $connection = Connection::make($config);
     $this->pdo = $connection;

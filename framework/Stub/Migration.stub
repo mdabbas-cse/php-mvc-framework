@@ -1,0 +1,23 @@
+<?php
+
+namespace LaraCore\Database\Migrations;
+
+use LaraCore\Framework\Db\Migrations\Blueprint;
+use LaraCore\Framework\Db\Migrations\Migration;
+
+class {{migtation_name}} extends Migration
+{
+ public function up()
+  {
+    $this->create('{{table_name}}', function (Blueprint $table) {
+      $table->id();
+     
+      $table->timestamps();
+    });
+  }
+
+  public function down()
+  {
+    $this->drop('{{table_name}}');
+  }
+}

@@ -3,21 +3,16 @@
 namespace LaraCore\Framework\Console;
 
 use LaraCore\Framework\Console\Log;
-use LaraCore\Framework\Db\Migrations\Migration;
 
-class MigrationCommand extends Migration
+class ControllerCommand
 {
   /**
    * The singleton instance of this class.
    *
-   * @var \LaraCore\Framework\Console\MigrationCommand
+   * @var \LaraCore\Framework\Console\ControllerCommand
    */
   protected static $instance;
 
-  public function __construct()
-  {
-    parent::__construct();
-  }
 
   /**
    * Define self instance for singleton pattern
@@ -26,7 +21,7 @@ class MigrationCommand extends Migration
   public static function getInstance()
   {
     if (!self::$instance) {
-      self::$instance = new MigrationCommand();
+      self::$instance = new ControllerCommand();
     }
     return self::$instance;
   }
@@ -36,26 +31,26 @@ class MigrationCommand extends Migration
    * @param mixed $argv
    * @return void
    */
-  public static function makeMigration($argv)
+  public static function makeController($argv)
   {
     // Extract migration name from the command-line arguments
-    $migrationName = $argv[2] ?? null;
+    $controllerName = $argv[2] ?? null;
 
-    if (!$migrationName) {
-      echo "Usage: php laracore make:migration <MigrationName>\n";
+    if (!$controllerName) {
+      echo "Usage: php laracore make:migration <controllerName>\n";
       exit(1);
     }
 
-    $migrationClassName = "LaraCore\\Database\\{$migrationName}";
+    $controllerClassName = "LaraCore\\App\\Http\\Controllers\\{$controllerName}";
 
-    // Check if the migration class already exists
-    if (class_exists($migrationClassName)) {
-      Log::error("Migration $migrationName already exists.");
+    // Check if the controller class already exists
+    if (class_exists($controllerClassName)) {
+      Log::error("Controller '$controllerName' already exists.");
       exit(1);
     }
-    self::createMigrationFile($migrationName);
+    self::createMigrationFile($controllerName);
 
-    Log::success("Migration $migrationName created successfully.");
+    Log::success("Migration $controllerName created successfully.");
   }
 
   /**

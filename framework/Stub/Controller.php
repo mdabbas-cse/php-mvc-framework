@@ -6,7 +6,7 @@ use LaraCore\Framework\Controller;
 use LaraCore\Framework\Request;
 use LaraCore\Framework\Response;
 
-class HomeController extends Controller
+class {{HomeController}} extends Controller
 {
   public function __construct()
   {
@@ -18,17 +18,11 @@ class HomeController extends Controller
       'title' => 'Home Page',
       'name' => 'LaraCore Framework'
     ];
-    // return view('home', $data);
     return $this->view('home', $data);
   }
 
   public function list(Request $request, Response $response)
   {
-    $data = [
-      'title' => 'List Page',
-      'name' => 'LaraCore Framework'
-    ];
-    // return view('home', $data);
-    return $this->view('home', $data);
+    // To do something
   }
 }
