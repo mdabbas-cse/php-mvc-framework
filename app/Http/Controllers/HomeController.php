@@ -2,7 +2,10 @@
 
 namespace LaraCore\App\Http\Controllers;
 
+
 use LaraCore\Framework\Controller;
+use LaraCore\Framework\Request;
+use LaraCore\Framework\Response;
 
 class HomeController extends Controller
 {
@@ -10,7 +13,7 @@ class HomeController extends Controller
   // {
   //   parent::__construct();
   // }
-  public function index()
+  public function index(Request $request, Response $response)
   {
     $data = [
       'title' => 'Home Page',
