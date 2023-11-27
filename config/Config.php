@@ -14,8 +14,8 @@ return [
   'app' => [
     'title' => 'My Todo',
     'defaultLayout' => 'default',
-    'root' => 'http://lora-core.af/',
-    'debug' => false,
+    'root' => 'http://php-mvc-framework.test/',
+    'debug' => true,
     'timezone' => 'Asia/Dhaka'
   ],
   'auth' => [
