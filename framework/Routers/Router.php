@@ -185,6 +185,8 @@ class Router
         throw new \Exception("Middleware $middleware not found");
       }
     }
+    $namespacePrefix = 'LaraCore\App';
+    $middleware = $namespacePrefix . str_replace($namespacePrefix, '', $middleware);
     $middleware = new $middleware();
     $middleware->handle($request, function ($request) {
       return $request;
