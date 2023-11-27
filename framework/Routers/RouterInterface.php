@@ -14,7 +14,6 @@ interface RouterInterface
    */
   public static function load($file): RouterInterface;
 
-
   /**
    * Summary of callRouter which is used to call the router
    * 

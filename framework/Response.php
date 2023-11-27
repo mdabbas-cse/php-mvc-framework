@@ -18,4 +18,16 @@ class Response
   {
     header('Location: ' . $url, true, $statusCode);
   }
+
+  /**
+   * @method for json response
+   * @param $data
+   * @param $statusCode
+   */
+  public function json($data, $statusCode = 200)
+  {
+    header('Content-Type: application/json');
+    self::setStatusCode($statusCode);
+    echo json_encode($data);
+  }
 }

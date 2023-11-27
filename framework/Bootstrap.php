@@ -1,19 +1,15 @@
 <?php
 
-use LaraCore\Framework\Configuration;
-use LaraCore\Framework\Request;
-use LaraCore\Framework\Routers\Router;
+use LaraCore\Framework\Application;
+
+$helpers = ROOT . DS . 'framework' . DS . 'Helpers.php';
+
+include_once($helpers);
 
 session_start();
-$config = Configuration::get('app');
-date_default_timezone_set($config['timezone']);
 
-include ROOT . DS . 'framework' . DS . "Helpers.php";
-$web = ROOT . DS . 'routes' . DS . 'web.php';
+$app = new Application();
 
-Router::load($web)->callRouter(
-  Request::uri(),
-  Request::method()
-);
+$app->run();
 
 session_destroy();

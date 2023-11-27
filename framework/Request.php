@@ -9,36 +9,47 @@ final class Request implements RequestInterface
 {
   private $routeParams = [];
 
+  private $queryParams = [];
+
+  public function __construct()
+  {
+
+
+  }
+
   /**
    * @method for url path
    * @return string
    */
-  public static function uri()
+  public function uri(): string
   {
     $request = $_SERVER['REQUEST_URI'];
     if ($request === '/') {
       return '/';
     }
-    return trim(
+
+    $request = trim(
       parse_url($request, PHP_URL_PATH),
       '/'
     );
+    return $request;
   }
 
   /**
    * @method for server request method
    * @return string
    */
-  public static function method()
+  public function method(): string
   {
     return $_SERVER['REQUEST_METHOD'];
   }
 
   /**
    * @method for get all request body
-   * @return array
+   * 
+   * @return object
    */
-  public function getBody()
+  public function all(): object
   {
     $body = [];
     if ($this->isGet()) {
@@ -53,7 +64,7 @@ final class Request implements RequestInterface
         $this->{$key} = Input::sanitize($value);
       }
     }
-    return $body;
+    return (object) $body;
   }
 
   /**
@@ -71,7 +82,7 @@ final class Request implements RequestInterface
    * @method for check request method is post
    * @return bool
    */
-  public function isPost()
+  public function isPost(): bool
   {
     return $this->method() === 'POST' ? true : false;
   }
@@ -80,7 +91,7 @@ final class Request implements RequestInterface
    * @method for check request method is get
    * @return bool
    */
-  public function isGet()
+  public function isGet(): bool
   {
     return $this->method() === 'GET' ? true : false;
   }
@@ -88,39 +99,47 @@ final class Request implements RequestInterface
   /**
    * @method for check request method is put
    */
-  public function isPut()
+  public function isPut(): bool
   {
     return $this->method() === 'PUT' ? true : false;
   }
 
   /**
    * @method for check request method is delete
+   * 
+   * @return bool
    */
-  public function isDelete()
+  public function isDelete(): bool
   {
     return $this->method() === 'DELETE' ? true : false;
   }
 
   /**
    * @method for check request method is patch
+   * 
+   * @return bool
    */
-  public function isPatch()
+  public function isPatch(): bool
   {
     return $this->method() === 'PATCH' ? true : false;
   }
 
   /**
    * @method for check request method is head
+   * 
+   * @return bool
    */
-  public function isHead()
+  public function isHead(): bool
   {
     return $this->method() === 'HEAD' ? true : false;
   }
 
   /**
    * @method for check request method is options
+   * 
+   * @return bool
    */
-  public function isOptions()
+  public function isOptions(): bool
   {
     return $this->method() === 'OPTIONS' ? true : false;
   }
@@ -170,4 +189,7 @@ final class Request implements RequestInterface
   {
     return $this->routeParams[$key];
   }
+
+
+
 }

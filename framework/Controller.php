@@ -2,18 +2,17 @@
 
 namespace LaraCore\Framework;
 
-use LaraCore\Framework\Application;
 use LaraCore\Framework\Validation;
 use LaraCore\Framework\Interfaces\ControllerInterface;
 use LaraCore\Framework\View;
 
-abstract class Controller extends Application implements ControllerInterface
+abstract class Controller implements ControllerInterface
 {
   protected $view;
   protected $validate;
   public function __construct()
   {
-    parent::__construct();
+    // parent::__construct();
     $this->view = new View();
   }
 
@@ -29,7 +28,7 @@ abstract class Controller extends Application implements ControllerInterface
 
   public function validation(Request $request, $data = [])
   {
-    $this->validate = new Validation($request->getBody(), $data);
+    $this->validate = new Validation($request->all(), $data);
     return $this->validate->checkValidation();
   }
   public function isValidate()
