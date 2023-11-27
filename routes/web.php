@@ -15,21 +15,16 @@ Router::get('/', function (Request $request, Response $response) {
 })->name('welcome');
 Router::get('home', 'welcome1');
 
-Router::get('home/id', [HomeController::class, 'index'])->middleware(AuthMiddleware::class)->name('home.index');
+Router::get('home/id', [HomeController::class, 'index'])->middleware('auth')->name('home.index');
 
-
-// $routes->get('/', [HomeController::class, 'index']); // for home page
-// $routes->get('/', [AuthController::class, 'loginForm'])->middleware(AuthMiddleware::class); // for home page
-// $routes->get('user', function () {
-//   echo 'user';
-// }); // callback function
-// $routes->get('contact', 'contact'); // for access view without any call back function
-// $routes->post('contact', [UserController::class, 'store']); // for post request
-
-// $routes->get('auth-register', [AuthController::class, 'registerForm'])->name('auth.registerFrom');
-// $routes->post('auth-register', [AuthController::class, 'register']);
-// $routes->get('auth-login', [AuthController::class, 'loginForm'])->name('auth.loginFrom');
-// $routes->post('auth-login', [AuthController::class, 'login'])->name('login');
+/**
+ * Middleware Groups
+ */
+/** this middlewareGroup is not working **/
+// Router::middlewareGroup('auth', function () {
+//   Router::get('template', [HomeController::class, 'list']);
+//   Router::get('template-list', [HomeController::class, 'list']);
+// });
 
 // $routes->get('users/{id}/{user}/show', [UserController::class, 'show']);
 // $routes->get('users/{id:\d+}/{profile}', 'app/Http/Controllers/edit-user.php');

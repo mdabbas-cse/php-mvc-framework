@@ -2,6 +2,8 @@
 
 namespace LaraCore\Framework\Routers;
 
+use Closure;
+use LaraCore\App\Http\Kernel;
 use LaraCore\Framework\Request;
 use LaraCore\Framework\Response;
 
@@ -65,33 +67,17 @@ class Router
    * 
    * @param string $middlewareGroup
    */
-  public function middlewareGroup($middlewareGroup)
+  public static function middlewareGroup($middleware, callable $callback)
   {
+    // dd([$middleware, $callback]);
+    $request = new Request();
+    $middlewareAliases = Kernel::$middlewareAliases;
+    $middleware = $middlewareAliases[$middleware];
+    call_user_func($callback);
+    self::runMiddleware($request, $middleware);
   }
 
-  /**
-   * Method to set middleware alias
-   * 
-   * @param string $middlewareAlias
-   */
-  public function middlewareAlias($middlewareAlias)
-  {
-  }
 
-  /**
-   * Method to set middleware group alias
-   * 
-   * @param string $middlewareGroupAlias
-   */
-  public function middlewareGroupAlias($middlewareGroupAlias)
-  {
-  }
-
-  /**
-   * Method to set route name
-   * 
-   * @param string $name
-   */
   public function name($name)
   {
     self::$routes[count(self::$routes) - 1]['name'] = $name;
@@ -173,4 +159,58 @@ class Router
     }
   }
 
+  /**
+   * Method to execute middleware
+   * 
+   * @param array $route
+   * @return void
+   */
+  private static function executeMiddleware($route)
+  {
+    if (!isset($route['middleware']) || empty($route['middleware'])) {
+      return;
+    }
+    $request = new Request();
+    $middlewareAliases = Kernel::$middlewareAliases;
+    foreach ($route['middleware'] as $middleware) {
+      $middleware = $middlewareAliases[$middleware];
+      self::runMiddleware($request, $middleware);
+    }
+  }
+
+  private static function runMiddleware($request, $middleware)
+  {
+    if (isset($middleware)) {
+      if (!class_exists($middleware)) {
+        throw new \Exception("Middleware $middleware not found");
+      }
+    }
+    $middleware = new $middleware();
+    $middleware->handle($request, function ($request) {
+      return $request;
+    });
+  }
+
+  /**
+   * Method to get route name
+   * 
+   * @param string $name
+   * @param array $params
+   * @return string
+   */
+  public static function route($name, $params = [])
+  {
+    $route = array_filter(self::$routes, function ($route) use ($name) {
+      return $route['name'] === $name;
+    });
+    if (count($route) > 0) {
+      $route = array_values($route)[0];
+      $uri = $route['uri'];
+      foreach ($params as $key => $value) {
+        $uri = str_replace('{' . $key . '}', $value, $uri);
+      }
+      return $uri;
+    }
+    return null;
+  }
 }

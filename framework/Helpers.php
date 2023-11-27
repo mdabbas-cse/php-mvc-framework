@@ -3,6 +3,7 @@
 use LaraCore\Framework\Configuration;
 use LaraCore\Framework\Helpers\Errors;
 use LaraCore\Framework\Helpers\Values;
+use LaraCore\Framework\Response;
 use LaraCore\Framework\View;
 
 if (!function_exists('dd')) {
@@ -123,9 +124,10 @@ if (!function_exists('redirect')) {
    * @function redirect
    * @param $path
    */
-  function redirect($path)
+  function redirect()
   {
-    header("Location: {$path}");
+    $response = new Response();
+    return $response;
   }
 }
 

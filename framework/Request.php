@@ -190,6 +190,15 @@ final class Request implements RequestInterface
     return $this->routeParams[$key];
   }
 
+  /**
+   * 
+   */
+  public function withAttribute($key, $value)
+  {
+    $this->{$key} = $value;
+    return $this;
+  }
+
 
 
 }

@@ -22,4 +22,14 @@ class HomeController extends Controller
     // return view('home', $data);
     return $this->view('home', $data);
   }
+
+  public function list(Request $request, Response $response)
+  {
+    $data = [
+      'title' => 'List Page',
+      'name' => 'LaraCore Framework'
+    ];
+    // return view('home', $data);
+    return $this->view('home', $data);
+  }
 }

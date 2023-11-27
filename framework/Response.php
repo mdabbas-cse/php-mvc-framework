@@ -2,6 +2,8 @@
 
 namespace LaraCore\Framework;
 
+use LaraCore\Framework\Routers\Router;
+
 class Response
 {
   public static function setStatusCode($code)
@@ -16,7 +18,10 @@ class Response
    */
   public function redirect($url = '/', $statusCode = null)
   {
+    $app_url = app_url();
+    $url = $app_url . $url;
     header('Location: ' . $url, true, $statusCode);
+    $this;
   }
 
   /**
@@ -29,5 +34,20 @@ class Response
     header('Content-Type: application/json');
     self::setStatusCode($statusCode);
     echo json_encode($data);
+  }
+
+  /**
+   * @method for route name
+   * 
+   * @param $name
+   * @param $params
+   * @return void
+   */
+  public function route($name, $params = [])
+  {
+    $url = Router::route($name, $params);
+    if ($url) {
+      return $this->redirect($url);
+    }
   }
 }
