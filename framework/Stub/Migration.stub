@@ -5,7 +5,7 @@ namespace LaraCore\Database\Migrations;
 use LaraCore\Framework\Db\Migrations\Blueprint;
 use LaraCore\Framework\Db\Migrations\Migration;
 
-class {{migtation_name}} extends Migration
+class {{migration_name}} extends Migration
 {
  public function up()
   {

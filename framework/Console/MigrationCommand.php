@@ -88,7 +88,7 @@ class MigrationCommand extends Migration
     $migrationStub = file_get_contents(ROOT . DS . 'framework' . DS . 'Stub' . DS . 'Migration.stub');
 
     $migrationContent = str_replace(
-      ['{{migtation_name}}', '{{table_name}}'],
+      ['{{migration_name}}', '{{table_name}}'],
       [$migrationFileName, $migrationTable],
       $migrationStub
     );
