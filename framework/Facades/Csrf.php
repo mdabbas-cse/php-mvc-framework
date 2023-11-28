@@ -1,6 +1,6 @@
 <?php
 
-namespace zFramework\Core;
+namespace LaraCore\Framework\Facades;
 
 use LaraCore\Framework\Facades\Str;
 use LaraCore\Framework\Request;
