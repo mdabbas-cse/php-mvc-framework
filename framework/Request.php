@@ -199,6 +199,4 @@ final class Request implements RequestInterface
     return $this;
   }
 
-
-
 }
