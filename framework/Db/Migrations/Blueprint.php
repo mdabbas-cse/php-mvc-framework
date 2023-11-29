@@ -53,9 +53,9 @@ final class Blueprint
    * @param string $columnName
    * @return $this
    */
-  public function id($columnName = 'id')
+  public function id($columnName = 'id', $length = 11)
   {
-    $this->columns[] = "`{$columnName}` INT PRIMARY KEY AUTO_INCREMENT NOT NULL";
+    $this->columns[] = "`{$columnName}` INT({$length}) PRIMARY KEY AUTO_INCREMENT NOT NULL";
     return $this;
   }
 
@@ -118,8 +118,7 @@ final class Blueprint
    */
   public function string($columnName, $length = 255)
   {
-    $this->setCurrentColumn($columnName);
-    $this->columns[] = $this->getCurrentColumnDefinition("VARCHAR($length)");
+    $this->columns[] = "{$columnName} VARCHAR($length) NOT NULL";
     return $this;
   }
 
@@ -253,7 +252,9 @@ final class Blueprint
    */
   public function nullable()
   {
-    $this->isCurrentColumnNullable = true;
+    $index = count($this->columns) - 1;
+    $replace_null = str_replace('NOT NULL', 'NULL', $this->columns[$index]);
+    $this->columns[$index] = $replace_null;
     return $this;
   }
 
@@ -265,7 +266,7 @@ final class Blueprint
    */
   public function default($value)
   {
-    $this->currentColumnDefault = $value;
+    $this->columns[count($this->columns) - 1] .= " DEFAULT " . $this->quoteDefault($value);
     return $this;
   }
 
