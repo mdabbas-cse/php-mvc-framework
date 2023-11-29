@@ -2,7 +2,6 @@
 
 namespace LaraCore\Framework\Routers;
 
-use Closure;
 use LaraCore\App\Http\Kernel;
 use LaraCore\Framework\Request;
 use LaraCore\Framework\Response;
@@ -69,7 +68,6 @@ class Router
    */
   public static function middlewareGroup($middleware, callable $callback)
   {
-    // dd([$middleware, $callback]);
     $request = new Request();
     $middlewareAliases = Kernel::$middlewareAliases;
     $middleware = $middlewareAliases[$middleware];
@@ -77,7 +75,11 @@ class Router
     self::runMiddleware($request, $middleware);
   }
 
-
+  /**
+   * Method to set route name
+   * 
+   * @param string $name
+   */
   public function name($name)
   {
     self::$routes[count(self::$routes) - 1]['name'] = $name;
@@ -90,20 +92,16 @@ class Router
    * @param Request $request
    * @return void
    */
-  public static function dispatch(Request $request)
+  public static function dispatch(Request $request, Response $response)
   {
-    $uri = $request->uri();
-    $method = $request->method();
-    $route = self::findRoute($uri, $method);
-
+    $route = self::findRoute($request);
     if (!$route) {
       return view('404');
     }
 
-    self::executeMiddleware($route);
+    self::executeMiddleware($request, $route);
 
-    return self::executeRoute($route);
-
+    return self::executeRoute($request, $response, $route);
   }
 
   /**
@@ -113,14 +111,46 @@ class Router
    * @param string $method
    * @return array | false
    */
-  private static function findRoute($uri, $method)
+  private static function findRoute($request)
   {
+    $uri = $request->uri();
+    $method = $request->method();
+    $routeParams = false;
+
     foreach (self::$routes as $route) {
-      if ($route['uri'] === $uri && $route['method'] === $method) {
+      $routeName = [];
+      $routeUri = $route['uri'];
+      $routeMethod = $route['method'];
+      if ($routeUri === $uri && $routeMethod === $method) {
+        return $route;
+      }
+      if (preg_match_all('/\{(\w+)(:[^}]+)?}/', $routeUri, $matches)) {
+        $routeName = $matches[1];
+      }
+
+      $routeUri = trim($routeUri, '/');
+
+      // replace all route name with regex
+      $routeRegex = "@^" . preg_replace_callback(
+        '/\{\w+(:([^}]+))?}/',
+        function ($m) {
+          return isset($m[2]) ? "({$m[2]})" : '(\w+)';
+        },
+        $routeUri
+      ) . "$@"; // end of regex
+
+      if (preg_match_all($routeRegex, $uri, $matchesValue)) {
+        $values = [];
+
+        for ($i = 1; $i < count($matchesValue); $i++) {
+          $values[] = $matchesValue[$i][0];
+        }
+
+        $routeParams = array_combine($routeName, $values);
+        $request->setRouteParams($routeParams);
         return $route;
       }
     }
-
     return false;
   }
 
@@ -130,11 +160,9 @@ class Router
    * @param array $route
    * @return mixed
    */
-  private static function executeRoute($route)
+  private static function executeRoute($request, $response, $route)
   {
     $callback = $route['action'];
-    $request = new Request();
-    $response = new Response();
 
     if (is_array($callback)) {
       $namespacePrefix = 'LaraCore\App';
@@ -165,12 +193,12 @@ class Router
    * @param array $route
    * @return void
    */
-  private static function executeMiddleware($route)
+  private static function executeMiddleware($request, $route)
   {
     if (!isset($route['middleware']) || empty($route['middleware'])) {
       return;
     }
-    $request = new Request();
+
     $middlewareAliases = Kernel::$middlewareAliases;
     foreach ($route['middleware'] as $middleware) {
       $middleware = $middlewareAliases[$middleware];
@@ -214,5 +242,16 @@ class Router
       return $uri;
     }
     return null;
+  }
+
+  /**
+   * Method to route group
+   * 
+   * @param string $prefix
+   * @param callable $callback
+   * @return static
+   */
+  public static function group($prefix, callable $callback)
+  {
   }
 }

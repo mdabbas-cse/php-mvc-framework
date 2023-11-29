@@ -13,9 +13,10 @@ use LaraCore\Framework\Routers\Router;
 Router::get('/', function (Request $request, Response $response) {
   return view('welcome');
 })->name('welcome');
-Router::get('home', 'welcome1');
+Router::get('/home', 'welcome1');
 
-Router::get('home/id', [HomeController::class, 'index'])->middleware('auth')->name('home.index');
+// Router::get('/home/{id}', [HomeController::class, 'index'])->middleware('auth')->name('home.index');
+Router::get('/home/{id}', [HomeController::class, 'index'])->name('home.index');
 
 /**
  * Middleware Groups
