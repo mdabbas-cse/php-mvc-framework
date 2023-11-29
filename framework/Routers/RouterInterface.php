@@ -99,7 +99,7 @@ interface RouterInterface
   /**
    * Summary of middleware which is used to add middleware to the routes
    * 
-   * @param string|middleware instance $middleware
+   * @param string | middleware instance $middleware
    * @return @RouterInterface
    */
   public function middleware($middleware): RouterInterface;
