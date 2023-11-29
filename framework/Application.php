@@ -158,7 +158,7 @@ final class Application
    */
   protected function dispatch()
   {
-    Router::dispatch($this->request);
+    Router::dispatch($this->request, $this->response);
   }
 
   /**
