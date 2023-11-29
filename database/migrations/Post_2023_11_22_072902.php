@@ -11,7 +11,7 @@ class Post_2023_11_22_072902 extends Migration
   {
     $this->create('posts', function (Blueprint $table) {
       $table->id();
-      $table->string('title');
+      $table->string('title')->nullable()->default('this is a title');
       $table->string('slug');
       $table->text('content');
       $table->integer('user_id');
