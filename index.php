@@ -16,3 +16,4 @@ try {
 $bootstrap = ROOT . DS . 'framework' . DS . 'Bootstrap.php';
 
 include_once($bootstrap);
+// https: //github.com/spiral/framework/issues
