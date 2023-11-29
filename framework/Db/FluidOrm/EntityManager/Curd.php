@@ -1,8 +1,8 @@
 <?php
 
-namespace Framework\Db\FluidOrm\EntityManager;
+namespace LaraCore\Framework\Db\FluidOrm\EntityManager;
 
-use Framework\Db\FluidOrm\EntityManager\CrudInterface;
+use LaraCore\Framework\Db\FluidOrm\EntityManager\CrudInterface;
 use LaraCore\Framework\Db\FluidOrm\DataMapper\DataMapper;
 use LaraCore\Framework\Db\FluidOrm\QueryBuilder\QueryBuilder;
 use Throwable;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Framework\Db\FluidOrm\EntityManager\Exceptions;
+namespace LaraCore\Framework\Db\FluidOrm\EntityManager\Exceptions;
 
 
-use Framework\Db\FluidOrm\EntityManager\Exceptions\EntityManagerException;
+use LaraCore\Framework\Db\FluidOrm\EntityManager\Exceptions\EntityManagerException;
 use Throwable;
 
 class CrudException extends EntityManagerException

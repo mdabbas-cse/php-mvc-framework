@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Db\FluidOrm\EntityManager;
+namespace LaraCore\Framework\Db\FluidOrm\EntityManager;
 
 interface EntityManagerInterface
 {

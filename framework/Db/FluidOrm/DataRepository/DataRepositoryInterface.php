@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Db\FluidOrm\DataRepository;
+namespace LaraCore\Framework\Db\FluidOrm\DataRepository;
 
 interface DataRepositoryInterface
 {
@@ -46,7 +46,7 @@ interface DataRepositoryInterface
    * @param array $selectors
    * @return Object
    */
-  public function findObjectBy(array $conditions = [], array $selectors = []): Object;
+  public function findObjectBy(array $conditions = [], array $selectors = []): object;
 
   /**
    * Returns the search results based on the user search conditions and parameters
@@ -86,7 +86,7 @@ interface DataRepositoryInterface
    * @param Object $request
    * @return array
    */
-  public function findWithSearchAndPaging(Object $request, array $args = []): array;
+  public function findWithSearchAndPaging(object $request, array $args = []): array;
 
   /**
    * Find and item by its ID and return the object row else return 404 with the or404 chaining method

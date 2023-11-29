@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Db\FluidOrm\DataRepository\Exceptions;
+namespace LaraCore\Framework\Db\FluidOrm\DataRepository\Exceptions;
 
 use Exception;
 use Throwable;

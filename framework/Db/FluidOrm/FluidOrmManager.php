@@ -1,9 +1,9 @@
 <?php
 
-namespace Framework\Db\FluidOrm;
+namespace LaraCore\Framework\Db\FluidOrm;
 
-use Framework\Db\FluidOrm\EntityManager\Crud;
-use Framework\Db\FluidOrm\EntityManager\EntityManagerFactory;
+use LaraCore\Framework\Db\FluidOrm\EntityManager\Crud;
+use LaraCore\Framework\Db\FluidOrm\EntityManager\EntityManagerFactory;
 use LaraCore\Framework\Db\DatabaseConnection;
 use LaraCore\Framework\Db\FluidOrm\DataMapper\DataMapperEnvironmentConfiguration;
 use LaraCore\Framework\Db\FluidOrm\DataMapper\DataMapperFactory;

@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Framework\Db\FluidOrm\EntityManager;
+namespace LaraCore\Framework\Db\FluidOrm\EntityManager;
 
-use Framework\Db\FluidOrm\EntityManager\Exceptions\CrudException;
-use LaraCore\Framework\Db\FluidOrm\Interfaces\DataMapperInterface;
+use LaraCore\Framework\Db\FluidOrm\EntityManager\Exceptions\CrudException;
+use LaraCore\Framework\Db\FluidOrm\DataMapper\DataMapperInterface;
 use LaraCore\Framework\Db\FluidOrm\QueryBuilder\QueryBuilderInterface;
 
 class EntityManagerFactory

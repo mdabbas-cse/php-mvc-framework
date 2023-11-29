@@ -1,8 +1,8 @@
 <?php
 
-namespace Framework\Db\FluidOrm\DataRepository;
+namespace LaraCore\Framework\Db\FluidOrm\DataRepository;
 
-use Framework\Db\FluidOrm\DataRepository\Exceptions\DataRepositoryException;
+use LaraCore\Framework\Db\FluidOrm\DataRepository\Exceptions\DataRepositoryException;
 
 class DataRepositoryFactory
 {
