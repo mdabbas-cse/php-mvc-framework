@@ -52,6 +52,13 @@ final class Request implements RequestInterface
   public function all(): object
   {
     $body = [];
+    // for route params
+    if ($this->routeParams) {
+      foreach ($this->getRouteParams() as $key => $value) {
+        $body[$key] = Input::sanitize($value);
+        $this->{$key} = Input::sanitize($value);
+      }
+    }
     if ($this->isGet()) {
       foreach ($_GET as $key => $value) {
         $body[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
