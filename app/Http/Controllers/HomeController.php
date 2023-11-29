@@ -14,6 +14,7 @@ class HomeController extends Controller
   }
   public function index(Request $request, Response $response)
   {
+    dd($request->all());
     $data = [
       'title' => 'Home Page',
       'name' => 'LaraCore Framework'
