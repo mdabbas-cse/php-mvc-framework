@@ -65,6 +65,9 @@ php laracore migrate
 ```bash
 php -S localhost:8000
 ```
+or 
+Your application root url
+
 8. Open the application in your browser `http://localhost:8000`
 9. Create Route in `routes/web.php` file
 ```bash
