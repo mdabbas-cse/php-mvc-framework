@@ -122,7 +122,7 @@ app/Models/User.php
 
 15.  Create view in `views` directory
 ```bash
-views/welcome.php
+resources/Views/welcome.php
 ```
 ```bash
 <?php $this->setSiteTile('Home'); ?> <!-- set site title -->
@@ -145,18 +145,18 @@ views/welcome.php
 
 <?php $this->end(); ?> <!-- end body section -->
 ```
-16.  Create layout in `views/layouts` directory
+16.  Create layout in `resources/Views/layouts` directory
 ```bash
-views/layouts/default.php
+resources/Views/layouts/default.php
 ```
-17.  Create partials in `views/partials` directory
+17.  Create partials in `resources/Views/partials` directory
 ```bash
-views/partials/header.php
-views/partials/footer.php
+resources/Views/partials/header.php
+resources/Views/partials/footer.php
 ```
-18.  Create component in `views/components` directory
+18.  Create component in `resources/Views/components` directory
 ```bash
-views/components/form.php
+resources/Views/components/form.php
 ```
 19.  Create controller in `app/Http/Controllers` directory or
 ```bash
