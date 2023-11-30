@@ -94,9 +94,9 @@ class User_2023_11_21_204052 extends Migration
   {
     $this->create('users', function (Blueprint $table) {
       $table->id();
-      $table->string('name');
-      $table->string('email');
-      $table->string('password');
+      $table->string('name', 50)->nullable()->default('laracore')->comment('user name');
+      $table->string('email', 25)->unique()->comment('user email');
+      $table->string('password')->comment('user password');
       $table->timestamps();
     });
   }
@@ -119,8 +119,12 @@ php laracore make:model User
 ```bash
 app/Models/User.php
 ```
+15.  Create layout in `resources/Views/layouts` directory
+```bash
+resources/Views/layouts/default.php
+```
 
-15.  Create view in `views` directory
+16.  Create view in `resources/Views` directory
 ```bash
 resources/Views/welcome.php
 ```
@@ -138,31 +142,18 @@ resources/Views/welcome.php
 <h1>Welcome to LaraCore Framework <?= dirname(__FILE__); ?></h1>
 
 <script>
-  $(function() {
+  (function() {
     alert('hello');
-  })
+  }())
 </script>
 
 <?php $this->end(); ?> <!-- end body section -->
 ```
-16.  Create layout in `resources/Views/layouts` directory
-```bash
-resources/Views/layouts/default.php
-```
-17.  Create partials in `resources/Views/partials` directory
-```bash
-resources/Views/partials/header.php
-resources/Views/partials/footer.php
-```
-18.  Create component in `resources/Views/components` directory
-```bash
-resources/Views/components/form.php
-```
-19.  Create controller in `app/Http/Controllers` directory or
+17.   Create controller in `app/Http/Controllers` directory or
 ```bash
 php laracore make:controller UserController
 ```
-20.  Create model in `app/Models` directory or
+18.   Create model in `app/Models` directory or
 ```bash
 php laracore make:model User
 ```
