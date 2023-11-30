@@ -18,6 +18,10 @@ class Command
         $command = $argv[1];
 
         switch ($command) {
+            case 'serve':
+                Server::run($argv);
+                break;
+
             case 'make:migration':
                 MigrationCommand::makeMigration($argv);
                 break;
