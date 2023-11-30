@@ -66,7 +66,7 @@ class Csrf
    */
   public static function check($alwaysTrue = false, Request $request): bool
   {
-    if (($request->isGet() && $request->input('_token') != self::get()) && $alwaysTrue != true)
+    if (($request->isGet() && $request->input('_token') !== self::get()) && $alwaysTrue !== true)
       return false;
     return true;
   }
