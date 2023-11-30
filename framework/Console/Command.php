@@ -3,6 +3,7 @@
 namespace LaraCore\Framework\Console;
 
 use LaraCore\Framework\Console\MigrationCommand;
+use LaraCore\Framework\Console\ControllerCommand;
 use LaraCore\Framework\Console\Log;
 
 
@@ -35,7 +36,7 @@ class Command
                 break;
 
             case 'make:controller':
-                // self::makeController($argv);
+                ControllerCommand::make($argv);
                 break;
 
             case 'make:model':

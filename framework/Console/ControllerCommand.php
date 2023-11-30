@@ -7,61 +7,75 @@ use LaraCore\Framework\Console\Log;
 class ControllerCommand
 {
   /**
-   * The singleton instance of this class.
-   *
-   * @var \LaraCore\Framework\Console\ControllerCommand
-   */
-  protected static $instance;
-
-
-  /**
-   * Define self instance for singleton pattern
-   * 
-   */
-  public static function getInstance()
-  {
-    if (!self::$instance) {
-      self::$instance = new ControllerCommand();
-    }
-    return self::$instance;
-  }
-
-  /**
-   * Summary of makeMigration
+   * Summary of make controller
    * @param mixed $argv
    * @return void
    */
-  public static function makeController($argv)
+  public static function make($argv)
   {
     // Extract migration name from the command-line arguments
-    $controllerName = $argv[2] ?? null;
+    $controllerNameArgv = $argv[2] ?? null;
 
-    if (!$controllerName) {
+    if (!$controllerNameArgv) {
       echo "Usage: php laracore make:migration <controllerName>\n";
       exit(1);
     }
 
-    $controllerClassName = "LaraCore\\App\\Http\\Controllers\\{$controllerName}";
+    // split the controller name by '/'
+    $controllerNameArray = explode('/', $controllerNameArgv);
+    $controllerName = end($controllerNameArray);
+    $pattern = '/Controller$/';
+    if (!preg_match($pattern, $controllerName)) {
+      print_r('not match');
+      $controllerName .= 'Controller';
+    }
+
+    // create file path
+    $filePath = null;
+    $replaceNamespace = null;
+    if (count($controllerNameArray) > 1) {
+      $newArray = array_slice($controllerNameArray, 0, -1);
+      $replaceNamespace = '\\' . str_replace('/', '\\', $newArray);
+      print_r(['$replaceNamespace' => $replaceNamespace]);
+      $filePath = DS . implode(DS, $controllerNameArray);
+    }
+
+    $controllerNameSpace = "LaraCore\\App\\Http\\Controllers{$replaceNamespace}";
 
     // Check if the controller class already exists
-    if (class_exists($controllerClassName)) {
+    if (class_exists($controllerNameSpace)) {
       Log::error("Controller '$controllerName' already exists.");
       exit(1);
     }
-    self::createMigrationFile($controllerName);
+    $path = ROOT . DS . 'app' . DS . 'Http' . DS . 'Controllers' . $filePath;
 
-    Log::success("Migration $controllerName created successfully.");
-  }
+    // Check if the Migrations directory exists, and create it if not
+    if (!is_dir($path)) {
+      mkdir($path);
+    }
 
-  /**
-   * Summary of applyMigrations
-   * @return void
-   */
-  public static function migrate($argv)
-  {
-    // get instance of MigrationCommand
-    $migrationCommand = self::getInstance();
-    $migrationCommand->run($argv);
+    $path = $path . DS . $controllerName . '.php';
+
+    $controllerStub = file_get_contents(ROOT . DS . 'framework' . DS . 'Stub' . DS . 'Controller.stub');
+    print_r([
+      $path,
+      $replaceNamespace,
+    ]);
+    exit;
+    Log::info("Controller file created: $path");
+
+    $controllerContent = str_replace(
+      ['{{Namespace}}', '{{ControllerName}}'],
+      [$controllerNameSpace, $controllerName],
+      $controllerStub
+    );
+
+    $createFile = file_put_contents($path, $controllerContent);
+    if (!$createFile) {
+      Log::error("Controller $controllerName not created.");
+      exit(1);
+    }
+    Log::success("Controller $controllerName created successfully.");
   }
 
   /**
@@ -71,45 +85,7 @@ class ControllerCommand
    */
   private static function createMigrationFile($migrationName)
   {
-    $path = ROOT . DS . 'database' . DS . 'migrations';
-    $migrationFileName = $migrationName . '_' . date('Y_m_d_His');
-    $migrationFilePath = $path . DS . $migrationFileName . '.php';
-    $migrationTable = strtolower($migrationName) . 's';
 
-    // Check if the Migrations directory exists, and create it if not
-    if (!is_dir($path)) {
-      mkdir($path);
-    }
-    $migrationStub = file_get_contents(ROOT . DS . 'framework' . DS . 'Stub' . DS . 'Migration.stub');
-
-    $migrationContent = str_replace(
-      ['{{migtation_name}}', '{{table_name}}'],
-      [$migrationFileName, $migrationTable],
-      $migrationStub
-    );
-
-    file_put_contents($migrationFilePath, $migrationContent);
-
-    Log::info("Migration file created: $migrationFilePath");
   }
 
-  /**
-   * Summary of run
-   * @return void
-   */
-  public function run($argv)
-  {
-    $this->applyMigrations($argv);
-  }
-
-  /**
-   * Summary of Migration rollback
-   * @return void
-   */
-  public static function rollback()
-  {
-    // get instance of MigrationCommand
-    $migrationCommand = self::getInstance();
-    $migrationCommand->rollbackMigrations();
-  }
 }

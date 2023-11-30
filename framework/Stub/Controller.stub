@@ -1,12 +1,12 @@
 <?php
 
-namespace LaraCore\App\Http\Controllers;
+namespace {{Namespace}};
 
 use LaraCore\Framework\Controller;
 use LaraCore\Framework\Request;
 use LaraCore\Framework\Response;
 
-class {{HomeController}} extends Controller
+class {{ControllerName}} extends Controller
 {
   public function __construct()
   {
@@ -14,10 +14,12 @@ class {{HomeController}} extends Controller
   }
   public function index(Request $request, Response $response)
   {
+    // Example data
     $data = [
       'title' => 'Home Page',
       'name' => 'LaraCore Framework'
     ];
+    // Render view
     return $this->view('home', $data);
   }
 
