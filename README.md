@@ -75,8 +75,10 @@ Your application root url
 Route::get('/', function () {
   return view('welcome');
 });
+
 // route for render only view any file without call back function
 Route::get('/about', 'about');
+
 // route with parameter controller and method
 Route::get('/user/{id}', [UserController::class , 'show'])->middleware('auth')->name('user.show');
 ```
