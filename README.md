@@ -27,7 +27,7 @@ This is a web application framework built with PHP programming language. I belie
 ### Installation
 1. Clone the repository
 ```bash 
-git clone 
+git clone https://github.com/mdabbas-cse/php-mvc-framework.git
 ```
 2. Install dependencies
 ```bash
