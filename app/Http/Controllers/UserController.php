@@ -15,7 +15,7 @@ class UserController extends Controller
   public function store(Request $request)
   {
     if ($request->isPost()) {
-      $data = $request->getBody();
+      $data = $request->all();
       dd($data);
     }
   }
@@ -40,5 +40,10 @@ class UserController extends Controller
   public function posts($id)
   {
     return view('user-posts', ['id' => $id]);
+  }
+
+  public function contact(Request $request)
+  {
+    dd($request->all());
   }
 }
