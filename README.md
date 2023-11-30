@@ -61,11 +61,111 @@ composer install
 ```bash
 php laracore migrate
 ```
-1. Run the application
+7. Run the application
 ```bash
 php -S localhost:8000
 ```
-1. Open the application in your browser `http://localhost:8000`
+8. Open the application in your browser `http://localhost:8000`
+9. Create Route in `routes/web.php` file
+```bash
+Route::get('/', function () {
+  return view('welcome');
+});
+```
+10. Create User Migration or any migration in `database/migrations` directory or
+```bash
+php laracore make:migration create_users_table
+```
+11. Edit the migration file in `database/migrations` directory
+```bash
+database/migrations/2021_01_01_000000_create_users_table.php
+```
+```bash
+<?php
+
+namespace LaraCore\Database\Migrations;
+
+use LaraCore\Framework\Db\Migrations\Blueprint;
+use LaraCore\Framework\Db\Migrations\Migration;
+
+class User_2023_11_21_204052 extends Migration
+{
+  public function up()
+  {
+    $this->create('users', function (Blueprint $table) {
+      $table->id();
+      $table->string('name');
+      $table->string('email');
+      $table->string('password');
+      $table->timestamps();
+    });
+  }
+
+  public function down()
+  {
+    $this->drop('users');
+  }
+}
+```
+12. Run the migration
+```bash
+php laracore migrate
+```
+13. Create User Model or any model in `app/Models` directory or
+```bash
+php laracore make:model User
+```
+14. Edit the model file in `app/Models` directory
+```bash
+app/Models/User.php
+```
+
+15.  Create view in `views` directory
+```bash
+views/welcome.php
+```
+```bash
+<?php $this->setSiteTile('Home'); ?> <!-- set site title -->
+
+<?php $this->start('head'); ?> <!-- start head section -->
+
+<!-- include any style sheet and script sheet -->
+
+<?php $this->end(); ?> <!-- end head section -->
+
+<?php $this->start('body'); ?> <!-- start body section -->
+
+<h1>Welcome to LaraCore Framework <?= dirname(__FILE__); ?></h1>
+
+<script>
+  $(function() {
+    alert('hello');
+  })
+</script>
+
+<?php $this->end(); ?> <!-- end body section -->
+```
+16.  Create layout in `views/layouts` directory
+```bash
+views/layouts/default.php
+```
+17.  Create partials in `views/partials` directory
+```bash
+views/partials/header.php
+views/partials/footer.php
+```
+18.  Create component in `views/components` directory
+```bash
+views/components/form.php
+```
+19.  Create controller in `app/Http/Controllers` directory or
+```bash
+php laracore make:controller UserController
+```
+20.  Create model in `app/Models` directory or
+```bash
+php laracore make:model User
+```
  
 ## License
 This framework is open-sourced software licensed under the MIT license.
