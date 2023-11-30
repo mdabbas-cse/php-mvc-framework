@@ -71,9 +71,14 @@ Your application root url
 8. Open the application in your browser `http://localhost:8000`
 9. Create Route in `routes/web.php` file
 ```bash
+// route for home page 
 Route::get('/', function () {
   return view('welcome');
 });
+// route for render only view any file without call back function
+Route::get('/about', 'about');
+// route with parameter controller and method
+Route::get('/user/{id}', [UserController::class , 'show'])->middleware('auth')->name('user.show');
 ```
 10. Create User Migration or any migration in `database/migrations` directory or
 ```bash
