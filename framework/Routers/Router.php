@@ -33,21 +33,37 @@ class Router
    */
   protected $middlewareGroupsAliases = [];
 
+  /**
+   * @var string
+   */
+  protected static $useApiPrefix = '';
+
   public static function __callStatic($method, $args)
   {
     if (!in_array($method, ['get', 'post', 'delete', 'put'])) {
       throw new \Exception("Method $method not supported");
     }
-    // dd($args);
+
     self::$routes[] = [
       'method' => strtoupper($method),
-      'uri' => $args[0],
+      'uri' => self::formatUri($args[0]),
       'action' => $args[1],
       'middleware' => [],
       'name' => null,
+      'isApi' => !empty(self::$useApiPrefix) ? true : false,
     ];
 
     return new self();
+  }
+  /**
+   * Method to format uri
+   * 
+   * @param string $uri
+   * @return string
+   */
+  private static function formatUri($uri)
+  {
+    return self::$useApiPrefix ? '/api' . $uri : $uri;
   }
 
   /**
@@ -116,7 +132,7 @@ class Router
     $uri = $request->uri();
     $method = $request->method();
     $routeParams = false;
-
+    // dd(self::$routes);
     foreach (self::$routes as $route) {
       $routeName = [];
       $routeUri = $route['uri'];
@@ -163,6 +179,11 @@ class Router
   private static function executeRoute($request, $response, $route)
   {
     $callback = $route['action'];
+
+    // set api header
+    if ($route['isApi']) {
+      self::setApiHeader();
+    }
 
     if (is_array($callback)) {
       $namespacePrefix = 'LaraCore\App';
@@ -242,6 +263,40 @@ class Router
       return $uri;
     }
     return null;
+  }
+
+  /**
+   * Method to set api prefix
+   * 
+   * @param string $prefix
+   * @return void
+   */
+  public static function setApiPrefix($prefix)
+  {
+    self::$useApiPrefix = true;
+  }
+
+  /**
+   * Method to set api header, cors, content type etc
+   * 
+   * @return void
+   */
+  public static function setApiHeader()
+  {
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+    header('Content-Type: application/json');
+  }
+
+  /**
+   * set api header, cors, content type with auth token
+   * 
+   * @return void
+   */
+  public static function setApiHeaderWithAuth()
+  {
+
   }
 
   /**

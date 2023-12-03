@@ -107,6 +107,7 @@ final class Application
     $this->registerErrorHandler();
     $this->registerShutdownHandler();
     $this->registerRoutes();
+    $this->registerApiRoutes();
     $this->registerMiddlewares();
     $this->dispatch();
   }
@@ -139,6 +140,17 @@ final class Application
   protected function registerRoutes()
   {
     require_once(ROOT . DS . 'routes' . DS . 'web.php');
+  }
+
+  /**
+   * Register API routes
+   * 
+   * @return void
+   */
+  protected function registerApiRoutes()
+  {
+    Router::setApiPrefix('api');
+    require_once(ROOT . DS . 'routes' . DS . 'api.php');
   }
 
   /**

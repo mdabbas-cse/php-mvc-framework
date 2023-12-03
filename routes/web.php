@@ -18,6 +18,8 @@ Router::get('/home', 'welcome1');
 // Router::get('/home/{id}', [HomeController::class, 'index'])->middleware('auth')->name('home.index');
 Router::get('/home/{id}', [HomeController::class, 'index'])->name('home.index');
 
+Router::get('/contact', 'login')->name('contact');
+Router::post('/contact-store', [UserController::class, 'contact'])->name('store.user');
 /**
  * Middleware Groups
  */
