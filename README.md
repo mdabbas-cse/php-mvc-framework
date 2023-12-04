@@ -10,6 +10,7 @@ This is a web application framework built with PHP programming language. I belie
 - [x] Multi layouts system.
 - [x] HTTP helper.
 - [x] CSRF token.
+- [x] Develop API with Bearer token.
 - [x] Component for form and input field.
 - [x] Form validations.
 - [ ] Database migrations.
