@@ -31,9 +31,10 @@ class Response
    */
   public function json($data, $statusCode = 200)
   {
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     self::setStatusCode($statusCode);
-    echo json_encode($data);
+    echo json_encode($data, JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT);
+    exit;
   }
 
   /**
@@ -49,5 +50,17 @@ class Response
     if ($url) {
       return $this->redirect($url);
     }
+  }
+
+  /**
+   * @json response
+   * 
+   * @param $data
+   * @param $statusCode
+   * @return void
+   */
+  public function jsonResponse($data, $statusCode = 200)
+  {
+    $this->json($data, $statusCode);
   }
 }
