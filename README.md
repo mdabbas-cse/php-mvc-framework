@@ -14,10 +14,13 @@ This is a web application framework built with PHP programming language. I belie
 - [x] Component for form and input field.
 - [x] Form validations.
 - [ ] Database migrations.
+- [ ] Database factories.
+- [ ] Database seeders.
 - [ ] Object relational mapping(ORM).
 - [ ] User management system.
 - [ ] Multi authentication system.
 - [ ] E-mail and SMS system.
+- [ ] Blade template (like laravel).
 
 ### Requirements
 - PHP >= 7.2
