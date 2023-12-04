@@ -34,6 +34,23 @@ return [
   'csrf' => [
     'key' => 'csrf_token'
   ],
+  /**
+   * Set API token
+   * condition: true | false
+   * key: base64_encode('laracore-api-token')
+   * if condition is true then you need to pass api token in header
+   * Authorization: Bearer base64_encode('laracore-api-token')
+   * and set check to true
+   * it's will set api token for all api routes
+   * if you want to set api token for specific route then set check to false
+   * and pass api token in header
+   * and create middleware for that route
+   * and set middleware in route
+   */
+  'api-token' => [
+    'check' => false,
+    'key' => 'bGFyYWNvcmUtYXBpLXRva2Vu'
+  ],
   'remember' => [
     'cookie_name' => 'hash',
     'cookie_expiry' => 604800

@@ -41,4 +41,18 @@ class UserApiController extends Controller
     ];
     return $response->json($data);
   }
+
+  public function user($request, $response)
+  {
+    $req = $request->all();
+    $data = [
+      'success' => true,
+      'user' => [
+        'id' => $req->id,
+        'name' => 'John Doe',
+        'email' => ''
+      ]
+    ];
+    return $response->json($data);
+  }
 }

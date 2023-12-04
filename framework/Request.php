@@ -15,6 +15,7 @@ final class Request implements RequestInterface
   {
 
 
+
   }
 
   /**
@@ -195,6 +196,34 @@ final class Request implements RequestInterface
   public function getParam($key)
   {
     return $this->routeParams[$key];
+  }
+
+  /**
+   * @method for check http authorization
+   * 
+   * @return bool
+   */
+  public function isHttpAuthorizedOrFail()
+  {
+    return isset($_SERVER['HTTP_AUTHORIZATION']) && !empty($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : false;
+  }
+
+  /**
+   * @medium for set json header
+   * 
+   * @return void
+   */
+  public function setJsonHeader()
+  {
+    header('Content-Type: application/json');
+  }
+
+  /**
+   * @method  for setUnauthorized 
+   */
+  public function setUnauthorizedHeader()
+  {
+    header('HTTP/1.0 401 Unauthorized');
   }
 
   /**

@@ -3,6 +3,7 @@
 namespace LaraCore\Framework\Routers;
 
 use LaraCore\App\Http\Kernel;
+use LaraCore\Framework\Configuration;
 use LaraCore\Framework\Request;
 use LaraCore\Framework\Response;
 
@@ -16,7 +17,7 @@ class Router
   /**
    * @var array
    */
-  protected $middleware = [];
+  protected $middlewares = [];
 
   /**
    * @var array
@@ -80,15 +81,29 @@ class Router
   /**
    * Method to set middleware group
    * 
-   * @param string $middlewareGroup
+   * @param string $middleware
    */
   public static function middlewareGroup($middleware, callable $callback)
   {
     $request = new Request();
     $middlewareAliases = Kernel::$middlewareAliases;
     $middleware = $middlewareAliases[$middleware];
+
+    /** @var mixed */
+    $previousMiddleware = self::$middlewares;
+    self::$middlewares = [];
+
     call_user_func($callback);
     self::runMiddleware($request, $middleware);
+
+    // Assign the current middleware to the routes in the group
+    // $groupMiddleware = self::$middlewares;
+    // self::$middlewares = $previousMiddleware;
+
+    // foreach (self::$routes as &$route) {
+    //   $route['middleware'] = array_merge($route['middleware'], $groupMiddleware);
+    // }
+
   }
 
   /**
@@ -180,9 +195,9 @@ class Router
   {
     $callback = $route['action'];
 
-    // set api header
+    // set api header of api route
     if ($route['isApi']) {
-      self::setApiHeader();
+      self::setApiHeaderWithAuth($request, $response);
     }
 
     if (is_array($callback)) {
@@ -281,22 +296,54 @@ class Router
    * 
    * @return void
    */
-  public static function setApiHeader()
+  public static function setApiHeaderWithAuth($request, $response)
   {
+    // Enable CORS (Cross-Origin Resource Sharing)
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
     header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
-    header('Content-Type: application/json');
-  }
 
-  /**
-   * set api header, cors, content type with auth token
-   * 
-   * @return void
-   */
-  public static function setApiHeaderWithAuth()
-  {
+    // Set content type to JSON
+    $request->setJsonHeader();
 
+    $config = Configuration::get('api-token');
+    if (!$config['check']) {
+      return;
+    }
+
+    // Check for Authorization header (Bearer token)
+    $authHeader = $request->isHttpAuthorizedOrFail();
+
+    if (!$authHeader) {
+      // No Authorization header provided
+      $request->setUnauthorizedHeader();
+      $response->jsonResponse(
+        ['error' => 'No Authorization header provided'],
+        401
+      );
+    }
+    // Validate and extract the Bearer token
+    list($bearer, $token) = explode(' ', $authHeader);
+    if (empty($token) || strtolower($bearer) !== 'bearer') {
+      // Invalid or missing Bearer token
+      $request->setUnauthorizedHeader();
+      $response->jsonResponse(
+        ['error' => 'Invalid or missing Bearer token'],
+        401
+      );
+    }
+    // For demonstration, assume a hardcoded valid token
+    $yourValidAuthToken = $config['key']; // api_token
+
+    if ($token !== $yourValidAuthToken) {
+      // Invalid token
+      $request->setUnauthorizedHeader();
+      // echo json_encode(['error'=> VarDumper::dumpAsString($token))
+      $response->jsonResponse(
+        ['error' => 'Invalid token'],
+        401
+      );
+    }
   }
 
   /**
