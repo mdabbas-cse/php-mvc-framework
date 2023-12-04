@@ -6,7 +6,7 @@ This is a web application framework built with PHP programming language. I belie
 - [x] Simple and fast routing system.
 - [x] Custom routing system.
 - [x] Custom query builder.
-- [x] Simple view templating.
+- [x] Simple view template.
 - [x] Multi layouts system.
 - [x] HTTP helper.
 - [x] CSRF token.
