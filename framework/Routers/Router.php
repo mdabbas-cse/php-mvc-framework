@@ -311,10 +311,9 @@ class Router
       return;
     }
 
-    // Check for Authorization header (Bearer token)
-    $authHeader = $request->isHttpAuthorizedOrFail();
-
-    if (!$authHeader) {
+    // Check for api token in header
+    $api_token = $request->isHttpAuthorizedOrFail();
+    if (!$api_token) {
       // No Authorization header provided
       $request->setUnauthorizedHeader();
       $response->jsonResponse(
@@ -322,9 +321,7 @@ class Router
         401
       );
     }
-    // Validate and extract the Bearer token
-    list($bearer, $token) = explode(' ', $authHeader);
-    if (empty($token) || strtolower($bearer) !== 'bearer') {
+    if (empty($api_token)) {
       // Invalid or missing Bearer token
       $request->setUnauthorizedHeader();
       $response->jsonResponse(
@@ -333,12 +330,11 @@ class Router
       );
     }
     // For demonstration, assume a hardcoded valid token
-    $yourValidAuthToken = $config['key']; // api_token
+    $apiKey = $config['key']; // api_token
 
-    if ($token !== $yourValidAuthToken) {
+    if ($api_token !== $apiKey) {
       // Invalid token
       $request->setUnauthorizedHeader();
-      // echo json_encode(['error'=> VarDumper::dumpAsString($token))
       $response->jsonResponse(
         ['error' => 'Invalid token'],
         401

@@ -205,7 +205,7 @@ final class Request implements RequestInterface
    */
   public function isHttpAuthorizedOrFail()
   {
-    return isset($_SERVER['HTTP_AUTHORIZATION']) && !empty($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : false;
+    return isset($_SERVER['HTTP_API_KEY']) ? $_SERVER['HTTP_API_KEY'] : false;
   }
 
   /**
