@@ -3,9 +3,9 @@
 namespace LaraCore\Framework\Routers;
 
 use LaraCore\App\Http\Kernel;
-use LaraCore\Framework\Configuration;
 use LaraCore\Framework\Request;
 use LaraCore\Framework\Response;
+use LaraCore\Framework\RestApi\ApiHandler;
 
 class Router
 {
@@ -197,7 +197,8 @@ class Router
 
     // set api header of api route
     if ($route['isApi']) {
-      self::setApiHeaderWithAuth($request, $response);
+      $apiHandler = new ApiHandler($request, $response);
+      $apiHandler->setApiHeaderWithAuth();
     }
 
     if (is_array($callback)) {
@@ -289,57 +290,6 @@ class Router
   public static function setApiPrefix($prefix)
   {
     self::$useApiPrefix = true;
-  }
-
-  /**
-   * Method to set api header, cors, content type etc
-   * 
-   * @return void
-   */
-  public static function setApiHeaderWithAuth($request, $response)
-  {
-    // Enable CORS (Cross-Origin Resource Sharing)
-    header('Access-Control-Allow-Origin: *');
-    header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-    header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
-
-    // Set content type to JSON
-    $request->setJsonHeader();
-
-    $config = Configuration::get('api-token');
-    if (!$config['check']) {
-      return;
-    }
-
-    // Check for api token in header
-    $api_token = $request->isHttpAuthorizedOrFail();
-    if (!$api_token) {
-      // No Authorization header provided
-      $request->setUnauthorizedHeader();
-      $response->jsonResponse(
-        ['error' => 'No Authorization header provided'],
-        401
-      );
-    }
-    if (empty($api_token)) {
-      // Invalid or missing Bearer token
-      $request->setUnauthorizedHeader();
-      $response->jsonResponse(
-        ['error' => 'Invalid or missing Bearer token'],
-        401
-      );
-    }
-    // For demonstration, assume a hardcoded valid token
-    $apiKey = $config['key']; // api_token
-
-    if ($api_token !== $apiKey) {
-      // Invalid token
-      $request->setUnauthorizedHeader();
-      $response->jsonResponse(
-        ['error' => 'Invalid token'],
-        401
-      );
-    }
   }
 
   /**
