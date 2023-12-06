@@ -41,28 +41,21 @@ git clone https://github.com/mdabbas-cse/php-mvc-framework.git
 composer install
 ```
 3. Create a database and import the `database.sql` file.
-4. Configure the database connection in `config/Config.php` file.
+4. Configure the database connection in `.env` file.
 ```bash
-'database' => [
-    'dbname' => 'your database name',
-    'username' => 'your database username',
-    'password' => 'your database password',
-    'connection' => 'your database connection',
-    'port' => 3306,
-    'options' => [
-      PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-    ]
-  ],
+DB_HOST=localhost # your database host
+DB_PORT=3306 # your database port
+DB_DATABASE=laracore # your database name
+DB_USERNAME=root # your database username
+DB_PASSWORD= # your database password
 ```
-5. Application configuration
+5. Application configuration in `.env` file.
 ```bash
-'app' => [
-  'title' => 'Your application title',
-  'defaultLayout' => 'default', // default layout name "default" 
-  'root' => 'http://localhost:8000', // your application root url
-  'debug' => false, // set true for debug mode
-  'timezone' => 'Asia/Dhaka' // your local timezone
-],
+APP_NAME=Laracore # your application name
+APP_DEBUG=true # your application debug mode
+APP_URL=http://php-mvc-framework.test/ # your application url
+APP_DEFAULT_LAYOUT=default # your application default layout
+APP_TIME_ZONE=Asia/Dhaka # your application time zone
 ```
 6. migrate the database
 ```bash
