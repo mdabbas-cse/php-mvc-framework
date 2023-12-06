@@ -2,6 +2,8 @@
 ## About LaraCore Framework
 This is a web application framework built with PHP programming language. I believe development must be an enjoyable and creative experience to be truly fulfilling. we develop any project easily by using this framework.
 
+NOTE: This framework is still under development in dev-mode branch.
+
 ## Features and Road map
 - [x] Simple and fast routing system.
 - [x] Custom routing system.
@@ -13,6 +15,7 @@ This is a web application framework built with PHP programming language. I belie
 - [x] Develop API with Bearer token.
 - [x] Component for form and input field.
 - [x] Form validations.
+- [x] Environment variables (Custom Dotenv).
 - [ ] Database migrations.
 - [ ] Database factories.
 - [ ] Database seeders.
