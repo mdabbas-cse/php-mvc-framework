@@ -89,7 +89,7 @@ final class Application {
    */
   public function run() {
     $this->loadHelpers();
-    // $this->loadDotEnv();
+    $this->loadDotEnv();
     $this->loadAppConfig();
     $this->setDefaultTimezone();
     $this->registerErrorHandler();
@@ -244,13 +244,5 @@ final class Application {
     $dotenv = Dotenv::createImmutable(ROOT);
     $dotenv->load();
   }
-
-  /**
-   * Summary of __destruct
-   */
-  public function __destruct() {
-    // $this->run();
-  }
-
 
 }
