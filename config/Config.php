@@ -2,21 +2,21 @@
 
 return [
   'database' => [
-    'dbname' => 'laracore',
-    'username' => 'root',
-    'password' => '',
-    'connection' => 'localhost',
-    'port' => 3306,
+    'dbname' => $_ENV['DB_DATABASE'],
+    'username' => $_ENV['DB_USERNAME'],
+    'password' => $_ENV['DB_PASSWORD'],
+    'connection' => $_ENV['DB_HOST'],
+    'port' => $_ENV['DB_PORT'],
     'options' => [
       PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     ]
   ],
   'app' => [
-    'title' => 'My Todo',
-    'defaultLayout' => 'default',
-    'root' => 'http://php-mvc-framework.test/',
-    'debug' => true,
-    'timezone' => 'Asia/Dhaka'
+    'title' => $_ENV['APP_NAME'],
+    'defaultLayout' => $_ENV['APP_DEFAULT_LAYOUT'],
+    'root' => $_ENV['APP_URL'],
+    'debug' => $_ENV['APP_DEBUG'],
+    'timezone' => $_ENV['APP_TIME_ZONE'],
   ],
   'auth' => [
     'session' => 'user_id',
@@ -48,8 +48,8 @@ return [
    * and set middleware in route
    */
   'api-token' => [
-    'check' => false,
-    'key' => 'bGFyYWNvcmUtYXBpLXRva2Vu'
+    'check' => $_ENV['API_TOKEN_CHECK'],
+    'key' => $_ENV['API_TOKEN_KEY']
   ],
   'remember' => [
     'cookie_name' => 'hash',
