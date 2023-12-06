@@ -2,10 +2,8 @@
 
 namespace LaraCore\Framework\Console;
 
-class ApiKey
-{
-  private static function generateKey()
-  {
+class ApiKey {
+  private static function generateKey() {
     $key = base64_encode(random_bytes(32));
     $key = substr($key, 0, 32);
     $key = str_replace('/', '', $key);
@@ -17,45 +15,23 @@ class ApiKey
   /**
    * run command method
    */
-  public static function generate()
-  {
-    $key = self::generateKey();
+  public static function generate() {
+    $newKey = self::generateKey();
 
-    // get config file
-    $configFile = ROOT . DS . 'config' . DS . 'Config.php';
-    $config = include $configFile;
-    file_get_contents($configFile);
+    $filePath = ROOT.DS.'.env';
+    $contents = file_get_contents($filePath);
+    $key = 'API_KEY';
 
-    $config['api-token']['key'] = $key;
+    // Find and replace the specified key with the new value
+    $contents = preg_replace("/$key=.*/", "$key=$newKey", $contents);
 
-    $updatedFileContents = '<?php' . PHP_EOL . PHP_EOL . 'return [' . PHP_EOL;
-    $updatedFileContents .= self::formatArray($config, 1);
-    $updatedFileContents .= '];';
+    // Write the updated contents back to the .env file
+    $result = file_put_contents($filePath, $contents);
 
-    $result = file_put_contents($configFile, $updatedFileContents);
-    if ($result) {
+    if($result) {
       Log::success("Api key generated successfully");
     } else {
       Log::error("Api key generation failed");
     }
   }
-
-  private static function formatArray($array, $indentLevel)
-  {
-    $indent = str_repeat('  ', $indentLevel);
-    $formatted = '';
-
-    foreach ($array as $key => $value) {
-      if (is_array($value)) {
-        $formatted .= "{$indent}'{$key}' => [\n";
-        $formatted .= self::formatArray($value, $indentLevel + 1);
-        $formatted .= "{$indent}],\n";
-      } else {
-        $formatted .= "{$indent}'{$key}' => '{$value}',\n";
-      }
-    }
-
-    return $formatted;
-  }
-
 }
