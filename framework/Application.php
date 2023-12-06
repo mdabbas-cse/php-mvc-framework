@@ -252,7 +252,12 @@ final class Application {
    * @param array $argv
    */
   public function runConsoleCommand($argv) {
+    $this->loadHelpers();
+    $this->loadDotEnv();
+    $this->loadAppConfig();
+    $this->setDefaultTimezone();
+    $this->registerErrorHandler();
+    $this->registerShutdownHandler();
     Command::run($argv);
   }
-
 }
