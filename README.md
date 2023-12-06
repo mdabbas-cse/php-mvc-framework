@@ -14,6 +14,7 @@ NOTE: This framework is still under development in dev-mode branch.
 - [x] CSRF token.
 - [x] Component for form and input field.
 - [x] Form validations.
+- [x] Environment variables (Custom Dotenv).
 - [ ] Database migrations.
 - [ ] Object relational mapping(ORM).
 - [ ] User management system.
