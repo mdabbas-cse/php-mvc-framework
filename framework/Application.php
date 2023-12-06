@@ -17,6 +17,7 @@
 
 namespace LaraCore\Framework;
 
+use LaraCore\Framework\Console\Command;
 use LaraCore\Framework\Dotenv\Dotenv;
 use LaraCore\Framework\Interfaces\RequestInterface;
 use LaraCore\Framework\Routers\Router;
@@ -243,6 +244,15 @@ final class Application {
   public function loadDotEnv() {
     $dotenv = Dotenv::createImmutable(ROOT);
     $dotenv->load();
+  }
+
+  /**
+   * Run console command
+   * 
+   * @param array $argv
+   */
+  public function runConsoleCommand($argv) {
+    Command::run($argv);
   }
 
 }
