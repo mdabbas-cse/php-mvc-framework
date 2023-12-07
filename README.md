@@ -31,6 +31,81 @@ NOTE: This framework is still under development in dev-mode branch.
 - MySQL
 - Apache or Nginx
 
+### Folder Structure
+```bash
+├── app
+│   ├── Http
+│   │   ├── Controllers
+│   │   │   └── UserController.php
+│   │   ├── Middleware
+│   │   │    └── AuthMiddleware.php
+│   │   └── Kernel.php
+│   ├── Models
+│   │   └── User.php
+│   └── Providers
+│       ├── AppServiceProvider.php
+│       └── RouteServiceProvider.php
+├── config
+│   ├── app.php
+│   ├── auth.php
+│   ├── database.php
+│   ├── mail.php
+│   ├── session.php
+├── database
+│   ├── factories
+│   │   └── UserFactory.php
+│   ├── migrations
+│   │   └── 2021_01_01_000000_create_users_table.php
+│   └── seeders
+│       └── UserSeeder.php
+├── resources
+│   ├── assets
+│   │   ├── css
+│   │   │   └── style.css
+│   │   └── js
+│   │       └── script.js
+│   ├── lang
+│   │   └── en
+│   │       └── validation.php
+│   ├── views
+│   │   ├── auth
+│   │   │   ├── login.php
+│   │   │   ├── register.php
+│   │   │   └── reset.php
+│   │   ├── layouts
+│   │   │   ├── auth.php
+│   │   │   └── default.php
+│   │   ├── partials
+│   │   │   ├── footer.php
+│   │   │   ├── head.php
+│   │   │   └── header.php
+│   │   ├── 404.php
+│   │   ├── about.php
+│   │   ├── blue_print_file_view.php
+│   │   └── welcome.php
+├── routes
+│   ├── api.php
+│   └── web.php
+├── storage
+│   ├── cache
+│   ├── logs
+│   │   └── error.log
+│   └── sessions
+├── tests
+│   └── ExampleTest.php
+├── .env
+├── .gitignore
+├── .htaccess
+├── .php-cs-fixer.php
+├── composer.json
+├── composer.lock
+├── database.sql
+├── index.php
+├── laracore
+├── LICENSE
+├── README.md
+```
+
 ### Installation
 1. Clone the repository
 ```bash 
