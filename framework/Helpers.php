@@ -229,7 +229,42 @@ if (!function_exists('path')) {
   }
 }
 
+/**
+ * @function for base_path 
+ * 
+ * @param string $path
+ * 
+ * @return string
+ */
+if (!function_exists('base_path')) {
+  function base_path($path = null)
+  {
+    $path = trim($path, '/');
+    $path = str_replace('/', DS, $path);
+    $path = ROOT . DS . $path;
+    return $path;
+  }
+}
+
+/**
+ * @function for include file
+ * 
+ * @param string $path
+ * 
+ * @return void
+ */
+if (!function_exists('include_file')) {
+  function include_file($path)
+  {
+    $path = base_path($path);
+    if (file_exists($path)) {
+      return include_once $path;
+    } else {
+      throw new Exception("File not found at {$path}");
+    }
+  }
+}
 
 
 
-include_once 'Components/InputsComponent.php';
+// include_once 'Components/InputsComponent.php';
