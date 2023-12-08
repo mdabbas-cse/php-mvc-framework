@@ -199,6 +199,7 @@ final class Application
   public function errorHandler($errno, $errstr, $errorFile, $errorLine)
   {
     $this->logError($errno, $errstr, $errorFile, $errorLine);
+    //TODO: display error
     // $this->displayError($errno, $errstr, $errorFile, $errorLine);
 
     return true;
@@ -206,11 +207,14 @@ final class Application
   }
   protected function logError($errno, $errstr, $errorFile, $errorLine)
   {
+    $dir = check_or_make_dir('storage/logs');
+
+    $errorFilePath = $dir . DS . 'error.log';
+
     error_log(
       "[" . date('Y-m-d H:i:s') . "] Error number: {$errno} | Error string: {$errstr} | Error file: {$errorFile} | Error line: {$errorLine} \n",
       3,
-      // ROOT . DS . 'storage' . DS . 'logs' . DS . 'error.log'
-      base_path('storage/logs/error.log')
+      $errorFilePath
     );
 
   }
@@ -219,10 +223,8 @@ final class Application
     http_response_code($responseCode);
     if ($this->config['debug']) {
       include_file('resources/error-templates/debug_template.php');
-      // include_once(ROOT . DS . 'resources' . DS . 'error-templates' . DS . 'error_template.php');
     } else {
       include_file('resources/error-templates/error_template.php');
-      // include_once(ROOT . DS . 'resources' . DS . 'error-templates' . DS . 'error_template.php');
     }
     exit();
   }
