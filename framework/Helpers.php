@@ -173,7 +173,7 @@ if (!function_exists('js')) {
 
 if (!function_exists('app_url')) {
   /**
-   * @function app_url
+   * @function app_url for get app root url
    * @param $path
    * @return string
    */
@@ -214,12 +214,13 @@ if (!function_exists('errors')) {
   }
 }
 
-/**
- * @function for create or check path is exist
- * @param $path
- * @return string
- */
+
 if (!function_exists('path')) {
+  /**
+   * @function for create or check path is exist
+   * @param $path
+   * @return string
+   */
   function path($path)
   {
     $path = trim($path, '/');
@@ -234,7 +235,7 @@ if (!function_exists('path')) {
 }
 
 /**
- * @function for base_path 
+ * @function for get Document root or base path
  * 
  * @param string $path
  * 
@@ -250,14 +251,14 @@ if (!function_exists('base_path')) {
   }
 }
 
-/**
- * @function for include file
- * 
- * @param string $path
- * 
- * @return void
- */
 if (!function_exists('include_file')) {
+  /**
+   * @function for include file
+   * 
+   * @param string $path
+   * 
+   * @return void
+   */
   function include_file($path)
   {
     $path = base_path($path);
@@ -265,6 +266,24 @@ if (!function_exists('include_file')) {
       return include_once $path;
     } else {
       throw new Exception("File not found at {$path}");
+    }
+  }
+
+  if (!function_exists('check_or_make_dir')) {
+    /**
+     * if directory not exist then create directory or return directory path
+     * 
+     * @param string $path
+     * 
+     * @return string $path
+     */
+    function check_or_make_dir($path)
+    {
+      $path = base_path($path);
+      if (!is_dir($path)) {
+        mkdir($path, 0777, true);
+      }
+      return $path;
     }
   }
 }
