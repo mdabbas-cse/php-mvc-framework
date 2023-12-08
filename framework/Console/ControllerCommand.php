@@ -23,69 +23,59 @@ class ControllerCommand
 
     // split the controller name by '/'
     $controllerNameArray = explode('/', $controllerNameArgv);
-    $controllerName = end($controllerNameArray);
-    $pattern = '/Controller$/';
-    if (!preg_match($pattern, $controllerName)) {
-      print_r('not match');
-      $controllerName .= 'Controller';
-    }
+    $controllerNameArray = array_map(function ($item) {
+      return ucfirst($item);
+    }, $controllerNameArray);
 
-    // create file path
-    $filePath = null;
-    $replaceNamespace = null;
+    $controllerNameSpace = "LaraCore\\App\\Http\\Controllers";
+    $controllersBasePath = 'app/Http/Controllers';
+
     if (count($controllerNameArray) > 1) {
-      $newArray = array_slice($controllerNameArray, 0, -1);
-      $replaceNamespace = '\\' . str_replace('/', '\\', $newArray);
-      print_r(['$replaceNamespace' => $replaceNamespace]);
-      $filePath = DS . implode(DS, $controllerNameArray);
+      $controllerName = end($controllerNameArray);
+      $pattern = '/Controller$/';
+      if (!preg_match($pattern, $controllerName)) {
+        $controllerName .= 'Controller';
+      }
+      $controllerNameSpace .= '\\' . str_replace('/', '\\', implode('/', array_slice($controllerNameArray, 0, -1)));
+      $controllersBasePath .= '/' . implode('/', array_slice($controllerNameArray, 0, -1));
+    } else {
+      $controllerName = $controllerNameArray[0];
+      $pattern = '/Controller$/';
+      if (!preg_match($pattern, $controllerName)) {
+        $controllerName .= 'Controller';
+      }
     }
-
-    $controllerNameSpace = "LaraCore\\App\\Http\\Controllers{$replaceNamespace}";
+    unset($controllerNameArray[end($controllerNameArray)]);
 
     // Check if the controller class already exists
-    if (class_exists($controllerNameSpace)) {
+    $class = $controllerNameSpace . '\\' . $controllerName;
+    if (class_exists($class)) {
       Log::error("Controller '$controllerName' already exists.");
       exit(1);
     }
-    $path = ROOT . DS . 'app' . DS . 'Http' . DS . 'Controllers' . $filePath;
+    // controller file path
+    $controllerPath = check_or_make_dir($controllersBasePath);
+    $controllerPath .= DS . $controllerName . '.php';
 
-    // Check if the Migrations directory exists, and create it if not
-    if (!is_dir($path)) {
-      mkdir($path);
-    }
+    // get controller stub
+    $controllerStubPath = base_path('framework/Stub/Controller.stub');
+    $controllerStub = file_get_contents($controllerStubPath);
 
-    $path = $path . DS . $controllerName . '.php';
+    Log::info("Controller file created...: $controllerPath");
 
-    $controllerStub = file_get_contents(ROOT . DS . 'framework' . DS . 'Stub' . DS . 'Controller.stub');
-    print_r([
-      $path,
-      $replaceNamespace,
-    ]);
-    exit;
-    Log::info("Controller file created: $path");
-
+    // replace stub
     $controllerContent = str_replace(
       ['{{Namespace}}', '{{ControllerName}}'],
       [$controllerNameSpace, $controllerName],
       $controllerStub
     );
 
-    $createFile = file_put_contents($path, $controllerContent);
+    $createFile = file_put_contents($controllerPath, $controllerContent);
     if (!$createFile) {
-      Log::error("Controller $controllerName not created.");
+      Log::error("Controller '$controllerName' not created.");
       exit(1);
     }
-    Log::success("Controller $controllerName created successfully.");
-  }
-
-  /**
-   * Summary of createMigrationFile
-   * @param mixed $migrationName
-   * @return void
-   */
-  private static function createMigrationFile($migrationName)
-  {
-
+    Log::success("Controller '$controllerName' created successfully.");
   }
 
 }
