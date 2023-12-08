@@ -34,6 +34,13 @@ final class Application
   protected $config = [];
 
   /**
+   * All application config
+   * 
+   * @var array
+   */
+  protected $allConfig = [];
+
+  /**
    * Application instance
    * 
    * @var Application
@@ -63,10 +70,16 @@ final class Application
    */
   public function __construct()
   {
-    // $this->config = Configuration::get('app');
     self::$instance = $this;
     $this->request = new Request();
     $this->response = new Response();
+    $this->loadDotEnv();
+    $this->allConfig = Configuration::all();
+    $this->loadAppConfig();
+    $this->loadHelpers();
+    $this->setDefaultTimezone();
+    $this->registerErrorHandler();
+    $this->registerShutdownHandler();
   }
 
   /**
@@ -94,12 +107,6 @@ final class Application
    */
   public function run()
   {
-    $this->loadHelpers();
-    $this->loadDotEnv();
-    $this->loadAppConfig();
-    $this->setDefaultTimezone();
-    $this->registerErrorHandler();
-    $this->registerShutdownHandler();
     $this->registerRoutes();
     $this->registerApiRoutes();
     $this->registerMiddlewares();
@@ -113,7 +120,7 @@ final class Application
    */
   protected function loadAppConfig()
   {
-    $this->config = Configuration::get('app');
+    $this->config = $this->allConfig['app'];
   }
 
   /**
@@ -236,7 +243,7 @@ final class Application
   /**
    * Load helper functions
    */
-  public static function loadHelpers()
+  public function loadHelpers()
   {
     require_once(ROOT . DS . 'framework' . DS . 'Helpers.php');
   }
@@ -254,12 +261,6 @@ final class Application
    */
   public function runConsoleCommand($argv)
   {
-    $this->loadHelpers();
-    $this->loadDotEnv();
-    $this->loadAppConfig();
-    $this->setDefaultTimezone();
-    $this->registerErrorHandler();
-    $this->registerShutdownHandler();
     Command::run($argv);
   }
 }

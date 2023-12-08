@@ -17,31 +17,24 @@ class Configuration
    */
   public static function get($key = null)
   {
-    $config = self::register($key);
-    if ($config) {
-      return $config;
+    $all = self::all();
+    if (array_key_exists($key, $all)) {
+      return $all[$key];
     }
-    die("Config key \"{$key}\" not found");
+    throw new Exception("Config key \"{$key}\" not found");
   }
 
   /**
-   * register all config files
+   * get all configs
    */
-  public static function register($key)
+  public static function all()
   {
-    $fileArray = scandir(base_path('config'));
-    $fileArray = array_diff($fileArray, ['.', '..']);
-
-    $configFileArray = [];
-
-    foreach ($fileArray as $configFile) {
-      $getFileName = explode('.', $configFile);
-      // if ($getFileName[0] == 'Config') {
-      //   continue;
-      // }
-      $configFileArray[$getFileName[0]] = include_file("config/{$configFile}");
+    $path = ROOT . DS . 'config' . DS . 'Config.php';
+    if (!file_exists($path)) {
+      throw new Exception("Config file not found");
     }
-    return $configFileArray[$key];
+    return include(ROOT . DS . 'config' . DS . 'Config.php');
   }
+
 
 }
