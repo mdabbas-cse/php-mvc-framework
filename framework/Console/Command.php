@@ -4,6 +4,7 @@ namespace LaraCore\Framework\Console;
 
 use LaraCore\Framework\Console\MigrationCommand;
 use LaraCore\Framework\Console\ControllerCommand;
+use LaraCore\Framework\Console\ModelCommand;
 use LaraCore\Framework\Console\ApiKey;
 use LaraCore\Framework\Console\Log;
 
@@ -41,7 +42,7 @@ class Command
                 break;
 
             case 'make:model':
-                // self::makeModel($argv);
+                ModelCommand::make($argv);
                 break;
             case 'generate:api-key':
                 ApiKey::generate();
