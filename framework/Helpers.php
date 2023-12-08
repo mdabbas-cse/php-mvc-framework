@@ -105,7 +105,7 @@ if (!function_exists('view')) {
    * @function view
    * @param string $viewName
    * @param array $data 
-   * @param option string $layout
+   * @param string $layout
    * @return View template
    */
   function view($viewName, $data = [], $layout = null)
@@ -179,8 +179,12 @@ if (!function_exists('app_url')) {
    */
   function app_url($path = null)
   {
-    $config = Configuration::get('app');
-    $url = trim($config['root'], '/');
+    $config = require(ROOT . DS . 'config' . DS . 'Config.php');
+    $appConfig = $config['app'];
+    if (!isset($appConfig['root'])) {
+      throw new Exception("App root not found");
+    }
+    $url = trim($appConfig['root'], '/');
     $path = trim($path, '/');
     return $path ? $url . '/' . $path : $url;
   }
