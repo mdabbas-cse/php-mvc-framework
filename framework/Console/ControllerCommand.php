@@ -17,7 +17,7 @@ class ControllerCommand
     $controllerNameArgv = $argv[2] ?? null;
 
     if (!$controllerNameArgv) {
-      echo "Usage: php laracore make:migration <controllerName>\n";
+      echo "Usage: php laracore make:controller <controllerName>\n";
       exit(1);
     }
 
