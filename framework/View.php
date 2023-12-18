@@ -12,6 +12,8 @@ class View
   public $_outBuffer;
   public $_layout = 'default';
 
+  public $errors = [];
+
   public function render($viewName, $data = [])
   {
     extract($data);
@@ -70,5 +72,58 @@ class View
   public function setLayout($path)
   {
     $this->_layout = $path;
+  }
+
+  /**
+   * @method for setErrors 
+   * 
+   * @param $errors
+   * @return void
+   */
+  public function setErrors($errors)
+  {
+    $this->errors = $errors;
+  }
+
+  /**
+   * @method for getErrors 
+   * 
+   * @return array
+   */
+  public function errors()
+  {
+    return $this->errors;
+  }
+
+  /**
+   * @method for hasErrors 
+   * 
+   * @return bool
+   */
+  public function hasErrors()
+  {
+    return !empty($this->errors);
+  }
+
+  /**
+   * @method for get error by key 
+   * 
+   * @param $key
+   * @return string
+   */
+  public function error($key)
+  {
+    return $this->errors[$key] ?? '';
+  }
+
+  /**
+   * @method for check error by key
+   * 
+   * @param $key
+   * @return bool
+   */
+  public function hasError($key)
+  {
+    return isset($this->errors[$key]);
   }
 }
