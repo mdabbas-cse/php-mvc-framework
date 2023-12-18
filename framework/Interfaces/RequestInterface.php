@@ -17,9 +17,9 @@ interface RequestInterface
 
   /**
    * All which is used to get all the request
-   * @return object
+   * @return array
    */
-  public function all(): object;
+  public function all(): array;
 
   /**
    * Get which is used to get the request

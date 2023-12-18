@@ -29,7 +29,12 @@ abstract class Controller implements ControllerInterface
   public function validation(Request $request, $data = [])
   {
     $this->validate = new Validation($request->all(), $data);
-    return $this->validate->checkValidation();
+    $checkValidation = $this->validate->checkValidation();
+    if (!$checkValidation) {
+      $this->view->errors = $this->validate->getErrors();
+      return false;
+    }
+    return $checkValidation;
   }
   public function isValidate()
   {

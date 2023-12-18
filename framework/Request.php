@@ -15,7 +15,6 @@ final class Request implements RequestInterface
   {
 
 
-
   }
 
   /**
@@ -50,7 +49,7 @@ final class Request implements RequestInterface
    * 
    * @return object
    */
-  public function all(): object
+  public function all(): array
   {
     $body = [];
     // for route params
@@ -72,7 +71,7 @@ final class Request implements RequestInterface
         $this->{$key} = Input::sanitize($value);
       }
     }
-    return (object) $body;
+    return $body;
   }
 
   /**
@@ -205,8 +204,12 @@ final class Request implements RequestInterface
    */
   public function isHttpAuthorizedOrFail()
   {
-    return isset($_SERVER['HTTP_API_KEY']) ? $_SERVER['HTTP_API_KEY'] : false;
+    // api key get from header
+    $apiKey = isset($_SERVER['HTTP_API_KEY']) ? $_SERVER['HTTP_API_KEY'] : false;
+    error_log($apiKey);
+    return $apiKey;
   }
+
 
   /**
    * @medium for set json header
