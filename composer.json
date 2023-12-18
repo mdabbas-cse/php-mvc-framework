@@ -52,6 +52,9 @@
     "fix-all": "php-cs-fixer fix includes",
     "fix": "php-cs-fixer fix",
     "pcf-commands": "php-cs-fixer",
-    "code-status": "php-cs-fixer fix --dry-run --show-progress=dots --ansi --diff -vv ./"
+    "code-status": "php-cs-fixer fix --dry-run --show-progress=dots --ansi --diff -vv ./",
+    "post-root-package-install": [
+      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+    ]
   }
 }
