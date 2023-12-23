@@ -3,7 +3,7 @@
 namespace LaraCore\Database\Factories;
 
 use LaraCore\App\Models\Users;
-use LaraCore\Framework\Factories\Factory;
+use LaraCore\Framework\Db\Factories\Factory;
 
 class UserFactory extends Factory
 {

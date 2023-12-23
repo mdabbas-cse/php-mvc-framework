@@ -1,6 +1,6 @@
 <?php
 
-namespace LaraCore\Framework\Seeders;
+namespace LaraCore\Framework\Db\Seeders;
 
 abstract class Seeder
 {

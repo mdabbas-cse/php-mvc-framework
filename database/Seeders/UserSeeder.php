@@ -3,7 +3,7 @@
 namespace LaraCore\Database\Seeders;
 
 use LaraCore\Database\Factories\UserFactory;
-use LaraCore\Framework\Seeders\Seeder;
+use LaraCore\Framework\Db\Seeders\Seeder;
 
 class UserSeeder extends Seeder
 {

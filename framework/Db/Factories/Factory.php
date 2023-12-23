@@ -1,6 +1,6 @@
 <?php
 
-namespace LaraCore\Framework\Factories;
+namespace LaraCore\Framework\Db\Factories;
 
 class Factory
 {

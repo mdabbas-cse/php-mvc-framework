@@ -2,7 +2,7 @@
 
 namespace LaraCore\Database\Seeders;
 
-use LaraCore\Framework\Seeders\Seeder;
+use LaraCore\Framework\Db\Seeders\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
