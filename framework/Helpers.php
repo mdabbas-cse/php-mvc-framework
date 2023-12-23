@@ -224,11 +224,11 @@ if (!function_exists('path')) {
   function path($path)
   {
     $path = trim($path, '/');
-    $path = str_replace('/', DS, $path);
+    $path = str_replace(['/', '\\'], DS, $path);
     $path = ROOT . DS . $path;
 
-    if (!file_exists($path)) {
-      mkdir($path);
+    if (!is_dir($path)) {
+      mkdir($path, 0777, true);
     }
     return $path;
   }
@@ -245,7 +245,7 @@ if (!function_exists('base_path')) {
   function base_path($path = null)
   {
     $path = trim($path, '/');
-    $path = str_replace('/', DS, $path);
+    $path = str_replace(['/', '\\'], DS, $path);
     $path = ROOT . DS . $path;
     return $path;
   }
@@ -269,7 +269,7 @@ if (!function_exists('include_file')) {
     }
   }
 
-  if (!function_exists('check_or_make_dir')) {
+  if (!function_exists('makeDir')) {
     /**
      * if directory not exist then create directory or return directory path
      * 
@@ -277,10 +277,11 @@ if (!function_exists('include_file')) {
      * 
      * @return string $path
      */
-    function check_or_make_dir($path)
+    function makeDir($path)
     {
       $path = base_path($path);
-      if (!is_dir($path)) {
+
+      if (!realpath($path)) {
         mkdir($path, 0777, true);
       }
       return $path;

@@ -46,7 +46,7 @@ class ModelCommand
       exit(1);
     }
     // controller file path
-    $modelPath = check_or_make_dir($modelsBasePath);
+    $modelPath = makeDir($modelsBasePath);
     $modelPath .= DS . $modelName . '.php';
 
     // get controller stub

@@ -54,7 +54,7 @@ class ControllerCommand
       exit(1);
     }
     // controller file path
-    $controllerPath = check_or_make_dir($controllersBasePath);
+    $controllerPath = makeDir($controllersBasePath);
     $controllerPath .= DS . $controllerName . '.php';
 
     // get controller stub

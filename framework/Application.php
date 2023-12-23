@@ -207,7 +207,7 @@ final class Application
   }
   protected function logError($errno, $errstr, $errorFile, $errorLine)
   {
-    $dir = check_or_make_dir('storage/logs');
+    $dir = makeDir('storage/logs');
 
     $errorFilePath = $dir . DS . 'error.log';
 
