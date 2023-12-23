@@ -44,6 +44,15 @@ class Command
             case 'make:model':
                 ModelCommand::make($argv);
                 break;
+
+            case 'db:seed':
+                SeederCommand::runDatabaseSeeder();
+                break;
+
+            case 'db:seeder': // for specific seeder
+                SeederCommand::run($argv);
+                break;
+
             case 'generate:api-key':
                 ApiKey::generate();
                 break;
