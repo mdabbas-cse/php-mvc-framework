@@ -1,6 +1,6 @@
 <?php
 
-namespace LaraCore\Framework\Db\FluidOrm\Interfaces;
+namespace LaraCore\Framework\Db\Interfaces;
 
 use PDO;
 

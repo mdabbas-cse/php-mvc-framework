@@ -3,7 +3,7 @@
 namespace LaraCore\Framework\Db;
 
 use LaraCore\Framework\Db\DbExceptions\DatabaseConnectionException;
-use LaraCore\Framework\Db\FluidOrm\Interfaces\DatabaseConnectionInterface;
+use LaraCore\Framework\Db\Interfaces\DatabaseConnectionInterface;
 use PDO;
 
 class DatabaseConnection implements DatabaseConnectionInterface
