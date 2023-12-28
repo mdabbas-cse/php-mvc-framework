@@ -12,13 +12,13 @@ NOTE: This framework is still under development in dev-mode branch.
 - [x] Multi layouts system.
 - [x] HTTP helper.
 - [x] CSRF token.
-- [x] Develop API with Bearer token.
+- [x] Develop API with api-key.
 - [x] Component for form and input field.
 - [x] Form validations.
 - [x] Environment variables (Custom Dotenv).
-- [ ] Database migrations.
-- [ ] Database factories.
-- [ ] Database seeders.
+- [x] Database migrations.
+- [x] Database factories.
+- [x] Database seeders.
 - [ ] Object relational mapping(ORM).
 - [ ] User management system.
 - [ ] Multi authentication system.
@@ -52,11 +52,11 @@ NOTE: This framework is still under development in dev-mode branch.
 │   ├── mail.php
 │   ├── session.php
 ├── database
-│   ├── factories
+│   ├── Factories
 │   │   └── UserFactory.php
-│   ├── migrations
+│   ├── Migrations
 │   │   └── 2021_01_01_000000_create_users_table.php
-│   └── seeders
+│   └── Seeders
 │       └── UserSeeder.php
 ├── resources
 │   ├── assets
