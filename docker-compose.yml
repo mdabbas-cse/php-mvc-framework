@@ -1,0 +1,64 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laracore_app
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/vendor
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: laracore
+      DB_USERNAME: laracore
+      DB_PASSWORD: secret
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+      MAIL_FROM_ADDRESS: hello@example.com
+      MAIL_FROM_NAME: Laracore
+    networks:
+      - laracore
+
+  db:
+    image: mysql:8.0
+    container_name: laracore_db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: laracore
+      MYSQL_USER: laracore
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: rootsecret
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootsecret"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - laracore
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: laracore_mail
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - laracore
+
+networks:
+  laracore:
+    driver: bridge
+
+volumes:
+  db_data:
