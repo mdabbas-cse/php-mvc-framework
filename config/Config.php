@@ -23,13 +23,15 @@ return [
     'remember' => 'user_r'
   ],
   'mail' => [
-    'smtp_auth' => true,
-    'smtp_secure' => 'tls',
-    'host' => 'smtp.gmail.com',
-    'username' => 'your email',
-    'password' => 'your password',
-    'port' => 587,
-    'html' => true
+    'smtp_auth'    => true,
+    'smtp_secure'  => $_ENV['MAIL_ENCRYPTION'] ?? '',
+    'host'         => $_ENV['MAIL_HOST'] ?? 'localhost',
+    'username'     => $_ENV['MAIL_USERNAME'] ?? '',
+    'password'     => $_ENV['MAIL_PASSWORD'] ?? '',
+    'port'         => $_ENV['MAIL_PORT'] ?? 1025,
+    'html'         => true,
+    'from_address' => $_ENV['MAIL_FROM_ADDRESS'] ?? 'hello@example.com',
+    'from_name'    => $_ENV['MAIL_FROM_NAME'] ?? $_ENV['APP_NAME'] ?? 'LaraCore',
   ],
   'csrf' => [
     'key' => 'csrf_token'

@@ -3,6 +3,7 @@
 use LaraCore\Framework\Configuration;
 use LaraCore\Framework\Helpers\Errors;
 use LaraCore\Framework\Helpers\Values;
+use LaraCore\Framework\Mail\Mailable;
 use LaraCore\Framework\Response;
 use LaraCore\Framework\View;
 
@@ -290,5 +291,12 @@ if (!function_exists('include_file')) {
 }
 
 
+
+if (!function_exists('send_mail')) {
+  function send_mail(Mailable $mailable): bool
+  {
+    return $mailable->send();
+  }
+}
 
 // include_once 'Components/InputsComponent.php';
