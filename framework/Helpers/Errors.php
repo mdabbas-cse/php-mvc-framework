@@ -26,11 +26,13 @@ class Errors
 
   public static function set($errors)
   {
-    if (!$errors)
+    if (!$errors) {
       return;
-    foreach ($errors as $key => $value) {
-      $_SESSION['inputErrors'][$key] = $value;
     }
-    dd($_SESSION['inputErrors']);
+    if (session_status() === PHP_SESSION_ACTIVE) {
+      foreach ($errors as $key => $value) {
+        $_SESSION['inputErrors'][$key] = $value;
+      }
+    }
   }
 }

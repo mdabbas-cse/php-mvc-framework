@@ -307,7 +307,7 @@ final class Blueprint
    *
    * @param string $columnName
    */
-  protected function setCurrentColumn($columnName)
+  public function setCurrentColumn($columnName)
   {
     $this->currentColumn = "`{$columnName}`";
     $this->isCurrentColumnNullable = false;
@@ -321,7 +321,7 @@ final class Blueprint
    * @param string $type
    * @return string
    */
-  protected function getCurrentColumnDefinition($type): string
+  public function getCurrentColumnDefinition($type): string
   {
     $definition = "$this->currentColumn $type";
 

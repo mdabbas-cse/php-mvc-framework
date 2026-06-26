@@ -1,0 +1,159 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  # ─────────────────────────────────────────────────────────────
+  # Job 1 — Code style: php-cs-fixer (PSR-12 + custom rules)
+  # ─────────────────────────────────────────────────────────────
+  code-style:
+    name: "Code Style"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          tools: composer:v2
+          coverage: none
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: cs-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: cs-composer-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Run PHP CS Fixer (dry-run)
+        run: |
+          ./vendor/bin/php-cs-fixer fix \
+            --config=.php-cs-fixer.php \
+            --dry-run \
+            --diff \
+            --ansi \
+            --allow-risky=yes \
+            --show-progress=dots \
+            -v
+
+  # ─────────────────────────────────────────────────────────────
+  # Job 2 — Static Analysis: PHPStan level 5
+  # ─────────────────────────────────────────────────────────────
+  static-analysis:
+    name: "Static Analysis"
+    runs-on: ubuntu-latest
+    needs: code-style
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          tools: composer:v2
+          coverage: none
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: stan-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: stan-composer-
+
+      - name: Cache PHPStan result cache
+        uses: actions/cache@v4
+        with:
+          path: .phpstan-cache
+          key: phpstan-${{ hashFiles('phpstan.neon', 'phpstan-baseline.neon', 'composer.lock') }}
+          restore-keys: phpstan-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Run PHPStan
+        run: |
+          ./vendor/bin/phpstan analyse \
+            --configuration=phpstan.neon \
+            --error-format=table \
+            --ansi \
+            --no-progress
+
+  # ─────────────────────────────────────────────────────────────
+  # Job 3 — Tests: PHPUnit (Unit + Integration + Feature)
+  # ─────────────────────────────────────────────────────────────
+  tests:
+    name: "Tests / PHP ${{ matrix.php }}"
+    runs-on: ubuntu-latest
+    needs: static-analysis
+    timeout-minutes: 15
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ["8.1", "8.2"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: pdo, pdo_sqlite, pdo_mysql
+          tools: composer:v2
+          coverage: none
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: test-composer-${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: test-composer-${{ matrix.php }}-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Unit tests
+        run: |
+          ./vendor/bin/phpunit \
+            --testsuite Unit \
+            --testdox \
+            --colors=always
+
+      - name: Integration tests
+        env:
+          APP_ENV: testing
+        run: |
+          ./vendor/bin/phpunit \
+            --testsuite Integration \
+            --testdox \
+            --colors=always
+
+      - name: Feature tests
+        env:
+          APP_ENV: testing
+        run: |
+          ./vendor/bin/phpunit \
+            --testsuite Feature \
+            --testdox \
+            --colors=always

@@ -90,17 +90,19 @@ class Migration
   }
 
   /**
-   * Add a new column to the given table.
+   * Add one or more columns to the given table.
    *
-   * @param string $tableName
-   * @param string $columnName
-   * @param \LaraCore\Framework\Db\Migrations\Blueprint $callback
+   * @param string   $tableName
+   * @param callable $callback  Receives a Blueprint; call column methods on it
    * @return void
    */
-  public function addColumn($tableName, $columnName, $callback)
+  public function addColumn($tableName, callable $callback)
   {
-    $columnDefinition = $callback->getCurrentColumnDefinition(''); // Get column definition from the Blueprint
-    $sql = "ALTER TABLE $tableName ADD COLUMN $columnDefinition";
+    $blueprint = new Blueprint();
+    $callback($blueprint);
+    $columns = $blueprint->getColumns();
+    $parts   = array_map(fn($col) => "ADD COLUMN {$col}", $columns);
+    $sql     = "ALTER TABLE {$tableName} " . implode(', ', $parts);
     $this->execute($sql);
   }
 
@@ -118,17 +120,19 @@ class Migration
   }
 
   /**
-   * Modify a column on the given table.
+   * Modify one or more columns on the given table.
    *
-   * @param string $tableName
-   * @param string $columnName
-   * @param \LaraCore\Framework\Db\Migrations\Blueprint $callback
+   * @param string   $tableName
+   * @param callable $callback  Receives a Blueprint; call column methods on it
    * @return void
    */
-  public function modifyColumn($tableName, $columnName, $callback)
+  public function modifyColumn($tableName, callable $callback)
   {
-    $columnDefinition = $callback->getCurrentColumnDefinition($columnName); // Get column definition from the Blueprint
-    $sql = "ALTER TABLE $tableName MODIFY COLUMN $columnDefinition";
+    $blueprint = new Blueprint();
+    $callback($blueprint);
+    $columns = $blueprint->getColumns();
+    $parts   = array_map(fn($col) => "MODIFY COLUMN {$col}", $columns);
+    $sql     = "ALTER TABLE {$tableName} " . implode(', ', $parts);
     $this->execute($sql);
   }
 

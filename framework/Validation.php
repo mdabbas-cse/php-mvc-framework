@@ -27,7 +27,7 @@ class Validation
   public function checkValidation()
   {
     foreach ($this->data as $attribute => $rules) {
-      $value = Input::sanitize($this->request[$attribute]);
+      $value = isset($this->request[$attribute]) ? Input::sanitize($this->request[$attribute]) : '';
       foreach ($rules as $rule) {
         $ruleName = $rule;
         if (!is_string($ruleName)) {

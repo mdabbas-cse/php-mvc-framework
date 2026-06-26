@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+# Git pre-push hook — runs the full quality pipeline before any push.
+# Install with:  php scripts/install-hooks.php
+# Or manually:   cp scripts/pre-push .git/hooks/pre-push && chmod +x .git/hooks/pre-push
+
+set -euo pipefail
+
+# ── Colours ────────────────────────────────────────────────────────────────────
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+CYAN='\033[0;36m'
+BOLD='\033[1m'
+RESET='\033[0m'
+
+ROOT_DIR="$(git rev-parse --show-toplevel)"
+cd "$ROOT_DIR"
+
+step() { echo -e "\n${CYAN}${BOLD}▶  $1${RESET}"; }
+ok()   { echo -e "${GREEN}✔  $1${RESET}"; }
+fail() { echo -e "${RED}✘  $1${RESET}"; exit 1; }
+warn() { echo -e "${YELLOW}!  $1${RESET}"; }
+
+echo -e "\n${BOLD}┌──────────────────────────────────────────────────────┐${RESET}"
+echo -e "${BOLD}│         LaraCore · Pre-Push Quality Gate             │${RESET}"
+echo -e "${BOLD}└──────────────────────────────────────────────────────┘${RESET}"
+
+# ── Guard: vendor must exist ────────────────────────────────────────────────────
+if [ ! -d "$ROOT_DIR/vendor" ]; then
+    warn "vendor/ not found — running composer install first"
+    composer install --no-interaction --prefer-dist --quiet
+fi
+
+# ── 1. PHP Syntax Check ────────────────────────────────────────────────────────
+step "PHP syntax check (all .php files)"
+
+SYNTAX_ERRORS=0
+while IFS= read -r -d '' file; do
+    if ! php -l "$file" > /dev/null 2>&1; then
+        echo -e "  ${RED}Parse error:${RESET} $file"
+        php -l "$file" 2>&1 | sed 's/^/  /'
+        SYNTAX_ERRORS=$((SYNTAX_ERRORS + 1))
+    fi
+done < <(find . \
+    -name "*.php" \
+    -not -path "./vendor/*" \
+    -not -path "./resources/*" \
+    -print0)
+
+if [ "$SYNTAX_ERRORS" -gt 0 ]; then
+    fail "PHP syntax check failed ($SYNTAX_ERRORS file(s) with errors)"
+fi
+ok "All PHP files pass syntax check"
+
+# ── 2. PHP-CS-Fixer (auto-fix, then re-stage) ──────────────────────────────────
+step "PHP-CS-Fixer (auto-fix)"
+
+CS_EXIT=0
+./vendor/bin/php-cs-fixer fix \
+    --config=.php-cs-fixer.php \
+    --allow-risky=yes \
+    --ansi \
+    --show-progress=dots \
+    -v || CS_EXIT=$?
+
+# Exit codes:
+#   0 = no changes needed
+#   8 = files were fixed
+#   4 = lint error in a source file (can't auto-fix)
+if [ "$CS_EXIT" -eq 8 ]; then
+    warn "CS-Fixer modified files — re-staging and committing fixes"
+    git add -u
+    git commit -m "style: auto-fix code style via php-cs-fixer
+
+Co-Authored-By: pre-push-hook <noreply@localhost>"
+    ok "Style fixes committed; push will include them"
+elif [ "$CS_EXIT" -ne 0 ]; then
+    fail "PHP-CS-Fixer exited with code $CS_EXIT (lint error or config problem)"
+else
+    ok "Code style is clean"
+fi
+
+# ── 3. PHPStan Static Analysis ─────────────────────────────────────────────────
+step "PHPStan static analysis (level 5)"
+
+if ! ./vendor/bin/phpstan analyse \
+    --configuration=phpstan.neon \
+    --error-format=table \
+    --ansi \
+    --no-progress; then
+    fail "PHPStan found errors — fix them or update the baseline (make analyse-baseline)"
+fi
+ok "PHPStan passed"
+
+# ── 4. PHPUnit Test Suite ──────────────────────────────────────────────────────
+step "PHPUnit — Unit tests"
+if ! ./vendor/bin/phpunit --testsuite Unit --testdox --colors=always; then
+    fail "Unit tests failed"
+fi
+ok "Unit tests passed"
+
+step "PHPUnit — Integration tests"
+if ! APP_ENV=testing ./vendor/bin/phpunit --testsuite Integration --testdox --colors=always; then
+    fail "Integration tests failed"
+fi
+ok "Integration tests passed"
+
+step "PHPUnit — Feature tests"
+if ! APP_ENV=testing ./vendor/bin/phpunit --testsuite Feature --testdox --colors=always; then
+    fail "Feature tests failed"
+fi
+ok "Feature tests passed"
+
+# ── Done ───────────────────────────────────────────────────────────────────────
+echo ""
+echo -e "${GREEN}${BOLD}✔  All checks passed — push approved.${RESET}"
+echo ""

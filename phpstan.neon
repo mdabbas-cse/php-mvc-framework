@@ -1,0 +1,28 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 5
+
+    bootstrapFiles:
+        - phpstan-bootstrap.php
+
+    scanFiles:
+        - framework/Helpers.php
+
+    paths:
+        - framework
+        - app
+        - tests
+
+    excludePaths:
+        - vendor
+        - resources
+        - database
+        - '*/tests/Fixtures/*'
+
+    ignoreErrors: []
+
+    # Relax some checks that are too noisy on a bootstrapped framework
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false

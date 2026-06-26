@@ -1,5 +1,9 @@
 *.log
-*.lock
 vendor
 .env
 *.txt
+# keep composer.lock tracked — needed for reproducible CI installs
+package-lock.json
+yarn.lock
+.phpstan-cache/
+.phpunit.result.cache

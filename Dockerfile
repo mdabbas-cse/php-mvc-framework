@@ -4,12 +4,13 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libzip-dev \
+    libsqlite3-dev \
     zip \
     unzip \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-install pdo pdo_mysql zip gd
+RUN docker-php-ext-install pdo pdo_mysql pdo_sqlite zip gd
 
 RUN a2enmod rewrite
 

@@ -28,5 +28,5 @@ interface QueryBuilderInterface
    * @param string|null $intoClass
    * @return array
    */
-  public function select($table, $columns = ['*'], $where = [], $intoClass = null);
+  public function rawSelect($table, $columns = ['*'], $where = [], $intoClass = null);
 }

@@ -1,170 +1,117 @@
 <?php
 
 /**
- * abstract class DataModel
- * like ORM in Laravel
- * @package LaraCore\Framework\Db
+ * DataModel — backward-compatible shim over the new Model base.
+ *
+ * Existing models that extend DataModel continue to work unchanged.
+ * New models should extend Model directly for the full Eloquent-like API.
+ *
+ * Migration guide:
+ *
+ *   Before (old style):
+ *     class Posts extends DataModel {
+ *         public function tableName(): string { return 'posts'; }
+ *         public function attributes(): array { return ['title', 'body']; }
+ *     }
+ *
+ *   After (new style — extend Model directly):
+ *     class Post extends Model {
+ *         protected static $table   = 'posts';
+ *         protected $fillable       = ['title', 'body'];
+ *     }
  */
 
 namespace LaraCore\Framework\Db;
 
-use PDO;
-
 abstract class DataModel extends Model
 {
-  protected $table;
-  protected $fillable = [];
-  protected $primaryKey = 'id';
+    // -------------------------------------------------------------------------
+    // Legacy abstract contract (still supported by existing models)
+    // -------------------------------------------------------------------------
 
-  public function __construct()
-  {
-    parent::__construct();
-  }
+    /**
+     * Return the table name for this model.
+     * In new models use  protected static $table = '...';  instead.
+     */
+    abstract public function tableName(): string;
 
-  /**
-   * assign table name from class name
-   */
-  abstract public function tableName(): string;
+    /**
+     * Return the list of fillable column names.
+     * In new models use  protected $fillable = [...];  instead.
+     */
+    abstract public function attributes(): array;
 
-  abstract public function attributes(): array;
+    // -------------------------------------------------------------------------
+    // Constructor: seed new-style fillable from the legacy attributes() call
+    // -------------------------------------------------------------------------
 
-  public function loadData($data)
-  {
-    foreach ($data as $key => $value) {
-      if (!property_exists($this, $key)) {
-        $this->{$key} = $value;
-      }
+    public function __construct()
+    {
+        $this->fillable = $this->attributes();
     }
-  }
 
-  /**
-   * assign dynamic properties
-   */
-  public function __set($name, $value)
-  {
-    $this->{$name} = $value;
-  }
+    // -------------------------------------------------------------------------
+    // Bridge: legacy tableName() -> new Model::getTable()
+    // -------------------------------------------------------------------------
 
-  /**
-   * @method form get all
-   * @Override 
-   */
-  public function getAll()
-  {
-    return parent::all($this->tableName());
-  }
-
-  /**
-   * save data to database
-   */
-  public function save()
-  {
-    $attributes = $this->attributes();
-    $params = array_map(function ($attr) {
-      return ":{$attr}";
-    }, $attributes);
-
-    $stmt = $this->prepare("INSERT INTO {$this->tableName()} (" . implode(',', $attributes) . ") VALUES (" . implode(',', $params) . ")");
-    foreach ($attributes as $attribute) {
-      $stmt->bindValue(":$attribute", $this->{$attribute});
+    public static function getTable(): string
+    {
+        // DataModel children define tableName() as an instance method,
+        // so we need a temporary instance to resolve it.
+        $instance = new static();
+        return $instance->tableName();
     }
-    $stmt->execute();
-    return true;
-  }
 
-  /**
-   * @method find
-   * @param int $id
-   * @return mixed
-   */
-  public function find($id)
-  {
-    $stmt = $this->prepare("SELECT * FROM {$this->tableName()} WHERE {$this->primaryKey} = :id");
-    $stmt->bindValue(':id', $id);
-    $stmt->execute();
-    return $stmt->fetchObject(static::class);
-  }
+    // -------------------------------------------------------------------------
+    // Legacy helpers — wrappers around the new fluent API
+    // -------------------------------------------------------------------------
 
-  /**
-   * @method update
-   * @param int $id
-   * @return mixed
-   */
-  public function update($id)
-  {
-    $attributes = $this->attributes();
-    $params = array_map(function ($attr) {
-      return "{$attr} = :{$attr}";
-    }, $attributes);
-
-    $stmt = $this->prepare("UPDATE {$this->tableName()} SET " . implode(',', $params) . " WHERE {$this->primaryKey} = :id");
-    foreach ($attributes as $attribute) {
-      $stmt->bindValue(":$attribute", $this->{$attribute});
+    /**
+     * Return all rows.  Replacement: static::all()
+     */
+    public function getAll(): Collection
+    {
+        return static::all();
     }
-    $stmt->bindValue(':id', $id);
-    $stmt->execute();
-    return true;
-  }
 
-  /**
-   * @method delete
-   * @param int $id
-   * @return mixed
-   * @throws \Exception
-   */
-  public function delete($id)
-  {
-    $stmt = $this->prepare("DELETE FROM {$this->tableName()} WHERE {$this->primaryKey} = :id");
-    $stmt->bindValue(':id', $id);
-    $stmt->execute();
-    return true;
-  }
-
-  /**
-   * @method select columns
-   * @param array $columns
-   * @return mixed
-   */
-  public function select($columns = ['*'])
-  {
-    $stmt = $this->prepare("SELECT " . implode(',', $columns) . " FROM {$this->tableName()}");
-    $stmt->execute();
-    return $stmt->fetchAll(\PDO::FETCH_OBJ, static::class);
-  }
-
-  /**
-   * @method select columns
-   * @param array $columns
-   * @return mixed
-   */
-  public function selectWhere($columns = ['*'], $where = [])
-  {
-    $params = array_map(function ($attr) {
-      return "{$attr} = :{$attr}";
-    }, array_keys($where));
-    $stmt = $this->prepare("SELECT " . implode(',', $columns) . " FROM {$this->tableName()} WHERE " . implode(' AND ', $params));
-    foreach ($where as $key => $value) {
-      $stmt->bindValue(":$key", $value);
+    /**
+     * SELECT specific columns.  Replacement: static::newQuery()->select(...)->get()
+     *
+     * @param string[] $columns
+     */
+    public function selectColumns(array $columns = ['*']): Collection
+    {
+        return static::newQuery()->select(...$columns)->get();
     }
-    $stmt->execute();
-    return $stmt->fetchAll(\PDO::FETCH_OBJ, static::class);
-  }
 
-  /**
-   * @method findOne
-   * @param array $columns
-   * @return mixed
-   */
-  public function findOne($columns = [])
-  {
-    $params = array_map(function ($attr) {
-      return "{$attr} = :{$attr}";
-    }, array_keys($columns));
-    $stmt = $this->prepare("SELECT * FROM {$this->tableName()} WHERE " . implode(' AND ', $params));
-    foreach ($columns as $key => $value) {
-      $stmt->bindValue(":$key", $value);
+    /**
+     * SELECT specific columns WHERE conditions match.
+     * Replacement: static::where(...)->get()
+     *
+     * @param string[] $columns
+     * @param array<string,mixed> $where
+     */
+    public function selectWhere(array $columns = ['*'], array $where = []): Collection
+    {
+        $qb = static::newQuery()->select(...$columns);
+        foreach ($where as $col => $val) {
+            $qb->where($col, $val);
+        }
+        return $qb->get();
     }
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_CLASS, static::class);
-  }
+
+    /**
+     * Find rows matching all given conditions.
+     * Replacement: static::where(...)->get()
+     *
+     * @param array<string,mixed> $conditions
+     */
+    public function findOne(array $conditions = []): Collection
+    {
+        $qb = static::newQuery();
+        foreach ($conditions as $col => $val) {
+            $qb->where($col, $val);
+        }
+        return $qb->get();
+    }
 }

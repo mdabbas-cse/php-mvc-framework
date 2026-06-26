@@ -47,6 +47,23 @@ services:
     networks:
       - laracore
 
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laracore_test
+    command: ["php", "vendor/bin/phpunit", "--testdox", "--colors=always"]
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+      - vendor_data:/var/www/html/vendor
+    environment:
+      APP_ENV: testing
+    profiles:
+      - test
+    networks:
+      - laracore
+
   mailpit:
     image: axllent/mailpit:latest
     container_name: laracore_mail
@@ -62,3 +79,4 @@ networks:
 
 volumes:
   db_data:
+  vendor_data:

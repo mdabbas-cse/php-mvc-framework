@@ -1,6 +1,6 @@
 # LaraCore Framework
 
-A lightweight PHP MVC framework built for fast, enjoyable web development. LaraCore provides routing, query building, form validation, migrations, seeders, CLI tooling, mail service, and REST API support — all without heavy dependencies.
+A lightweight PHP MVC framework built for fast, enjoyable web development. LaraCore provides routing, an Eloquent-style Active Record ORM with relationships, form validation, migrations, seeders, CLI tooling, mail service, and REST API support — all without heavy dependencies.
 
 > **Note:** This framework is actively under development.
 
@@ -8,28 +8,51 @@ A lightweight PHP MVC framework built for fast, enjoyable web development. LaraC
 
 ## Table of Contents
 
-- [Requirements](#requirements)
-- [Features](#features)
-- [Installation](#installation)
-  - [Standard Setup](#standard-setup)
-  - [Docker Setup](#docker-setup)
-- [Directory Structure](#directory-structure)
-- [Configuration](#configuration)
-- [Routing](#routing)
-- [Controllers](#controllers)
-- [Models](#models)
-- [Views & Layouts](#views--layouts)
-- [Validation](#validation)
-- [Middleware](#middleware)
-- [Database Migrations](#database-migrations)
-- [Seeders & Factories](#seeders--factories)
-- [Authentication & Sessions](#authentication--sessions)
-- [Mail Service](#mail-service)
-- [REST API](#rest-api)
-- [Helper Functions](#helper-functions)
-- [CLI Commands](#cli-commands)
-- [Roadmap](#roadmap)
-- [License](#license)
+- [LaraCore Framework](#laracore-framework)
+  - [Table of Contents](#table-of-contents)
+  - [Requirements](#requirements)
+  - [Features](#features)
+  - [Installation](#installation)
+    - [Standard Setup](#standard-setup)
+    - [Docker Setup](#docker-setup)
+  - [Directory Structure](#directory-structure)
+  - [Configuration](#configuration)
+  - [Routing](#routing)
+    - [HTTP Methods](#http-methods)
+    - [Route Actions](#route-actions)
+    - [Route Parameters](#route-parameters)
+    - [Named Routes \& Middleware](#named-routes--middleware)
+  - [Controllers](#controllers)
+  - [ORM / Models](#orm--models)
+    - [Defining a Model](#defining-a-model)
+    - [CRUD](#crud)
+    - [Query Builder](#query-builder)
+    - [Relationships](#relationships)
+    - [Scopes](#scopes)
+    - [Lifecycle Hooks](#lifecycle-hooks)
+    - [Soft Deletes](#soft-deletes)
+    - [Collections](#collections)
+  - [Views \& Layouts](#views--layouts)
+  - [Validation](#validation)
+  - [Middleware](#middleware)
+  - [Database Migrations](#database-migrations)
+  - [Seeders \& Factories](#seeders--factories)
+  - [Authentication \& Sessions](#authentication--sessions)
+  - [Mail Service](#mail-service)
+    - [Create a Mailable](#create-a-mailable)
+    - [Send Mail](#send-mail)
+    - [Mailable API](#mailable-api)
+    - [Mail Views](#mail-views)
+    - [SMTP Configuration (`.env`)](#smtp-configuration-env)
+  - [REST API](#rest-api)
+  - [Helper Functions](#helper-functions)
+  - [CLI Commands](#cli-commands)
+  - [Testing](#testing)
+    - [Running Tests Locally](#running-tests-locally)
+    - [Running Tests with Docker](#running-tests-with-docker)
+    - [Test Structure](#test-structure)
+  - [Roadmap](#roadmap)
+  - [License](#license)
 
 ---
 
@@ -37,7 +60,7 @@ A lightweight PHP MVC framework built for fast, enjoyable web development. LaraC
 
 - PHP >= 7.4 (8.0+ recommended)
 - Composer
-- MySQL 5.7+
+- MySQL 5.7+ / SQLite (tests only)
 - Apache (mod_rewrite enabled) or Nginx
 
 ---
@@ -45,7 +68,7 @@ A lightweight PHP MVC framework built for fast, enjoyable web development. LaraC
 ## Features
 
 - [x] Simple and fast routing with named routes and parameter binding
-- [x] Custom query builder with PDO prepared statements
+- [x] **Eloquent-style Active Record ORM** — chainable query builder, relationships, casts, scopes, lifecycle hooks
 - [x] MVC architecture with base Controller, Model, and View classes
 - [x] Multi-layout view template system
 - [x] Form validation with built-in rules
@@ -60,7 +83,7 @@ A lightweight PHP MVC framework built for fast, enjoyable web development. LaraC
 - [x] Flash messages and input sanitization helpers
 - [x] CLI tool (`laracore`) for code generation and migrations
 - [x] Docker support (PHP 8.2 + Apache + MySQL 8.0 + Mailpit)
-- [ ] Full ORM with relationships
+- [x] **PHPUnit test suite** — unit, integration (SQLite in-memory), and feature tests
 - [ ] User management system
 - [ ] Multi-authentication system
 - [ ] Blade-style templating
@@ -136,7 +159,7 @@ The project ships with a fully configured Docker environment — PHP 8.2 + Apach
 cp .env.example .env
 ```
 
-**2. Build and start all containers**
+**2. Build and start all services**
 ```bash
 docker compose up -d
 ```
@@ -155,12 +178,31 @@ docker compose exec app php laracore migrate
 | MySQL (from host) | `localhost:3307` |
 
 **Useful Docker commands:**
+
 ```bash
-docker compose up -d            # Start all services
-docker compose down             # Stop all services
-docker compose logs -f app      # Stream app logs
-docker compose exec app bash    # Shell into the app container
+# Lifecycle
+docker compose up -d                        # Start all services in background
+docker compose down                         # Stop and remove containers
+docker compose down -v                      # Stop and remove containers + volumes
+docker compose restart app                  # Restart the app container
+
+# Logs
+docker compose logs -f                      # Stream all service logs
+docker compose logs -f app                  # Stream app logs only
+
+# Shell access
+docker compose exec app bash                # Open bash shell in app container
+docker compose exec db mysql -u laracore -psecret laracore   # MySQL shell
+
+# Migrations & seeds (inside app container)
 docker compose exec app php laracore migrate
+docker compose exec app php laracore migration:rollback
+docker compose exec app php laracore db:seed
+
+# Code generation (inside app container)
+docker compose exec app php laracore make:controller UserController
+docker compose exec app php laracore make:model User
+docker compose exec app php laracore make:migration create_posts_table
 ```
 
 **Connect to MySQL from a GUI tool (TablePlus, DBeaver, etc.):**
@@ -221,6 +263,21 @@ php-mvc-framework/
 │   │   └── Mailer.php
 │   ├── Routers/
 │   ├── Db/
+│   │   ├── Model.php           ← Active Record base class
+│   │   ├── QueryBuilder.php    ← Fluent query builder
+│   │   ├── Collection.php      ← Iterable result set
+│   │   ├── Connection.php      ← PDO singleton
+│   │   ├── DataModel.php       ← Legacy compatibility shim
+│   │   ├── Concerns/
+│   │   │   └── SoftDeletes.php
+│   │   ├── Relations/
+│   │   │   ├── HasOne.php
+│   │   │   ├── HasMany.php
+│   │   │   ├── BelongsTo.php
+│   │   │   └── BelongsToMany.php
+│   │   └── Migrations/
+│   │       ├── Blueprint.php
+│   │       └── Migration.php
 │   ├── Console/
 │   └── Helpers/
 ├── resources/
@@ -240,12 +297,40 @@ php-mvc-framework/
 │   ├── logs/
 │   ├── cache/
 │   └── sessions/
+├── tests/
+│   ├── TestCase.php
+│   ├── DatabaseTestCase.php    ← SQLite in-memory base
+│   ├── Fixtures/
+│   │   └── TestUser.php
+│   ├── Unit/
+│   │   ├── Db/
+│   │   │   ├── CollectionTest.php
+│   │   │   ├── ModelTest.php
+│   │   │   ├── QueryBuilderSqlTest.php
+│   │   │   └── Migrations/
+│   │   │       └── BlueprintTest.php
+│   │   ├── Helpers/
+│   │   │   └── HashTest.php
+│   │   ├── Routers/
+│   │   │   └── RouterTest.php
+│   │   ├── RequestTest.php
+│   │   └── ValidationTest.php
+│   ├── Integration/
+│   │   └── Db/
+│   │       ├── ConnectionTest.php
+│   │       ├── QueryBuilderIntegrationTest.php
+│   │       └── ModelCrudTest.php
+│   └── Feature/
+│       └── Http/
+│           └── Controllers/
+│               └── HomeControllerTest.php
 ├── .env
 ├── .env.example
 ├── .dockerignore
 ├── .htaccess
 ├── Dockerfile
 ├── docker-compose.yml
+├── phpunit.xml
 ├── index.php
 ├── laracore
 └── composer.json
@@ -374,7 +459,7 @@ class UserController extends Controller
 {
     public function index(Request $request, Response $response)
     {
-        $users = (new Users())->getAll();
+        $users = Users::all();
         return $this->view('users.index', compact('users'));
     }
 
@@ -386,9 +471,7 @@ class UserController extends Controller
         ]);
 
         if ($this->isValidate()) {
-            $user = new Users();
-            $user->loadData($request->all());
-            $user->save();
+            Users::creating($request->all());
             return $response->redirect('/users');
         }
 
@@ -407,54 +490,300 @@ class UserController extends Controller
 
 ---
 
-## Models
+## ORM / Models
+
+LaraCore ships an Eloquent-inspired Active Record ORM. Every model instance represents a database row; static methods and the fluent query builder make querying clean and chainable.
+
+### Defining a Model
 
 ```bash
-php laracore make:model User
+php laracore make:model Post
 ```
 
 ```php
 namespace LaraCore\App\Models;
 
-use LaraCore\Framework\Db\DataModel;
+use LaraCore\Framework\Db\Model;
 
-class Users extends DataModel
+class Post extends Model
 {
-    protected $table    = 'users';
-    protected $fillable = ['name', 'email', 'password'];
+    protected static $table      = 'posts';
+    protected static $primaryKey = 'id';
+    protected static $timestamps = true;   // manages created_at / updated_at
 
-    public function tableName(): string { return $this->table; }
-    public function attributes(): array { return $this->fillable; }
+    protected $fillable = ['title', 'body', 'user_id', 'status'];
+    protected $hidden   = [];              // excluded from toArray() / toJson()
+    protected $casts    = [
+        'user_id' => 'int',
+        'status'  => 'bool',
+    ];
 }
 ```
 
-**CRUD:**
+### CRUD
 
 ```php
-$model = new Users();
+// Create — fires onCreating / onCreated hooks
+$post = Post::creating([
+    'title'   => 'Hello World',
+    'body'    => 'Content here',
+    'user_id' => 1,
+    'status'  => true,
+]);
 
-// Create
-$model->name     = 'John';
-$model->email    = 'john@example.com';
-$model->password = Hash::make('secret');
-$model->save();
+echo $post->id;      // auto-incremented primary key
+echo $post->exists;  // true
 
-// Read
-$user  = $model->find(1);
-$all   = $model->getAll();
-$one   = $model->findOne(['email' => 'a@b.com']);
-$rows  = $model->selectWhere(['name', 'email'], ['active' => 1]);
+// Read — single record
+$post = Post::find(1);          // returns Post|null
+$post = Post::findOrFail(1);    // throws RuntimeException if not found
 
-// Update
-$user = $model->find(1);
-$user->name = 'Jane';
-$user->update(1);
+// Read — all records
+$posts = Post::all();           // returns Collection
+
+// Save — insert or update based on $model->exists
+$post = new Post();
+$post->title = 'New post';
+$post->saving();                // INSERT (exists = false)
+
+$post->title = 'Updated';
+$post->saving();                // UPDATE (exists = true)
+
+// Update — mass-update attributes on an existing record
+$post->updated(['title' => 'Revised title', 'status' => false]);
 
 // Delete
-$model->delete(1);
+$post->delete();
 
-// Load array into model properties
-$model->loadData($request->all());
+// firstOrCreate — find or insert
+$post = Post::firstOrCreate(
+    ['title' => 'Hello World'],  // search criteria
+    ['body'  => 'Body text']     // extra attributes on create
+);
+
+// updateOrCreate — find and update or insert
+$post = Post::updateOrCreate(
+    ['title' => 'Hello World'],
+    ['body'  => 'Updated body']
+);
+```
+
+### Query Builder
+
+Every static call that doesn't resolve to a method on `Model` is forwarded to a `QueryBuilder` instance, giving you a fully chainable fluent API:
+
+```php
+// WHERE clauses
+Post::where('status', true)->get();
+Post::where('user_id', '>', 0)->orWhere('featured', 1)->get();
+Post::whereIn('id', [1, 2, 3])->get();
+Post::whereNotIn('id', [4, 5])->get();
+Post::whereNull('deleted_at')->get();
+Post::whereNotNull('published_at')->get();
+Post::whereBetween('created_at', ['2024-01-01', '2024-12-31'])->get();
+Post::whereLike('title', '%hello%')->get();
+Post::whereRaw('YEAR(created_at) = ?', [2024])->get();
+
+// Nested WHERE
+Post::where('status', 1)
+    ->whereNested(fn($q) => $q->where('views', '>', 100)->orWhere('featured', 1))
+    ->get();
+
+// SELECT
+Post::select('id', 'title')->get();
+Post::distinct()->select('user_id')->get();
+
+// JOINs
+Post::join('users', 'posts.user_id', '=', 'users.id')
+    ->select('posts.*', 'users.name as author')
+    ->get();
+
+Post::leftJoin('comments', 'posts.id', '=', 'comments.post_id')->get();
+Post::rightJoin('categories', 'posts.category_id', '=', 'categories.id')->get();
+
+// ORDER, GROUP, LIMIT
+Post::orderBy('created_at', 'DESC')->limit(10)->get();
+Post::latest()->get();                   // ORDER BY created_at DESC
+Post::oldest()->get();                   // ORDER BY created_at ASC
+Post::groupBy('user_id')->get();
+Post::having('total', '>', 5)->get();
+
+// Pagination
+$page = Post::where('status', 1)->paginate(15, 1);
+// Returns: ['data' => Collection, 'total' => int, 'per_page' => 15, 'current_page' => 1, 'last_page' => int]
+
+Post::forPage(2, 15)->get();             // LIMIT 15 OFFSET 15
+
+// Single results
+$post  = Post::where('slug', 'hello')->first();
+$post  = Post::where('slug', 'hello')->firstOrFail();  // throws if not found
+$post  = Post::find(1);
+
+// Aggregates
+$count = Post::where('status', 1)->count();
+$max   = Post::where('status', 1)->max('views');
+$min   = Post::min('price');
+$sum   = Post::sum('views');
+$avg   = Post::avg('rating');
+$bool  = Post::where('slug', 'x')->exists();
+$bool  = Post::where('slug', 'x')->doesntExist();
+
+// Raw SQL inspection (no DB hit)
+$sql = Post::where('status', 1)->orderBy('id')->toSql();
+```
+
+### Relationships
+
+```php
+class User extends Model
+{
+    protected static $table = 'users';
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class, 'user_id', 'id');
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'user_id', 'id');
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id');
+    }
+}
+
+class Post extends Model
+{
+    protected static $table = 'posts';
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+}
+```
+
+**Accessing relationships** (lazy-loaded, results cached on first access):
+
+```php
+$user = User::find(1);
+$profile = $user->profile;       // HasOne  → User|null
+$posts   = $user->posts;         // HasMany → Collection
+$roles   = $user->roles;         // BelongsToMany → Collection
+$author  = $post->author;        // BelongsTo → User|null
+```
+
+**Many-to-many pivot helpers:**
+
+```php
+$roles = $user->roles();
+$roles->attach([1, 2]);           // insert pivot rows
+$roles->detach([2]);              // delete pivot rows
+$roles->sync([1, 3]);             // replace all pivot rows
+```
+
+### Scopes
+
+```php
+class Post extends Model
+{
+    public function scopePublished(QueryBuilder $query): QueryBuilder
+    {
+        return $query->where('status', 1);
+    }
+
+    public function scopeByUser(QueryBuilder $query, int $userId): QueryBuilder
+    {
+        return $query->where('user_id', $userId);
+    }
+}
+
+// Usage — scope name without "scope" prefix, camelCase
+Post::published()->get();
+Post::published()->byUser(5)->orderBy('created_at')->get();
+```
+
+### Lifecycle Hooks
+
+Override any of these protected methods in your model to react to persistence events:
+
+```php
+class Users extends Model
+{
+    protected function onCreating(): void
+    {
+        // Fires before INSERT — hash password, set defaults, etc.
+        $this->attributes['password'] = Hash::make($this->attributes['password']);
+        $this->attributes['status']   = 1;
+    }
+
+    protected function onCreated(): void  {}  // after INSERT
+    protected function onUpdating(): void {}  // before UPDATE
+    protected function onUpdated(): void  {}  // after UPDATE
+    protected function onSaving(): void   {}  // before INSERT or UPDATE
+    protected function onSaved(): void    {}  // after INSERT or UPDATE
+    protected function onDeleting(): void {}  // before DELETE
+    protected function onDeleted(): void  {}  // after DELETE
+}
+```
+
+### Soft Deletes
+
+```php
+use LaraCore\Framework\Db\Concerns\SoftDeletes;
+
+class Post extends Model
+{
+    use SoftDeletes;
+    // Requires a `deleted_at TIMESTAMP NULL` column in your table
+}
+
+$post->delete();              // sets deleted_at, row stays in DB
+$post->forceDelete();         // permanent delete
+$post->restore();             // clears deleted_at
+$post->trashed();             // bool — is soft-deleted?
+
+Post::withTrashed()->get();   // include soft-deleted rows
+Post::onlyTrashed()->get();   // only soft-deleted rows
+```
+
+### Collections
+
+`get()` and `all()` return a `Collection` — a rich wrapper around a plain array:
+
+```php
+$posts = Post::where('status', 1)->get();
+
+$posts->count();
+$posts->first();
+$posts->last();
+$posts->filter(fn($p) => $p->views > 100);
+$posts->map(fn($p) => $p->title);
+$posts->pluck('title');
+$posts->sortBy('created_at');
+$posts->sortByDesc('views');
+$posts->take(5);
+$posts->skip(10);
+$posts->chunk(20);               // returns array of Collection
+$posts->unique('user_id');
+$posts->sum('views');            // float
+$posts->avg('rating');           // float
+$posts->max('views');
+$posts->min('price');
+$posts->contains($post);
+$posts->isEmpty();
+$posts->isNotEmpty();
+$posts->each(fn($p) => /* side-effect */);
+$posts->merge($otherCollection);
+$posts->reverse();
+$posts->toArray();
+$posts->toJson();
+foreach ($posts as $post) { /* iterable */ }
+echo count($posts);              // Countable
+echo $posts[0]->title;           // ArrayAccess
 ```
 
 ---
@@ -696,10 +1025,6 @@ The mail service is built on [PHPMailer](https://github.com/PHPMailer/PHPMailer)
 
 ### Create a Mailable
 
-```bash
-# Manually create in app/Mail/
-```
-
 ```php
 // app/Mail/WelcomeMail.php
 namespace LaraCore\App\Mail;
@@ -800,7 +1125,7 @@ class UserApiController extends Controller
 {
     public function index(Request $request, Response $response)
     {
-        return $response->json(['success' => true, 'data' => (new Users())->getAll()]);
+        return $response->json(['success' => true, 'data' => Users::all()->toArray()]);
     }
 }
 ```
@@ -855,7 +1180,7 @@ Input::sanitize($value)    // trim + stripslashes + htmlspecialchars
 ## CLI Commands
 
 ```bash
-# Development
+# Development server
 php laracore serve
 
 # Code generation
@@ -877,17 +1202,138 @@ php laracore generate:api-key
 
 ---
 
+## Testing
+
+The framework ships with a full PHPUnit 9.6 test suite organised into three layers.
+
+| Suite | Location | DB | What it tests |
+|---|---|---|---|
+| Unit | `tests/Unit/` | None | Pure logic — collection methods, model attributes, query SQL, router, request, validation, hash |
+| Integration | `tests/Integration/` | SQLite in-memory | Real INSERT/SELECT/UPDATE/DELETE via `Connection::setInstance()` injection |
+| Feature | `tests/Feature/` | None | Controller instantiation and callability |
+
+### Running Tests Locally
+
+```bash
+# Install dev dependencies (first time)
+composer install
+
+# All suites
+./vendor/bin/phpunit --testdox --colors=always
+
+# Individual suites
+./vendor/bin/phpunit --testsuite Unit        --testdox --colors=always
+./vendor/bin/phpunit --testsuite Integration --testdox --colors=always
+./vendor/bin/phpunit --testsuite Feature     --testdox --colors=always
+
+# Composer script shortcuts
+composer test              # Unit suite
+composer test:unit         # Unit suite
+composer test:integration  # Integration suite
+composer test:feature      # Feature suite
+composer test:all          # All suites
+
+# Single test file
+./vendor/bin/phpunit tests/Unit/Db/CollectionTest.php --testdox
+
+# Single test method
+./vendor/bin/phpunit --filter testSumReturnsFloat tests/Unit/Db/CollectionTest.php
+
+# Only tests tagged @group db
+./vendor/bin/phpunit --group db
+```
+
+### Running Tests with Docker
+
+The `test` service runs in an isolated container using SQLite for integration tests — no MySQL required.
+
+**First-time build:**
+```bash
+docker compose build test
+```
+
+**Run all tests:**
+```bash
+docker compose run --rm test
+```
+
+**Run a specific suite:**
+```bash
+docker compose run --rm test php vendor/bin/phpunit --testsuite Unit        --testdox --colors=always
+docker compose run --rm test php vendor/bin/phpunit --testsuite Integration --testdox --colors=always
+docker compose run --rm test php vendor/bin/phpunit --testsuite Feature     --testdox --colors=always
+```
+
+**Run a single test file:**
+```bash
+docker compose run --rm test php vendor/bin/phpunit tests/Unit/Db/CollectionTest.php --testdox
+```
+
+**Run a single test method:**
+```bash
+docker compose run --rm test php vendor/bin/phpunit --filter testSumReturnsFloat tests/Unit/Db/CollectionTest.php
+```
+
+**Run only DB-tagged tests:**
+```bash
+docker compose run --rm test php vendor/bin/phpunit --group db
+```
+
+**Reset the vendor volume** (required after `docker compose build test` when dependencies change):
+```bash
+docker volume rm php-mvc-framework_vendor_data
+docker compose build test
+docker compose run --rm test
+```
+
+### Test Structure
+
+```
+tests/
+├── TestCase.php               ← Base class (extends PHPUnit TestCase)
+├── DatabaseTestCase.php       ← SQLite in-memory: creates PDO, injects via Connection::setInstance()
+├── Fixtures/
+│   └── TestUser.php           ← Concrete Model used across DB tests
+├── Unit/
+│   ├── Db/
+│   │   ├── CollectionTest.php          ← all(), first(), filter(), map(), pluck(), sort, aggregate…
+│   │   ├── ModelTest.php               ← fill, setAttribute, cast, isDirty, toArray, hidden, hydration
+│   │   ├── QueryBuilderSqlTest.php     ← toSql() output for every clause type (no real DB)
+│   │   └── Migrations/
+│   │       └── BlueprintTest.php       ← column SQL string generation
+│   ├── Helpers/
+│   │   └── HashTest.php               ← make(), verify() pass/fail
+│   ├── Routers/
+│   │   └── RouterTest.php             ← route registration, named routes, unsupported method
+│   ├── RequestTest.php                ← uri(), method(), isGet/isPost, route params
+│   └── ValidationTest.php             ← required, email, min, max, match rules
+├── Integration/
+│   └── Db/
+│       ├── ConnectionTest.php                  ← singleton behaviour, reset
+│       ├── QueryBuilderIntegrationTest.php     ← INSERT/SELECT/UPDATE/DELETE, paginate, exists
+│       └── ModelCrudTest.php                   ← creating(), find(), saving(), updated(), delete()
+└── Feature/
+    └── Http/
+        └── Controllers/
+            └── HomeControllerTest.php          ← controller callable, methods exist
+```
+
+---
+
 ## Roadmap
 
-- [ ] Full ORM with relationships (hasOne, hasMany, belongsTo)
 - [ ] User management system
 - [ ] Multi-authentication system
 - [ ] Blade-style templating
 - [ ] Route groups and prefixes
 - [ ] Query caching
+- [ ] Eager loading (with / load)
 
 ---
 
+Documentation update with [claude](https://claude.ai)
+
 ## License
+
 
 LaraCore is open-sourced software licensed under the [MIT license](LICENSE).
