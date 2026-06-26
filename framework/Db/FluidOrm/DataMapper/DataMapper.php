@@ -141,10 +141,9 @@ class DataMapper implements DataMapperInterface
   public function bindParameters(array $fields, bool $isSearch = false): self
   {
     if (is_array($fields)) {
-      $type = $isSearch === false ? $this->bindValues($fields) : $this->bindSearchValues($fields);
-      if ($type)
-        return $this;
+      $isSearch === false ? $this->bindValues($fields) : $this->bindSearchValues($fields);
     }
+    return $this;
   }
 
   /**
@@ -154,8 +153,10 @@ class DataMapper implements DataMapperInterface
    */
   public function numRows(): int
   {
-    if ($this->statement)
+    if ($this->statement) {
       return $this->statement->rowCount();
+    }
+    return 0;
   }
 
   /**
@@ -174,21 +175,25 @@ class DataMapper implements DataMapperInterface
    * 
    * @return Object
    */
-  public function result(): object
+  public function result(): object|false
   {
-    if ($this->statement)
+    if ($this->statement) {
       return $this->statement->fetchObject();
+    }
+    return false;
   }
 
   /**
    * @InheritDoc
-   * 
+   *
    * @return array
    */
   public function results(): array
   {
-    if ($this->statement)
+    if ($this->statement) {
       return $this->statement->fetchAll(PDO::FETCH_CLASS, $this->intoClass);
+    }
+    return [];
   }
 
   /**

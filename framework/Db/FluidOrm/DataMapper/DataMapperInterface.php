@@ -50,7 +50,7 @@ interface DataMapperInterface
    * 
    * @return Object
    */
-  public function result(): object;
+  public function result(): object|false;
 
   /**
    * Returns all the rows within the database as an array

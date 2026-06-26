@@ -2,6 +2,9 @@
 
 namespace LaraCore\Framework\Facades;
 
+use function random_int;
+use function uniqid;
+
 class Str
 {
   /**
@@ -13,8 +16,9 @@ class Str
    */
   public static function limit(string $text, int $length = 50, string $continue = "..."): string
   {
-    if (strlen($text) > $length)
-      $text = substr($text, 0, $length) . $continue;
+    if (\strlen($text) > $length) {
+      $text = \substr($text, 0, $length) . $continue;
+    }
     return $text;
   }
 
@@ -27,11 +31,13 @@ class Str
   public static function rand(int $length = 5, bool $unique = false): string
   {
     $q = "QWERTYUIOPASDFHJKLZXCVBNMqwertyuopasdfghjklizxcvbnm0987654321";
-    $q_count = strlen($q) - 1;
+    $q_count = \strlen($q) - 1;
     $r = "";
-    for ($x = $length; $x > 0; $x--)
-      $r .= $q[rand(0, $q_count)];
-    return $r . ($unique ? uniqid('', true) : null);
+    for ($x = $length; $x > 0; $x--) {
+      $i = random_int(0, $q_count);
+      $r .= $q[$i];
+    }
+    return $r . ($unique ? uniqid('', true) : '');
   }
 
   /**
@@ -42,7 +48,6 @@ class Str
    */
   public static function slug(string $text, string $divider = '-'): string
   {
-    return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', $divider, $text)));
-    ;
+    return \strtolower(\trim((string) \preg_replace('/[^A-Za-z0-9-]+/', $divider, $text)));
   }
 }
